@@ -118,7 +118,8 @@ class PerfusionViewModel : ViewModel() {
                     it.copy(
                         resultadoMlHr = String.format("%.2f", velocidadMlHr),
                         resultadoMlMin = String.format("%.2f", velocidadMlMin),
-                        resultadoGttsMin = String.format("%.2f", velocidadGttsMinDouble), // Mantenemos decimales para mostrar
+                     //   resultadoGttsMin = String.format("%.2f", velocidadGttsMinDouble), // Mantenemos decimales para mostrar
+                        resultadoGttsMin = velocidadGttsMinInt.toString(), // Mantenemos decimales para mostrar
                         resultadoGttsMinInt = velocidadGttsMinInt, // <--- GUARDAMOS EL ENTERO
                         isCalculating = false,
                         volumenError = false,
