@@ -1,6 +1,7 @@
 package com.chifuz.enfermerapp.ui.navigation
 
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +21,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -69,6 +71,7 @@ val navItems = listOf(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavHost() {
+    val context = LocalContext.current // <--- AÑADE ESTA LÍNEA AQUÍ
     val navController = rememberNavController()
     val currentDestination by navController.currentBackStackEntryAsState()
     val currentRoute = currentDestination?.destination?.route
@@ -77,7 +80,6 @@ fun AppNavHost() {
     var expanded by remember { mutableStateOf(false) }
     // ESTADOS DE DIÁLOGOS
     var showDisclaimerDialog by remember { mutableStateOf(false) }
-    var showUpcomingDialog by remember { mutableStateOf(false) } // <--- NUEVO ESTADO
 
     Scaffold(
         topBar = {
@@ -120,7 +122,14 @@ fun AppNavHost() {
                             leadingIcon = { Icon(MenuItem.Share.icon, contentDescription = null) },
                             onClick = {
                                 expanded = false
-                                showUpcomingDialog = true // <--- Mostrar diálogo "Próximamente"
+                                // Creamos el intent directamente aquí
+                                val sendIntent = Intent().apply {
+                                    action = Intent.ACTION_SEND
+                                    putExtra(Intent.EXTRA_TEXT, "¡Te recomiendo EnfermerApp! Descárgala aquí: https://play.google.com/store/apps/details?id=com.chifuz.enfermerapp")
+                                    type = "text/plain"
+                                }
+                                val shareIntent = Intent.createChooser(sendIntent, "Compartir EnfermerApp vía")
+                                context.startActivity(shareIntent)
                             }
                         )
                     }
@@ -198,10 +207,7 @@ fun AppNavHost() {
         DisclaimerDialog(onDismiss = { showDisclaimerDialog = false })
     }
 
-    // --- NUEVO DIÁLOGO: Próximamente ---
-    if (showUpcomingDialog) {
-        UpcomingFeatureDialog(onDismiss = { showUpcomingDialog = false })
-    }
+
 }
 
 // Composable del diálogo de Descargo de Responsabilidad
@@ -288,36 +294,17 @@ fun CustomIcon(@androidx.annotation.DrawableRes id: Int, contentDescription: Str
     )
 }
 @Composable
-fun UpcomingFeatureDialog(onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        confirmButton = {
-            Button(onClick = onDismiss) {
-                Text("ACEPTAR")
-            }
-        },
-        icon = {
-            Icon(
-                imageVector = Icons.Default.Share,
-                contentDescription = "Compartir",
-                tint = MaterialTheme.colorScheme.tertiary,
-                modifier = Modifier.size(32.dp)
-            )
-        },
-        title = { Text("Función Próximamente Disponible", style = MaterialTheme.typography.titleLarge) },
-        text = {
-            Column {
-                Text(
-                    text = "La función 'Recomendar App' estará disponible después de la fase de prueba cerrada, una vez que el nombre de paquete final sea establecido.",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-                Text(
-                    text = "¡Gracias por probar EnfermerApp!",
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-        }
-    )
+fun shareEnfermerApp() {
+    val context = LocalContext.current
+    val packageName = "com.chifuz.enfermerapp" // Tu ID confirmado
+    val playStoreUrl = "https://play.google.com/store/apps/details?id=$packageName"
+
+    val sendIntent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, "¡Te recomiendo EnfermerApp! Descárgala aquí: $playStoreUrl")
+        type = "text/plain"
+    }
+
+    val shareIntent = Intent.createChooser(sendIntent, "Compartir EnfermerApp vía")
+    context.startActivity(shareIntent)
 }
