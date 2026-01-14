@@ -1,5 +1,8 @@
 package com.chifuz.enfermerapp.ui.screens.perfusion
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -13,20 +16,25 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController // <--- NUEVO
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.chifuz.enfermerapp.ads.AdsManager
 import com.chifuz.enfermerapp.ui.screens.dosis.CalculoTextField
 import com.chifuz.enfermerapp.ui.navigation.Screen
 
 @Composable
 fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel = viewModel()) {
     val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
+    val activity = remember(context) { context.findActivity() } //
     val keyboardController = LocalSoftwareKeyboardController.current // <--- NUEVO
 
     // Comprobamos si todos los campos tienen un valor válido para habilitar el botón
@@ -161,7 +169,18 @@ fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel 
             resultadoMlMin = uiState.resultadoMlMin!!,
             resultadoGttsMin = uiState.resultadoGttsMin!!,
             resultadoGttsMinInt = uiState.resultadoGttsMinInt, // <--- PASAMOS EL INT
-            onDismiss = viewModel::hideResultDialog,
+            onDismiss = {
+                // 1. Ocultamos el diálogo primero
+                viewModel.hideResultDialog()
+
+                // 2. Ejecutamos el anuncio
+                activity?.let { act ->
+                    AdsManager.showInterstitial(act) {
+                        // Aquí el flujo continúa tras el anuncio
+                        android.util.Log.d("ADS", "Intersticial de Perfusión cerrado")
+                    }
+                }
+            },
             onSync = {
                 viewModel.hideResultDialog()
 
@@ -178,6 +197,12 @@ fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel 
 
         )
     }
+}
+
+private tailrec fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }
 
 // Composable para los botones de selección de gotero

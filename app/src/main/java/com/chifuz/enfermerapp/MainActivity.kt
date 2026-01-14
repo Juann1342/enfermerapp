@@ -9,11 +9,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.chifuz.enfermerapp.ui.navigation.AppNavHost
 import com.chifuz.enfermerapp.ui.theme.EnfermerAppTheme
+import com.chifuz.enfermerapp.ads.AdsManager
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        com.google.android.gms.ads.MobileAds.initialize(this) {}
+        AdsManager.loadInterstitial(this)
         setContent {
             EnfermerAppTheme {
                 // Aquí el Surface usa el color de fondo del tema (BackgroundLight o BackgroundDark)

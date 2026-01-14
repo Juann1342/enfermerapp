@@ -1,24 +1,39 @@
 package com.chifuz.enfermerapp.ui.screens.dosis
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.Intent
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController // <--- NUEVO: Controlador de teclado
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.chifuz.enfermerapp.ads.AdsManager
 import com.chifuz.enfermerapp.ui.screens.dosis.DosisViewModel
 import com.chifuz.enfermerapp.ui.navigation.Screen
+import androidx.core.net.toUri
+import com.chifuz.enfermerapp.utils.PrefsManager
 
 // Componente para un TextField estandarizado de la app
 @Composable
@@ -50,6 +65,9 @@ fun CalculoTextField(
 
 @Composable
 fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewModel()) {
+    val context = LocalContext.current
+    val activity = remember(context) { context.findActivity() }
+    var showRateDialog by remember { mutableStateOf(false) }
     val uiState by viewModel.uiState.collectAsState()
     val keyboardController = LocalSoftwareKeyboardController.current // <--- NUEVO
 
@@ -121,16 +139,52 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
         }
     }
 
+    // Lógica del diálogo de Rating
+    if (showRateDialog) {
+        RatingDialog(
+            onDismiss = { showRateDialog = false },
+            onRate = {
+                showRateDialog = false
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data =
+                        "https://play.google.com/store/apps/details?id=com.chifuz.enfermerapp".toUri()
+                }
+                context.startActivity(intent)
+            }
+        )
+    }
+
     // --- NUEVO: Diálogo de Resultado de Dosis ---
     if (uiState.showResultDialog && uiState.resultadoMl != null) {
         DosisResultDialog(
             resultadoMl = uiState.resultadoMl!!,
             dosisAdmin = uiState.dosisAdministrar,
-            onDismiss = viewModel::hideResultDialog
+            onDismiss = {
+                // Lógica: 1. Cerrar diálogo, 2. Mostrar Ad
+                viewModel.hideResultDialog()
+                val count = PrefsManager.incrementCalculationCount(context)
+// 2. Lógica de decisión: ¿Rating o Ad?
+                if (count == 5 || count == 50) {
+                    showRateDialog = true
+                } else {
+                    // Si no es la vez 5 o 50, mostramos anuncio como siempre
+                    activity?.let { act ->
+                        AdsManager.showInterstitial(act) {
+                            Log.d("ADS", "Flujo continuado")
+                        }
+                    }
+                }
+            }
         )
     }
 }
 
+
+private tailrec fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
+}
 @Composable
 fun DosisResultDialog(
     resultadoMl: String,
@@ -170,6 +224,58 @@ fun DosisResultDialog(
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+            }
+        }
+    )
+}
+
+@Composable
+fun RatingDialog(
+    onDismiss: () -> Unit,
+    onRate: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = {
+            // Un ícono que transmita calidez
+            Icon(
+                imageVector = androidx.compose.material.icons.Icons.Default.Favorite,
+                contentDescription = null,
+                tint = androidx.compose.ui.graphics.Color(0xFFE91E63), // Un color cereza/rosa empático
+                modifier = Modifier.size(40.dp)
+            )
+        },
+        title = {
+            Text(
+                text = "\u00A1Hola, colega!",
+                style = MaterialTheme.typography.headlineSmall,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        text = {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Esperamos que EnfermerApp te est\u00e9 ayudando a que tu turno sea un poco m\u00e1s leve. \u00bfNos dar\u00edas una mano con una calificaci\u00f3n? Nos ayuda un mont\u00f3n a seguir creciendo juntos.",
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = onRate,
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+            ) {
+                Text("S\u00cd, CON GUSTO")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("AHORA NO, GRACIAS", color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     )
