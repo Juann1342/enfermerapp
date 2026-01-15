@@ -1,0 +1,98 @@
+<resources>
+    <string name="app_name">EnfermerApp</string>
+
+    <string name="aceptar">ACCEPTER</string>
+    <string name="ahora_no_gracias">PAS MAINTENANT, MERCI</string>
+    <string name="cancelar">ANNULER</string>
+    <string name="opciones">Options</string>
+    <string name="entendido">COMPRIS</string>
+    <string name="informacion">Information</string>
+
+    <string name="valor_invalido">Valeur num\u00e9rique invalide</string>
+
+    <string name="rating_title">Bonjour, coll\u00e8gue !</string>
+    <string name="rating_message">Nous esp\u00e9rons qu\'EnfermerApp vous aide \u00e0 rendre votre service un peu plus l\u00e9ger. Pourriez-vous nous donner un coup de main avec une \u00e9valuation ? Cela nous aide beaucoup \u00e0 continuer de grandir ensemble.</string>
+    <string name="rating_confirm">OUI, AVEC PLAISIR</string>
+
+    <string name="dosis_title">Calcul de Dose</string>
+    <string name="dosis_result_title">R\u00e9sultat du Calcul de Dose</string>
+    <string name="dosis_volume_extract">Volume \u00e0 pr\u00e9lever de l\'ampoule :</string>
+    <string name="dosis_instruction_line">Pr\u00e9levez %1$s ml du flacon pour obtenir la dose de %2$s mg.</string>
+    <string name="dosis_label_admin">Dose \u00e0 administrer</string>
+    <string name="dosis_label_vol_medic">Volume du m\u00e9dicament</string>
+    <string name="dosis_label_concentracion">Concentration totale du m\u00e9dicament</string>
+
+    <string name="dosis_label_solvente">Solvant (Dilution)</string>
+    <string name="dosis_label_soluto">Solut\u00e9 (Ampoule)</string>
+    <string name="dosis_btn_calcular">CALCULER</string>
+    <string name="dosis_content_desc_ok">R\u00e9sultat OK</string>
+
+    <string name="perfusion_title">Calcul de Perfusion</string>
+    <string name="perfusion_label_volumen">Volume total</string>
+    <string name="perfusion_velocidad_goteo">D\u00e9bit du goutte-\u00e0-goutte</string>
+    <string name="perfusion_label_gotero">Type de perfuseur</string>
+    <string name="perfusion_label_tiempo">Temps d\'infusion</string>
+    <string name="perfusion_tiempo">Temps</string>
+
+    <string name="perfusion_label_tiempo_perfusion">Temps de perfusion</string>
+
+    <string name="perfusion_label_unidad_tiempo">Unit\u00e9 de temps</string>
+    <string name="perfusion_macro">Macro-goutte (20 gtts/ml)</string>
+    <string name="perfusion_micro">Micro-goutte (60 gtts/ml)</string>
+    <string name="perfusion_label_volumen_perfundir">Volume \u00e0 perfuser</string>
+
+    <string name="perfusion_hours">Heures</string>
+    <string name="perfusion_minutes">Minutes</string>
+    <string name="perfusion_btn_calcular">CALCULER LE D\u00c9BIT</string>
+    <string name="perfusion_btn_sync">SYNC LE RYTHME</string>
+    <string name="perfusion_row_goteo">D\u00e9bit :</string>
+    <string name="perfusion_row_gasto">Consommation :</string>
+
+    <string name="perfusion_resultado_perfusion">R\u00e9sultat de la Perfusion</string>
+    <string name="perfusion_resultados_perfusion">R\u00e9sultats de la Perfusion</string>
+    <string name="perfusion_goteo_objetivo">D\u00e9bit (Objectif) :</string>
+    <string name="perfusion_gtts_unit">%1$s gouttes/min</string>
+    <string name="perfusion_label_velocidad">Vitesse :</string>
+    <string name="perfusion_label_gasto">Consommation :</string>
+
+    <string name="perfusion_value_ml_hr">%1$s ml/h</string>
+    <string name="perfusion_value_ml_min">%1$s ml/min</string>
+
+    <string name="sync_title">Synchronisation des Gouttes</string>
+    <string name="sync_reiniciar">R\u00e9initialiser</string>
+    <string name="sync_iniciar">D\u00e9marrer M\u00e9tronome</string>
+    <string name="sync_detener">Arr\u00eater M\u00e9tronome</string>
+    <string name="sync_pulsar">APPUYER LORSQUE LA GOUTTE TOMBE</string>
+    <string name="sync_detener_metronomo">ARR\u00caTER LE M\u00c9TRONOME</string>
+    <string name="sync_ritmo_actual">Rythme Actuel :</string>
+    <string name="menu_privacy_settings">Confidentialit\u00e9 et annonces</string>
+    <string name="sync_status_messaje">Appuyez sur le bouton quand la goutte tombe.</string>
+    <string name="sync_status_manual">Appuyez sur le bouton quand la goutte tombe.</string>
+
+    <string name="sync_status_metronome_active">Rythme %1$d GPM. M\u00e9tronome actif.</string>
+    <string name="sync_status_provisional">Rythme provisoire, continuez d\'appuyer…</string>
+    <string name="sync_status_stable">Rythme stable bas\u00e9 sur %1$d gouttes.</string>
+    <string name="sync_status_stopped">M\u00e9tronome arr\u00eat\u00e9.</string>
+    <string name="sync_status_active">M\u00e9tronome actif \u00e0 %1$d GPM.</string>
+    <string name="sync_status_need_calculation">Calculez le rythme d\'abord.</string>
+
+    <string name="sync_status_metronome">Guide rythmique actif.</string>
+    <string name="sync_instruction">R\u00e9glez le compte-gouttes \u00e0 %1$d gouttes par minute.</string>
+
+    <string name="menu_terms">Conditions G\u00e9n\u00e9rales</string>
+    <string name="menu_share">Recommander l\'Application</string>
+
+    <string name="compartir_app_msg">Je vous recommande EnfermerApp ! T\u00e9l\u00e9chargez-la ici : %1$s</string>
+    <string name="compartir_via">Partager EnfermerApp via</string>
+
+    <string name="disclaimer_title">Conditions d\'Utilisation</string>
+    <string name="disclaimer_intro">En utilisant l\'application EnfermerApp, vous acceptez les conditions suivantes :</string>
+    <string name="disclaimer_sec1_title">1. Outil de Support, Non un Substitut :</string>
+    <string name="disclaimer_sec1_body">EnfermerApp est un outil auxiliaire pour faciliter les calculs courants en soins infirmiers. En aucun cas cette application ne remplace le jugement clinique professionnel ou la supervision m\u00e9dicale.</string>
+    <string name="disclaimer_sec2_title">2. Obligation de Validation :</string>
+    <string name="disclaimer_sec2_body">L\'utilisateur (infirmier, m\u00e9decin ou tout professionnel de sant\u00e9) a l\'OBLIGATION ind\u00e9l\u00e9gable de v\u00e9rifier manuellement tous les r\u00e9sultats g\u00e9n\u00e9r\u00e9s par l\'application avant administration au patient. L\'inexactitude du calcul peut mettre la sant\u00e9 du patient en danger.</string>
+    <string name="disclaimer_sec3_title">3. Limitation de Responsabilit\u00e9 :</string>
+    <string name="disclaimer_sec3_body">Le Cr\u00e9ateur (le D\u00e9veloppeur) n\'est pas responsable des cons\u00e9quences directes ou indirectes r\u00e9sultant d\'une utilisation incorrecte ou n\u00e9gligente des donn\u00e9es fournies. L\'utilisation est sous la seule responsabilit\u00e9 du professionnel et de son \u00e9tablissement.</string>
+    <string name="disclaimer_sec4_title">4. Int\u00e9grit\u00e9 et Formules :</string>
+    <string name="disclaimer_sec4_body">Le D\u00e9veloppeur s\'efforce d\'utiliser des formules universellement accept\u00e9es, mais l\'utilisateur doit s\'assurer de leur conformit\u00e9 avec les protocoles de son institution.</string>
+</resources>

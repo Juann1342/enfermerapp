@@ -1,3 +1,98 @@
 <resources>
     <string name="app_name">EnfermerApp</string>
+
+    <string name="aceptar">ACCEPT</string>
+    <string name="ahora_no_gracias">NO, THANKS</string>
+    <string name="cancelar">CANCEL</string>
+    <string name="opciones">Options</string>
+    <string name="entendido">UNDERSTOOD</string>
+    <string name="informacion">Information</string>
+
+    <string name="valor_invalido">Invalid numerical value</string>
+
+    <string name="rating_title">Hello, colleague!</string>
+    <string name="rating_message">We hope EnfermerApp is helping make your shift a bit lighter. Would you mind giving us a hand with a rating? It helps us a lot to keep growing together.</string>
+    <string name="rating_confirm">YES, GLADLY</string>
+
+    <string name="dosis_title">Dosage Calculation</string>
+    <string name="dosis_result_title">Dosage Calculation Result</string>
+    <string name="dosis_volume_extract">Volume to withdraw from the vial:</string>
+    <string name="dosis_instruction_line">Withdraw %1$s ml from the vial to achieve the dose of %2$s mg.</string>
+    <string name="dosis_label_admin">Dose to administer</string>
+    <string name="dosis_label_vol_medic">Medication volume</string>
+    <string name="dosis_label_concentracion">Total drug concentration</string>
+
+    <string name="dosis_label_solvente">Solvent (Dilution)</string>
+    <string name="dosis_label_soluto">Solute (Vial)</string>
+    <string name="dosis_btn_calcular">CALCULATE</string>
+    <string name="dosis_content_desc_ok">Result OK</string>
+
+    <string name="perfusion_title">Infusion Calculation</string>
+    <string name="perfusion_label_volumen">Total volume</string>
+    <string name="perfusion_velocidad_goteo">Drip Rate</string>
+    <string name="perfusion_label_gotero">Drip set type</string>
+    <string name="perfusion_label_tiempo">Infusion time</string>
+    <string name="perfusion_tiempo">Time</string>
+
+    <string name="perfusion_label_tiempo_perfusion">Infusion time</string>
+
+    <string name="perfusion_label_unidad_tiempo">Time unit</string>
+    <string name="perfusion_macro">Macrodrip (20 gtts/ml)</string>
+    <string name="perfusion_micro">Microdrip (60 gtts/ml)</string>
+    <string name="perfusion_label_volumen_perfundir">Volume to infuse</string>
+
+    <string name="perfusion_hours">Hours</string>
+    <string name="perfusion_minutes">Minutes</string>
+    <string name="perfusion_btn_calcular">CALCULATE DRIP</string>
+    <string name="perfusion_btn_sync">SYNC RATE</string>
+    <string name="perfusion_row_goteo">Drip:</string>
+    <string name="perfusion_row_gasto">Flow rate:</string>
+
+    <string name="perfusion_resultado_perfusion">Infusion Result</string>
+    <string name="perfusion_resultados_perfusion">Infusion Results</string>
+    <string name="perfusion_goteo_objetivo">Drip Rate (Target):</string>
+    <string name="perfusion_gtts_unit">%1$s drops/min</string>
+    <string name="perfusion_label_velocidad">Rate:</string>
+    <string name="perfusion_label_gasto">Flow rate:</string>
+
+    <string name="perfusion_value_ml_hr">%1$s ml/hr</string>
+    <string name="perfusion_value_ml_min">%1$s ml/min</string>
+
+    <string name="sync_title">Drop Synchronization</string>
+    <string name="sync_reiniciar">Reset</string>
+    <string name="sync_iniciar">Start Metronome</string>
+    <string name="sync_detener">Stop Metronome</string>
+    <string name="sync_pulsar">TAP WHEN DROP FALLS</string>
+    <string name="sync_detener_metronomo">STOP METRONOME</string>
+    <string name="sync_ritmo_actual">Current Rate:</string>
+    <string name="menu_privacy_settings">Privacy &amp; Ads</string>
+    <string name="sync_status_messaje">Tap the button when the drop falls.</string>
+    <string name="sync_status_manual">Tap the button when the drop falls.</string>
+
+    <string name="sync_status_metronome_active">Tempo %1$d GPM. Metronome active.</string>
+    <string name="sync_status_provisional">Provisional rate, keep tapping…</string>
+    <string name="sync_status_stable">Stable rate based on %1$d drops.</string>
+    <string name="sync_status_stopped">Metronome stopped.</string>
+    <string name="sync_status_active">Metronome active at %1$d GPM.</string>
+    <string name="sync_status_need_calculation">Calculate the rate first.</string>
+
+    <string name="sync_status_metronome">Rhythmic guide active.</string>
+    <string name="sync_instruction">Adjust the dropper to %1$d drops per minute.</string>
+
+    <string name="menu_terms">Terms and Conditions</string>
+    <string name="menu_share">Recommend App</string>
+
+    <string name="compartir_app_msg">I recommend EnfermerApp! Download it here: %1$s</string>
+    <string name="compartir_via">Share EnfermerApp via</string>
+
+    <string name="disclaimer_title">Terms and Conditions of Use</string>
+    <string name="disclaimer_intro">By using the EnfermerApp application, you accept and acknowledge the following terms:</string>
+    <string name="disclaimer_sec1_title">1. Support Tool, Not a Substitute:</string>
+    <string name="disclaimer_sec1_body">EnfermerApp is an auxiliary tool to facilitate common calculations in nursing practice. Under no circumstances does this application replace professional clinical judgment or medical supervision.</string>
+    <string name="disclaimer_sec2_title">2. Obligation to Validate:</string>
+    <string name="disclaimer_sec2_body">The user (nursing staff, physician, or any healthcare professional) has the undelegable OBLIGATION to manually verify and validate all results generated by the application before administration or application to the patient. Calculation inaccuracy may put the patient\'s health at risk.</string>
+    <string name="disclaimer_sec3_title">3. Limitation of Liability:</string>
+    <string name="disclaimer_sec3_body">The Creator of the application (the Developer) is not responsible for direct, indirect, incidental, or punitive consequences resulting from incorrect, inadequate, or negligent use of the data provided by EnfermerApp. The use of this application is under the sole responsibility of the professional using it and/or the healthcare center where treatments are applied.</string>
+    <string name="disclaimer_sec4_title">4. Integrity and Formulas:</string>
+    <string name="disclaimer_sec4_body">The Developer strives to use universally accepted formulas, but the user must ensure that these formulas are appropriate for their institution\'s clinical guidelines.</string>
 </resources>

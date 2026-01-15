@@ -1,6 +1,8 @@
 package com.chifuz.enfermerapp.ui.navigation
 
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +17,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocalHospital
 import androidx.compose.material.icons.filled.MoreVert // <--- NUEVA IMPORTACIÓN
+import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
@@ -23,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -31,6 +35,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.chifuz.enfermerapp.MainActivity
 import com.chifuz.enfermerapp.R
 import com.chifuz.enfermerapp.ui.screens.dosis.DosisScreen
 import com.chifuz.enfermerapp.ui.screens.perfusion.PerfusionScreen
@@ -55,10 +60,10 @@ sealed class Screen(val route: String, val title: String, val icon: Int) {
 }
 
 // Opciones del menú superior (hamburguesa)
-sealed class MenuItem(val title: String, val icon: ImageVector) {
+sealed class MenuItem(val title: Int, val icon: ImageVector) {
     // Mantener Icons.Default.Info para el DropdownMenuItem
-    object Terms : MenuItem("Términos y Condiciones", Icons.Default.Info)
-    object Share : MenuItem("Recomendar App", Icons.Default.Share)
+    object Terms : MenuItem(R.string.menu_terms, Icons.Default.Info)
+    object Share : MenuItem(R.string.menu_share, Icons.Default.Share)
 }
 
 // Lista de destinos de la barra de navegación inferior
@@ -81,8 +86,18 @@ fun AppNavHost() {
     // ESTADOS DE DIÁLOGOS
     var showDisclaimerDialog by remember { mutableStateOf(false) }
 
+    // Función para encontrar la MainActivity desde cualquier Composable
+    fun Context.findActivity(): MainActivity? = when (this) {
+        is MainActivity -> this
+        is ContextWrapper -> baseContext.findActivity()
+        else -> null
+    }
+
     Scaffold(
         topBar = {
+            // Obtenemos la referencia a la actividad para leer el estado de privacidad
+            val activity = context as? MainActivity
+
             TopAppBar(
                 title = {
                     Text(
@@ -90,45 +105,68 @@ fun AppNavHost() {
                         style = MaterialTheme.typography.titleLarge
                     )
                 },
-                // Aplicamos colores para la barra superior
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer, // Fondo de la barra
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer, // Color del texto
-                    actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer // Color de los iconos (ej. Menú)
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 ),
                 actions = {
-                    // Menú hamburguesa (Opciones secundarias)
                     IconButton(onClick = { expanded = true }) {
-                        // Ícono de tres puntos verticales para menú de opciones secundarias
                         Icon(
-                            imageVector = Icons.Default.MoreVert, // <--- CAMBIO CLAVE
-                            contentDescription = "Opciones"
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = stringResource(R.string.opciones)
                         )
                     }
                     DropdownMenu(
                         expanded = expanded,
                         onDismissRequest = { expanded = false }
                     ) {
+                        // --- BOTÓN DE PRIVACIDAD (Solo se muestra si es requerido) ---
+                        if (activity?.isPrivacyOptionsRequired == true) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.menu_privacy_settings)) },
+                                leadingIcon = { Icon(Icons.Default.PrivacyTip, contentDescription = null) },
+                                onClick = {
+                                    expanded = false
+                                    // Abrimos el formulario de Google para que el usuario pueda cambiar su decisión
+                                    com.google.android.ump.UserMessagingPlatform.showPrivacyOptionsForm(activity) { error ->
+                                        if (error != null) {
+                                            android.util.Log.e("UMP", "${error.errorCode}: ${error.message}")
+                                        }
+                                    }
+                                }
+                            )
+                        }
+
+                        // --- OPCIÓN: TÉRMINOS Y CONDICIONES ---
                         DropdownMenuItem(
-                            text = { Text(MenuItem.Terms.title) },
+                            text = { Text(stringResource(MenuItem.Terms.title)) },
                             leadingIcon = { Icon(MenuItem.Terms.icon, contentDescription = null) },
                             onClick = {
                                 expanded = false
                                 showDisclaimerDialog = true
                             }
                         )
+
+                        // --- OPCIÓN: COMPARTIR APP ---
                         DropdownMenuItem(
-                            text = { Text(MenuItem.Share.title) },
+                            text = { Text(stringResource(MenuItem.Share.title)) },
                             leadingIcon = { Icon(MenuItem.Share.icon, contentDescription = null) },
                             onClick = {
                                 expanded = false
-                                // Creamos el intent directamente aquí
+                                val playStoreUrl = "https://play.google.com/store/apps/details?id=com.chifuz.enfermerapp"
                                 val sendIntent = Intent().apply {
                                     action = Intent.ACTION_SEND
-                                    putExtra(Intent.EXTRA_TEXT, "¡Te recomiendo EnfermerApp! Descárgala aquí: https://play.google.com/store/apps/details?id=com.chifuz.enfermerapp")
+                                    putExtra(
+                                        Intent.EXTRA_TEXT,
+                                        context.getString(R.string.compartir_app_msg, playStoreUrl)
+                                    )
                                     type = "text/plain"
                                 }
-                                val shareIntent = Intent.createChooser(sendIntent, "Compartir EnfermerApp vía")
+                                val shareIntent = Intent.createChooser(
+                                    sendIntent,
+                                    context.getString(R.string.compartir_via)
+                                )
                                 context.startActivity(shareIntent)
                             }
                         )
@@ -217,67 +255,67 @@ fun DisclaimerDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         confirmButton = {
             Button(onClick = onDismiss) {
-                Text("ENTENDIDO")
+                Text(stringResource(R.string.entendido))
             }
         },
         icon = {
             Icon(
                 imageVector = Icons.Default.Info,
-                contentDescription = "Información",
+                contentDescription = stringResource(R.string.informacion),
                 tint = MaterialTheme.colorScheme.secondary
             )
         },
-        title = { Text("Descargo de Responsabilidad y Términos de Uso", style = MaterialTheme.typography.titleLarge) },
+        title = { Text(stringResource(R.string.disclaimer_title), style = MaterialTheme.typography.titleLarge) },
         text = {
             Column(
                 modifier = Modifier.verticalScroll(rememberScrollState())
             ) {
                 Text(
-                    text = "Al utilizar la aplicación EnfermerApp, usted acepta y reconoce los siguientes términos:",
+                    text = stringResource(R.string.disclaimer_intro),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
                 // 1. Herramienta de Soporte
                 Text(
-                    text = "1. Herramienta de Soporte, No Sustituto:",
+                    text = stringResource(R.string.disclaimer_sec1_title),
                     style = MaterialTheme.typography.titleSmall
                 )
                 Text(
-                    text = "EnfermerApp es una herramienta auxiliar para facilitar cálculos comunes en la práctica de enfermería. Bajo ninguna circunstancia esta aplicación reemplaza el juicio clínico profesional ni la supervisión médica.",
+                    text = stringResource(R.string.disclaimer_sec1_body),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
                 // 2. Validación de Cálculos
                 Text(
-                    text = "2. Obligación de Validación:",
+                    text = stringResource(R.string.disclaimer_sec2_title),
                     style = MaterialTheme.typography.titleSmall
                 )
                 Text(
-                    text = "El usuario (personal de enfermería, médico, o cualquier profesional de la salud) tiene la OBLIGACIÓN indelegable de verificar y validar manualmente todos los resultados generados por la aplicación antes de su administración o aplicación en el paciente. La inexactitud del cálculo puede poner en riesgo la salud del paciente.",
+                    text = stringResource(R.string.disclaimer_sec2_body),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
                 // 3. Descargo de Responsabilidad Legal
                 Text(
-                    text = "3. Limitación de Responsabilidad:",
+                    text = stringResource(R.string.disclaimer_sec3_title),
                     style = MaterialTheme.typography.titleSmall
                 )
                 Text(
-                    text = "El Creador de la aplicación (el Desarrollador) no se hace responsable de las consecuencias directas, indirectas, incidentales o punitivas que resulten del uso incorrecto, inadecuado o negligente de los datos proporcionados por EnfermerApp. El uso de esta aplicación es bajo la exclusiva responsabilidad del profesional que la utiliza y/o del centro de salud donde se aplican los tratamientos.",
+                    text = stringResource(R.string.disclaimer_sec3_body),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
                 // 4. Integridad de los Datos y Fórmulas
                 Text(
-                    text = "4. Integridad y Fórmulas:",
+                    text = stringResource(R.string.disclaimer_sec4_title),
                     style = MaterialTheme.typography.titleSmall
                 )
                 Text(
-                    text = "El Desarrollador se esfuerza por utilizar fórmulas universalmente aceptadas, pero el usuario debe asegurarse de que estas fórmulas sean apropiadas para las guías clínicas de su institución.",
+                    text = stringResource(R.string.disclaimer_sec4_body),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }

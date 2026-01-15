@@ -24,10 +24,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign // <--- NUEVA IMPORTACIÓN
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.chifuz.enfermerapp.R
 import com.chifuz.enfermerapp.ui.screens.sync.SyncViewModel
 import com.chifuz.enfermerapp.utils.VibrationManager
 
@@ -74,7 +76,7 @@ fun SyncScreen(gttsMinInicial: Int = 0, viewModel: SyncViewModel = viewModel()) 
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Sincronización de Gota",
+            text = stringResource(R.string.sync_title),
             style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.padding(bottom = 16.dp) // Menos espacio
         )
@@ -96,7 +98,7 @@ fun SyncScreen(gttsMinInicial: Int = 0, viewModel: SyncViewModel = viewModel()) 
         ) {
             ControlActionButton(
                 icon = Icons.Default.Refresh,
-                text = "Reiniciar",
+                text = stringResource(R.string.sync_reiniciar),
                 onClick = viewModel::reset,
                 // Aplicar weight para ancho igualitario
                 modifier = Modifier.weight(1f)
@@ -105,7 +107,7 @@ fun SyncScreen(gttsMinInicial: Int = 0, viewModel: SyncViewModel = viewModel()) 
 
             ControlActionButton(
                 icon = Icons.Default.PlayArrow,
-                text = if (uiState.mode == SyncMode.METRONOME) "Detener Metrónomo" else "Iniciar Metrónomo",
+                text = if (uiState.mode == SyncMode.METRONOME) stringResource(R.string.sync_detener) else stringResource(R.string.sync_iniciar),
                 onClick = viewModel::toggleMetronomeMode,
                 enabled = uiState.currentGttsMin > 0 || uiState.mode == SyncMode.METRONOME,
                 // Aplicar weight para ancho igualitario
@@ -118,8 +120,9 @@ fun SyncScreen(gttsMinInicial: Int = 0, viewModel: SyncViewModel = viewModel()) 
         // --- Área de Resultado ---
         SyncResultCard(
             gttsMin = uiState.currentGttsMin,
-            status = uiState.statusMessage,
+            status = stringResource(id = uiState.statusMessage, uiState.statusArg),
             mode = uiState.mode
+
         )
     }
 }
@@ -182,11 +185,11 @@ fun DropTapButton(
             when (mode) {
                 SyncMode.MANUAL -> {
                     icon = Icons.Default.WaterDrop
-                    text = "PULSAR AL CAER GOTA"
+                    text = stringResource(R.string.sync_pulsar)
                 }
                 SyncMode.METRONOME -> {
                     icon = Icons.Default.Stop
-                    text = "DETENER METRÓNOMO"
+                    text = stringResource(R.string.sync_detener_metronomo)
                 }
             }
 
@@ -249,7 +252,7 @@ fun SyncResultCard(gttsMin: Int, status: String, mode: SyncMode) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Ritmo Actual:",
+                text = stringResource(R.string.sync_ritmo_actual),
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center // Centrar
             )
@@ -273,7 +276,7 @@ fun SyncResultCard(gttsMin: Int, status: String, mode: SyncMode) {
             if (gttsMin > 0) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = if (mode == SyncMode.METRONOME) "Guía rítmica activa." else "Ajuste el gotero a $gttsMin gotas por minuto.",
+                    text = if (mode == SyncMode.METRONOME) stringResource(R.string.sync_status_metronome) else stringResource(R.string.sync_instruction, gttsMin),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.fillMaxWidth(), // Aseguramos que ocupe todo el ancho

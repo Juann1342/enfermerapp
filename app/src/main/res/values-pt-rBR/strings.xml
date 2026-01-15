@@ -1,0 +1,98 @@
+<resources>
+    <string name="app_name">EnfermerApp</string>
+
+    <string name="aceptar">ACEITAR</string>
+    <string name="ahora_no_gracias">AGORA N\u00c3O, OBRIGADO</string>
+    <string name="cancelar">CANCELAR</string>
+    <string name="opciones">Op\u00e7\u00f5es</string>
+    <string name="entendido">ENTENDIDO</string>
+    <string name="informacion">Informa\u00e7\u00e3o</string>
+
+    <string name="valor_invalido">Valor num\u00e9rico inv\u00e1lido</string>
+
+    <string name="rating_title">Ol\u00e1, colega!</string>
+    <string name="rating_message">Esperamos que o EnfermerApp esteja ajudando a tornar seu plant\u00e3o um pouco mais leve. Voc\u00ea poderia nos dar uma m\u00e3o com uma avalia\u00e7\u00e3o? Isso nos ajuda muito a continuar crescendo juntos.</string>
+    <string name="rating_confirm">SIM, COM PRAZER</string>
+
+    <string name="dosis_title">C\u00e1lculo de Dosagem</string>
+    <string name="dosis_result_title">Resultado do C\u00e1lculo de Dosagem</string>
+    <string name="dosis_volume_extract">Volume a retirar da ampola:</string>
+    <string name="dosis_instruction_line">Extraia %1$s ml do frasco para atingir a dose de %2$s mg.</string>
+    <string name="dosis_label_admin">Dose a administrar</string>
+    <string name="dosis_label_vol_medic">Volume do medicamento</string>
+    <string name="dosis_label_concentracion">Concentra\u00e7\u00e3o total do f\u00e1rmaco</string>
+
+    <string name="dosis_label_solvente">Solvente (Dilui\u00e7\u00e3o)</string>
+    <string name="dosis_label_soluto">Soluto (Ampola)</string>
+    <string name="dosis_btn_calcular">CALCULAR</string>
+    <string name="dosis_content_desc_ok">Resultado OK</string>
+
+    <string name="perfusion_title">C\u00e1lculo de Perfus\u00e3o</string>
+    <string name="perfusion_label_volumen">Volume total</string>
+    <string name="perfusion_velocidad_goteo">Velocidade de Gotejamento</string>
+    <string name="perfusion_label_gotero">Tipo de gotejador</string>
+    <string name="perfusion_label_tiempo">Tempo de infus\u00e3o</string>
+    <string name="perfusion_tiempo">Tempo</string>
+
+    <string name="perfusion_label_tiempo_perfusion">Tempo de perfus\u00e3o</string>
+
+    <string name="perfusion_label_unidad_tiempo">Unidade de tempo</string>
+    <string name="perfusion_macro">Macrogotejador (20 gts/ml)</string>
+    <string name="perfusion_micro">Microgotejador (60 gts/ml)</string>
+    <string name="perfusion_label_volumen_perfundir">Volume a perfundir</string>
+
+    <string name="perfusion_hours">Horas</string>
+    <string name="perfusion_minutes">Minutos</string>
+    <string name="perfusion_btn_calcular">CALCULAR GOTAS</string>
+    <string name="perfusion_btn_sync">SINCRONIZAR RITMO</string>
+    <string name="perfusion_row_goteo">Gotejamento:</string>
+    <string name="perfusion_row_gasto">Gasto:</string>
+
+    <string name="perfusion_resultado_perfusion">Resultado de Perfus\u00e3o</string>
+    <string name="perfusion_resultados_perfusion">Resultados de Perfus\u00e3o</string>
+    <string name="perfusion_goteo_objetivo">Ritmo de Gotejamento (Objetivo):</string>
+    <string name="perfusion_gtts_unit">%1$s gotas/min</string>
+    <string name="perfusion_label_velocidad">Velocidade:</string>
+    <string name="perfusion_label_gasto">Gasto:</string>
+
+    <string name="perfusion_value_ml_hr">%1$s ml/h</string>
+    <string name="perfusion_value_ml_min">%1$s ml/min</string>
+
+    <string name="sync_title">Sincroniza\u00e7\u00e3o de Gota</string>
+    <string name="sync_reiniciar">Reiniciar</string>
+    <string name="sync_iniciar">Iniciar Metr\u00f4nomo</string>
+    <string name="sync_detener">Parar Metr\u00f4nomo</string>
+    <string name="sync_pulsar">PULSAR AO CAIR A GOTA</string>
+    <string name="sync_detener_metronomo">PARAR METR\u00d4NOMO</string>
+    <string name="sync_ritmo_actual">Ritmo Atual:</string>
+    <string name="menu_privacy_settings">Privacidade e an\u00fancios</string>
+    <string name="sync_status_messaje">Pressione o bot\u00e3o ao cair a gota.</string>
+    <string name="sync_status_manual">Pressione o bot\u00e3o ao cair a gota.</string>
+
+    <string name="sync_status_metronome_active">Ritmo %1$d GPM. Metr\u00f4nomo ativo.</string>
+    <string name="sync_status_provisional">Ritmo provis\u00f3rio, continue pulsando…</string>
+    <string name="sync_status_stable">Ritmo est\u00e1vel baseado em %1$d gotas.</string>
+    <string name="sync_status_stopped">Metr\u00f4nomo parado.</string>
+    <string name="sync_status_active">Metr\u00f4nomo ativo em %1$d GPM.</string>
+    <string name="sync_status_need_calculation">Calcule o ritmo primeiro.</string>
+
+    <string name="sync_status_metronome">Guia r\u00edtmico ativo.</string>
+    <string name="sync_instruction">Ajuste o gotejador para %1$d gotas por minuto.</string>
+
+    <string name="menu_terms">Termos e Condi\u00e7\u00f5es</string>
+    <string name="menu_share">Recomendar App</string>
+
+    <string name="compartir_app_msg">Recomendo o EnfermerApp! Baixe-o aqui: %1$s</string>
+    <string name="compartir_via">Compartilhar EnfermerApp via</string>
+
+    <string name="disclaimer_title">Termos e Condi\u00e7\u00f5es de Uso</string>
+    <string name="disclaimer_intro">Ao utilizar o aplicativo EnfermerApp, voc\u00ea aceita e reconhece os seguintes termos:</string>
+    <string name="disclaimer_sec1_title">1. Ferramenta de Suporte, N\u00e3o Substituto:</string>
+    <string name="disclaimer_sec1_body">O EnfermerApp \u00e9 uma ferramenta auxiliar para facilitar c\u00e1lculos comuns na pr\u00e1tica de enfermagem. Sob nenhuma circunst\u00e2ncia este aplicativo substitui o julgamento cl\u00ednico profissional ou a supervis\u00e3o m\u00e9dica.</string>
+    <string name="disclaimer_sec2_title">2. Obriga\u00e7\u00e3o de Valida\u00e7\u00e3o:</string>
+    <string name="disclaimer_sec2_body">O usu\u00e1rio (equipe de enfermagem, m\u00e9dico ou qualquer profissional de sa\u00fade) tem a OBRIGA\u00c7\u00c3O indeleg\u00e1vel de verificar e validar manualmente todos os resultados gerados pelo aplicativo antes de sua administra\u00e7\u00e3o ou aplica\u00e7\u00e3o no paciente. A imprecis\u00e3o do c\u00e1lculo pode colocar em risco a sa\u00fade do paciente.</string>
+    <string name="disclaimer_sec3_title">3. Limita\u00e7\u00e3o de Responsabilidade:</string>
+    <string name="disclaimer_sec3_body">O Criador do aplicativo (o Desenvolvedor) n\u00e3o se responsabiliza pelas consequ\u00eancias diretas, indiretas, incidentais ou punitivas resultantes do uso incorreto, inadequado ou negligente dos dados fornecidos pelo EnfermerApp. O uso deste aplicativo \u00e9 de exclusiva responsabilidade do profissional que o utiliza e/ou do centro de sa\u00fade onde os tratamentos s\u00e3o aplicados.</string>
+    <string name="disclaimer_sec4_title">4. Integridade e F\u00f3rmulas:</string>
+    <string name="disclaimer_sec4_body">O Desenvolvedor se empenha em utilizar f\u00f3rmulas universalmente aceitas, mas o usu\u00e1rio deve garantir que estas f\u00f3rmulas sejam apropriadas para as diretrizes cl\u00ednicas de sua institui\u00e7\u00e3o.</string>
+</resources>

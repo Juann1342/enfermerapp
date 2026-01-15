@@ -2,8 +2,10 @@ package com.chifuz.enfermerapp.ui.screens.sync
 
 
 import android.util.Log
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chifuz.enfermerapp.R
 import com.chifuz.enfermerapp.utils.VibrationManager
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +21,8 @@ data class SyncUiState(
     val isCalculating: Boolean = false,
     val mode: SyncMode = SyncMode.MANUAL,
     val lastTapTimestamp: Long = 0L, // Marca de tiempo del último toque
-    val statusMessage: String = "Pulsa el botón al caer la gota.",
+    val statusMessage: Int = R.string.sync_status_manual,
+    val statusArg: Int = 0,
     val isMetronomeActive: Boolean = false, // Indica si el modo Metrónomo está corriendo
     val metronomeBlink: Boolean = false, // Para el efecto visual del metrónomo
     val tempoImported: Boolean = false // <--- NUEVO: Bandera de ritmo importado
@@ -53,7 +56,8 @@ class SyncViewModel : ViewModel() {
             _uiState.update {
                 it.copy(
                     mode = SyncMode.METRONOME,
-                    statusMessage = "Ritmo $gttsMin GPM. Metrónomo activo.",
+                    statusMessage = R.string.sync_status_metronome_active,
+                    statusArg = gttsMin,
                     tempoImported = true // <--- Marcar como importado
                 )
             }
@@ -100,16 +104,18 @@ class SyncViewModel : ViewModel() {
         val averageTimePerDropMs = totalTimeMs / numIntervals
         val gttsPerMin = (60000.0 / averageTimePerDropMs).roundToInt()
 
-        val status = if (timestamps.size < 5) {
-            "Ritmo provisional, sigue pulsando..."
+        // Determinamos qué "molde" usar según la lógica
+        val statusRes = if (timestamps.size < 5) {
+            R.string.sync_status_provisional
         } else {
-            "Ritmo estable basado en ${timestamps.size} gotas."
+            R.string.sync_status_stable
         }
 
         _uiState.update {
             it.copy(
                 currentGttsMin = gttsPerMin,
-                statusMessage = status
+                statusMessage = statusRes, // <--- Usamos la variable aquí
+                statusArg = timestamps.size
             )
         }
     }
@@ -117,19 +123,31 @@ class SyncViewModel : ViewModel() {
     // --- Lógica del Modo Metrónomo (Automático) ---
 
     fun toggleMetronomeMode() {
-        if (_uiState.value.mode == SyncMode.METRONOME) {
+        val currentState = _uiState.value
+
+        if (currentState.mode == SyncMode.METRONOME) {
             stopMetronome()
-            _uiState.update { it.copy(mode = SyncMode.MANUAL, statusMessage = "Metrónomo detenido.", tempoImported = false) } // <--- Reiniciar bandera
+            _uiState.update { it.copy(
+                mode = SyncMode.MANUAL,
+                statusMessage = R.string.sync_status_stopped,
+                tempoImported = false
+            ) }
         } else {
-            if (_uiState.value.currentGttsMin > 0) {
-                startMetronome(_uiState.value.currentGttsMin)
-                _uiState.update { it.copy(mode = SyncMode.METRONOME, statusMessage = "Metrónomo activo a ${_uiState.value.currentGttsMin} GPM.", tempoImported = true) } // <--- Activar bandera
+            if (currentState.currentGttsMin > 0) {
+                startMetronome(currentState.currentGttsMin)
+                _uiState.update { it.copy(
+                    mode = SyncMode.METRONOME,
+                    statusMessage = R.string.sync_status_active,
+                    statusArg = currentState.currentGttsMin,
+                    tempoImported = true
+                ) }
             } else {
-                _uiState.update { it.copy(statusMessage = "Calcula el ritmo primero.") }
+                _uiState.update { it.copy(
+                    statusMessage = R.string.sync_status_need_calculation
+                ) }
             }
         }
     }
-
     private fun startMetronome(gttsPerMin: Int) {
 
         // Detener cualquier trabajo anterior
@@ -174,7 +192,7 @@ class SyncViewModel : ViewModel() {
             SyncUiState(
                 currentGttsMin = 0, // Aseguramos que el ritmo también se reinicie
                 mode = SyncMode.MANUAL, // Aseguramos que el modo sea manual
-                statusMessage = "Pulsa el botón al caer la gota.",
+                statusMessage = R.string.sync_status_manual,
                 tempoImported = false // <--- CLAVE: Reiniciar la bandera
             )
         }

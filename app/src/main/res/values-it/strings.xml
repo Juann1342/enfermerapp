@@ -1,0 +1,98 @@
+<resources>
+    <string name="app_name">EnfermerApp</string>
+
+    <string name="aceptar">ACCETTA</string>
+    <string name="ahora_no_gracias">NON ORA, GRAZIE</string>
+    <string name="cancelar">ANNULLA</string>
+    <string name="opciones">Opzioni</string>
+    <string name="entendido">CAPITO</string>
+    <string name="informacion">Informazioni</string>
+    <string name="menu_privacy_settings">Privacy e annunci</string>
+    <string name="valor_invalido">Valore numerico non valido</string>
+
+    <string name="rating_title">Ciao, collega!</string>
+    <string name="rating_message">Speriamo che EnfermerApp ti stia aiutando a rendere il tuo turno un po\' pi\u00f9 leggero. Ti andrebbe di darci una mano con una valutazione? Ci aiuta molto a continuare a crescere insieme.</string>
+    <string name="rating_confirm">S\u00cc, VOLENTIERI</string>
+
+    <string name="dosis_title">Calcolo della Dose</string>
+    <string name="dosis_result_title">Risultato del Calcolo della Dose</string>
+    <string name="dosis_volume_extract">Volume da prelevare dalla fiala:</string>
+    <string name="dosis_instruction_line">Prelevare %1$s ml dal flacone per ottenere la dose di %2$s mg.</string>
+    <string name="dosis_label_admin">Dose da somministrare</string>
+    <string name="dosis_label_vol_medic">Volume del farmaco</string>
+    <string name="dosis_label_concentracion">Concentrazione totale del farmaco</string>
+
+    <string name="dosis_label_solvente">Solvente (Diluizione)</string>
+    <string name="dosis_label_soluto">Soluto (Fiala)</string>
+    <string name="dosis_btn_calcular">CALCOLA</string>
+    <string name="dosis_content_desc_ok">Risultato OK</string>
+
+    <string name="perfusion_title">Calcolo della Perfusione</string>
+    <string name="perfusion_label_volumen">Volume totale</string>
+    <string name="perfusion_velocidad_goteo">Velocit\u00e0 di Gocciolamento</string>
+    <string name="perfusion_label_gotero">Tipo de gocciolatore</string>
+    <string name="perfusion_label_tiempo">Tempo di infusione</string>
+    <string name="perfusion_tiempo">Tempo</string>
+
+    <string name="perfusion_label_tiempo_perfusion">Tempo di perfusione</string>
+
+    <string name="perfusion_label_unidad_tiempo">Unit\u00e0 di tempo</string>
+    <string name="perfusion_macro">Macrogocciolatore (20 gtt/ml)</string>
+    <string name="perfusion_micro">Microgocciolatore (60 gtt/ml)</string>
+    <string name="perfusion_label_volumen_perfundir">Volume da perfondere</string>
+
+    <string name="perfusion_hours">Ore</string>
+    <string name="perfusion_minutes">Minuti</string>
+    <string name="perfusion_btn_calcular">CALCOLA GOCCE</string>
+    <string name="perfusion_btn_sync">SINCRO RITMO</string>
+    <string name="perfusion_row_goteo">Gocciolamento:</string>
+    <string name="perfusion_row_gasto">Consumo:</string>
+
+    <string name="perfusion_resultado_perfusion">Risultato della Perfusione</string>
+    <string name="perfusion_resultados_perfusion">Risultati della Perfusione</string>
+    <string name="perfusion_goteo_objetivo">Ritmo di Gocciolamento (Obiettivo):</string>
+    <string name="perfusion_gtts_unit">%1$s gocce/min</string>
+    <string name="perfusion_label_velocidad">Velocit\u00e0:</string>
+    <string name="perfusion_label_gasto">Consumo:</string>
+
+    <string name="perfusion_value_ml_hr">%1$s ml/h</string>
+    <string name="perfusion_value_ml_min">%1$s ml/min</string>
+
+    <string name="sync_title">Sincronizzazione Goccia</string>
+    <string name="sync_reiniciar">Riavvia</string>
+    <string name="sync_iniciar">Avvia Metronomo</string>
+    <string name="sync_detener">Ferma Metronomo</string>
+    <string name="sync_pulsar">PREMI AL CADERE DELLA GOCCIA</string>
+    <string name="sync_detener_metronomo">FERMA METRONOMO</string>
+    <string name="sync_ritmo_actual">Ritmo Attuale:</string>
+
+    <string name="sync_status_messaje">Premi il pulsante quando cade la goccia.</string>
+    <string name="sync_status_manual">Premi il pulsante quando cade la goccia.</string>
+
+    <string name="sync_status_metronome_active">Ritmo %1$d GPM. Metronomo attivo.</string>
+    <string name="sync_status_provisional">Ritmo provvisorio, continua a premere…</string>
+    <string name="sync_status_stable">Ritmo stabile basato su %1$d gocce.</string>
+    <string name="sync_status_stopped">Metronomo fermato.</string>
+    <string name="sync_status_active">Metronomo attivo a %1$d GPM.</string>
+    <string name="sync_status_need_calculation">Prima calcola il ritmo.</string>
+
+    <string name="sync_status_metronome">Guida ritmica attiva.</string>
+    <string name="sync_instruction">Regola il gocciolatore a %1$d gocce al minuto.</string>
+
+    <string name="menu_terms">Termini e Condizioni</string>
+    <string name="menu_share">Consiglia l\'App</string>
+
+    <string name="compartir_app_msg">Ti consiglio EnfermerApp! Scaricala qui: %1$s</string>
+    <string name="compartir_via">Condividi EnfermerApp tramite</string>
+
+    <string name="disclaimer_title">Termini e Condizioni d\'Uso</string>
+    <string name="disclaimer_intro">Utilizzando l\'applicazione EnfermerApp, accetti i seguenti termini:</string>
+    <string name="disclaimer_sec1_title">1. Strumento di Supporto, Non Sostituto:</string>
+    <string name="disclaimer_sec1_body">EnfermerApp \u00e8 uno strumento ausiliario per facilitare i calcoli comuni nella pratica infermieristica. In nessun caso questa applicazione sostituisce il giudizio clinico professionale o la supervisione medica.</string>
+    <string name="disclaimer_sec2_title">2. Obbligo di Validazione:</string>
+    <string name="disclaimer_sec2_body">L\'utente (personale infermieristico, medico o qualsiasi operatore sanitario) ha l\'OBBLIGO indelegabile di verificare manualmente tutti i risultati generati dall\'applicazione prima della somministrazione al paziente. L\'inesattezza del calcolo può mettere a rischio la salute del paziente.</string>
+    <string name="disclaimer_sec3_title">3. Limitazione di Responsabilit\u00e0:</string>
+    <string name="disclaimer_sec3_body">Il Creatore dell\'applicazione (lo Sviluppatore) non \u00e8 responsabile per conseguenze dirette o indirette derivanti dall\'uso errato o negligente dei dati forniti. L\'uso \u00e8 sotto l\'esclusiva responsabilit\u00e0 del professionista e della struttura sanitaria.</string>
+    <string name="disclaimer_sec4_title">4. Integrit\u00e0 e Formule:</string>
+    <string name="disclaimer_sec4_body">Lo Sviluppatore si impegna a utilizzare formule universalmente accettate, ma l\'utente deve assicurarsi che siano appropriate per le linee guida della propria istituzione.</string>
+</resources>

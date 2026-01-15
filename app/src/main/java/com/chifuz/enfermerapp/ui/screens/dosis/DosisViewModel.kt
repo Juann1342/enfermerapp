@@ -107,7 +107,7 @@ class DosisViewModel : ViewModel() {
                 }
 
             } catch (e: Exception) {
-                _uiState.update { it.copy(resultadoMl = "Error de cálculo. $e", isCalculating = false) }
+                _uiState.update { it.copy(resultadoMl = "Error", isCalculating = false) }
             }
         }
     }

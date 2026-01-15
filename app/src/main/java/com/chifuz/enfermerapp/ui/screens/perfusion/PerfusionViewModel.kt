@@ -129,7 +129,7 @@ class PerfusionViewModel : ViewModel() {
                 }
 
             } catch (e: Exception) {
-                _uiState.update { it.copy(resultadoMlHr = "Error de cálculo. $e", resultadoMlMin = null, resultadoGttsMin = null, resultadoGttsMinInt = 0, isCalculating = false) }
+                _uiState.update { it.copy(resultadoMlHr = "Error", resultadoMlMin = null, resultadoGttsMin = null, resultadoGttsMinInt = 0, isCalculating = false) }
             }
         }
     }

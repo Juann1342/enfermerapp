@@ -6,6 +6,7 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import com.chifuz.enfermerapp.R
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -24,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController // <--- NUEVO: Controlador de teclado
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -56,8 +58,7 @@ fun CalculoTextField(
         trailingIcon = { Text(unit, style = MaterialTheme.typography.bodyLarge) },
         supportingText = {
             if (isError) {
-                Text("Valor numérico inválido")
-            }
+                Text(stringResource(R.string.valor_invalido))            }
         },
         modifier = modifier.fillMaxWidth()
     )
@@ -85,7 +86,7 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Cálculo de Dosis",
+            text = stringResource(R.string.dosis_title),
             style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.padding(bottom = 24.dp)
         )
@@ -94,7 +95,7 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
         CalculoTextField(
             value = uiState.dosisAdministrar,
             onValueChange = viewModel::updateDosisAdministrar,
-            label = "Dosis a administrar",
+            label = stringResource(R.string.dosis_label_admin),
             unit = "mg",
             isError = uiState.dosisAdministrarError,
             modifier = Modifier.padding(bottom = 16.dp)
@@ -104,7 +105,7 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
         CalculoTextField(
             value = uiState.solvente,
             onValueChange = viewModel::updateSolvente,
-            label = "Volumen del medicamento",
+            label = stringResource(R.string.dosis_label_vol_medic),
             unit = "ml",
             isError = uiState.solventeError,
             modifier = Modifier.padding(bottom = 16.dp)
@@ -114,7 +115,7 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
         CalculoTextField(
             value = uiState.soluto,
             onValueChange = viewModel::updateSoluto,
-            label = "Concentración total del fármaco",
+            label = stringResource(R.string.dosis_label_concentracion),
             unit = "mg",
             isError = uiState.solutoError,
             modifier = Modifier.padding(bottom = 24.dp)
@@ -134,7 +135,7 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
             if (uiState.isCalculating) {
                 CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
             } else {
-                Text("CALCULAR")
+                Text(stringResource(R.string.dosis_btn_calcular))
             }
         }
     }
@@ -195,22 +196,21 @@ fun DosisResultDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             Button(onClick = onDismiss) {
-                Text("ACEPTAR")
-            }
+                Text(stringResource(R.string.aceptar))            }
         },
         icon = {
             Icon(
                 imageVector = Icons.Default.CheckCircle,
-                contentDescription = "Resultado OK",
+                contentDescription = stringResource(R.string.dosis_content_desc_ok),
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(32.dp)
             )
         },
-        title = { Text("Resultado del Cálculo de Dosis", style = MaterialTheme.typography.titleLarge) },
+        title = { Text(stringResource(R.string.dosis_result_title), style = MaterialTheme.typography.titleLarge) },
         text = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "Volumen a extraer de la ampolla:",
+                    text = stringResource(R.string.dosis_volume_extract),
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
@@ -220,7 +220,7 @@ fun DosisResultDialog(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Extraiga $resultadoMl ml del frasco para lograr la dosis de $dosisAdmin mg.",
+                    text = stringResource(R.string.dosis_instruction_line, resultadoMl, dosisAdmin),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -247,7 +247,7 @@ fun RatingDialog(
         },
         title = {
             Text(
-                text = "\u00A1Hola, colega!",
+                text = stringResource(R.string.rating_title),
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
@@ -259,7 +259,7 @@ fun RatingDialog(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Esperamos que EnfermerApp te est\u00e9 ayudando a que tu turno sea un poco m\u00e1s leve. \u00bfNos dar\u00edas una mano con una calificaci\u00f3n? Nos ayuda un mont\u00f3n a seguir creciendo juntos.",
+                    text = stringResource(R.string.rating_message),
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center
                 )
@@ -270,12 +270,12 @@ fun RatingDialog(
                 onClick = onRate,
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
-                Text("S\u00cd, CON GUSTO")
+                Text(stringResource(R.string.rating_confirm))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("AHORA NO, GRACIAS", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.ahora_no_gracias), color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     )

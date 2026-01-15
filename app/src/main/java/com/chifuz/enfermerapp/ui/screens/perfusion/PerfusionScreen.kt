@@ -21,11 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController // <--- NUEVO
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.chifuz.enfermerapp.R
 import com.chifuz.enfermerapp.ads.AdsManager
 import com.chifuz.enfermerapp.ui.screens.dosis.CalculoTextField
 import com.chifuz.enfermerapp.ui.navigation.Screen
@@ -50,14 +52,14 @@ fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel 
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Velocidad de Goteo",
+            text = stringResource(R.string.perfusion_velocidad_goteo),
             style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.padding(bottom = 24.dp)
         )
 
         // --- 1. Selección de Gotero (Toggle Buttons) ---
         Text(
-            text = "Tipo de Gotero:",
+            text = stringResource(R.string.perfusion_label_gotero),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier
                 .align(Alignment.Start)
@@ -70,13 +72,13 @@ fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel 
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             GoteroToggleButton(
-                text = "Microgotero (60 gtt/ml)",
+                text = stringResource(R.string.perfusion_micro),
                 isSelected = uiState.selectedGotero == GoteroType.MICRO,
                 onClick = { viewModel.selectGotero(GoteroType.MICRO) },
                 modifier = Modifier.weight(1f)
             )
             GoteroToggleButton(
-                text = "Macrogotero (20 gtt/ml)",
+                text = stringResource(R.string.perfusion_macro),
                 isSelected = uiState.selectedGotero == GoteroType.MACRO,
                 onClick = { viewModel.selectGotero(GoteroType.MACRO) },
                 modifier = Modifier.weight(1f)
@@ -87,7 +89,7 @@ fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel 
         CalculoTextField(
             value = uiState.volumen,
             onValueChange = viewModel::updateVolumen,
-            label = "Volumen a perfundir",
+            label = stringResource(R.string.perfusion_label_volumen_perfundir),
             unit = "ml",
             isError = uiState.volumenError,
             modifier = Modifier.padding(bottom = 24.dp)
@@ -95,7 +97,7 @@ fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel 
 
         // --- 3. Tiempo (Input y Toggle Buttons para Unidad) ---
         Text(
-            text = "Tiempo de perfusión:",
+            text = stringResource(R.string.perfusion_label_tiempo_perfusion),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier
                 .align(Alignment.Start)
@@ -113,7 +115,7 @@ fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel 
             CalculoTextField(
                 value = uiState.tiempo,
                 onValueChange = viewModel::updateTiempo,
-                label = "Tiempo",
+                label = stringResource(R.string.perfusion_tiempo),
                 unit = if (uiState.selectedTimeUnit == TimeUnit.HOURS) "hrs" else "min",
                 isError = uiState.tiempoError,
                 modifier = Modifier.weight(0.6f)
@@ -127,13 +129,13 @@ fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel 
                 horizontalArrangement = Arrangement.End
             ) {
                 TimeUnitToggleButton(
-                    text = "Horas",
+                    text = stringResource(R.string.perfusion_hours),
                     isSelected = uiState.selectedTimeUnit == TimeUnit.HOURS,
                     onClick = { viewModel.selectTimeUnit(TimeUnit.HOURS) }
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 TimeUnitToggleButton(
-                    text = "Minutos",
+                    text = stringResource(R.string.perfusion_minutes),
                     isSelected = uiState.selectedTimeUnit == TimeUnit.MINUTES,
                     onClick = { viewModel.selectTimeUnit(TimeUnit.MINUTES) }
                 )
@@ -157,7 +159,7 @@ fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel 
             if (uiState.isCalculating) {
                 CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
             } else {
-                Text("CALCULAR")
+                Text(stringResource(R.string.dosis_btn_calcular))
             }
         }
     }
@@ -274,21 +276,21 @@ fun PerfusionResultDialog(
         icon = {
             Icon(
                 imageVector = Icons.Default.Info,
-                contentDescription = "Resultado de Perfusión",
+                contentDescription = stringResource(R.string.perfusion_resultado_perfusion),
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(32.dp)
             )
         },
-        title = { Text("Resultados de Perfusión", style = MaterialTheme.typography.titleLarge) },
+        title = { Text(stringResource(R.string.perfusion_resultados_perfusion), style = MaterialTheme.typography.titleLarge) },
         text = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 // Bloque 1: Velocidad principal
                 Text(
-                    text = "Ritmo de Goteo (Objetivo):",
+                    text = stringResource(R.string.perfusion_goteo_objetivo),
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                 )
                 Text(
-                    text = "$resultadoGttsMin gotas/min",
+                    text = stringResource(R.string.perfusion_gtts_unit, resultadoGttsMin),
                     style = MaterialTheme.typography.displayMedium,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(bottom = 12.dp)
@@ -296,15 +298,23 @@ fun PerfusionResultDialog(
 
                 // Bloque 2: Detalles de volumen
                 Divider(Modifier.padding(vertical = 8.dp).fillMaxWidth())
-                ResultRow(label = "Velocidad:", value = "$resultadoMlHr ml/hr", unitColor = MaterialTheme.colorScheme.primary)
-                ResultRow(label = "Gasto:", value = "$resultadoMlMin ml/min", unitColor = MaterialTheme.colorScheme.primary)
+                ResultRow(
+                    label = stringResource(R.string.perfusion_label_velocidad),
+                    value = stringResource(R.string.perfusion_value_ml_hr, resultadoMlHr),
+                    unitColor = MaterialTheme.colorScheme.primary
+                )
+                ResultRow(
+                    label = stringResource(R.string.perfusion_label_gasto),
+                    value = stringResource(R.string.perfusion_value_ml_min, resultadoMlMin),
+                    unitColor = MaterialTheme.colorScheme.primary
+                )
                 Spacer(modifier = Modifier.height(8.dp))
             }
         },
         // Botones de acción
         confirmButton = {
             Button(onClick = onDismiss) {
-                Text("ACEPTAR")
+                Text( stringResource(R.string.aceptar))
             }
         },
         dismissButton = {
@@ -315,9 +325,9 @@ fun PerfusionResultDialog(
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary),
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.secondary)
                 ) {
-                    Icon(Icons.Default.PlayArrow, contentDescription = "Sincronizar")
+                    Icon(Icons.Default.PlayArrow, contentDescription = stringResource(R.string.perfusion_btn_sync))
                     Spacer(Modifier.width(4.dp))
-                    Text("SINCRONIZAR RITMO")
+                    Text( stringResource(R.string.perfusion_btn_sync))
                 }
             }
         }
