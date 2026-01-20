@@ -28,6 +28,23 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setContent {
+            EnfermerAppTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    // Pasamos el estado de privacidad al NavHost o lo manejamos desde aquí
+                    AppNavHost()
+                }
+            }
+        }
+
+        consentimientoAds()
+
+    }
+
+    private fun consentimientoAds(){
         // 1. Configuración de UMP
         val params = ConsentRequestParameters.Builder()
             .setTagForUnderAgeOfConsent(false)
@@ -60,18 +77,6 @@ class MainActivity : ComponentActivity() {
                 initializeAds()
             }
         )
-
-        setContent {
-            EnfermerAppTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    // Pasamos el estado de privacidad al NavHost o lo manejamos desde aquí
-                    AppNavHost()
-                }
-            }
-        }
     }
 
     private fun initializeAds() {

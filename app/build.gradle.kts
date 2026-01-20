@@ -30,8 +30,8 @@ android {
         applicationId = "com.chifuz.enfermerapp"
         minSdk = 24
         targetSdk = 36
-        versionCode = 13
-        versionName = "1.3"
+        versionCode = 14
+        versionName = "1.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
