@@ -19,6 +19,7 @@ import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.UserMessagingPlatform
 
+
 class MainActivity : ComponentActivity() {
 
     // Esta variable le dirá a tu Menú si debe mostrar el botón de privacidad o no
@@ -78,6 +79,7 @@ class MainActivity : ComponentActivity() {
             }
         )
     }
+
 
     private fun initializeAds() {
         MobileAds.initialize(this) {}
