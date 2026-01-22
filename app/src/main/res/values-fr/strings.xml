@@ -95,4 +95,43 @@
     <string name="disclaimer_sec3_body">Le Cr\u00e9ateur (le D\u00e9veloppeur) n\'est pas responsable des cons\u00e9quences directes ou indirectes r\u00e9sultant d\'une utilisation incorrecte ou n\u00e9gligente des donn\u00e9es fournies. L\'utilisation est sous la seule responsabilit\u00e9 du professionnel et de son \u00e9tablissement.</string>
     <string name="disclaimer_sec4_title">4. Int\u00e9grit\u00e9 et Formules :</string>
     <string name="disclaimer_sec4_body">Le D\u00e9veloppeur s\'efforce d\'utiliser des formules universellement accept\u00e9es, mais l\'utilisateur doit s\'assurer de leur conformit\u00e9 avec les protocoles de son institution.</string>
+
+    <string name="menu_edad">\u00c2ge</string>
+    <string name="edad_title">Calculateur d\'\u00e2ge</string>
+    <string name="edad_result_title">R\u00e9sultat du calcul</string>
+    <string name="fecha_nacimiento">Date de naissance</string>
+    <string name="seleccionar_fecha">Choisir une date</string>
+    <string name="es_prematuro">Est-ce pr\u00e9matur\u00e9 ? (&lt; 37 semaines)</string>
+    <string name="gestational_weeks">Semaines de gestation</string>
+    <string name="btn_calcular_edad">CALCULER L\'\u00c2GE</string>
+    <string name="edad_cronologica">\u00c2ge chronologique :</string>
+    <string name="edad_corregida">\u00c2ge corrig\u00e9 :</string>
+    <string name="error_semanas">Plage valide : 20 \u00e0 36 semaines</string>
+
+    <plurals name="años">
+        <item quantity="one">%d an</item>
+        <item quantity="other">%d ans</item>
+    </plurals>
+    <plurals name="meses">
+        <item quantity="one">%d mois</item>
+        <item quantity="other">%d mois</item>
+    </plurals>
+    <plurals name="semanas">
+        <item quantity="one">%d semaine</item>
+        <item quantity="other">%d semaines</item>
+    </plurals>
+    <plurals name="dias">
+        <item quantity="one">%d jour</item>
+        <item quantity="other">%d jours</item>
+    </plurals>
+
+    <string name="menu_dosis">Dose</string>
+    <string name="menu_perfusion">D\u00e9bit</string>
+    <string name="menu_sync">Synchroniser</string>
+    <string name="menu_edad_nav">\u00c2ge</string>
+
+    <string name="faltan_para_termino">%1$s restant avant le terme %2$s</string>
+    <string name="parentesis_semanas">(%1$d semaines)</string>
+    <string name="y_con_espacios"> et </string>
+
 </resources>

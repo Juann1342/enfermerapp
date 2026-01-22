@@ -4,21 +4,16 @@ package com.chifuz.enfermerapp.ui.navigation
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.LocalHospital
 import androidx.compose.material.icons.filled.MoreVert // <--- NUEVA IMPORTACIÓN
 import androidx.compose.material.icons.filled.PrivacyTip
-import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -40,17 +35,17 @@ import com.chifuz.enfermerapp.R
 import com.chifuz.enfermerapp.ui.screens.dosis.DosisScreen
 import com.chifuz.enfermerapp.ui.screens.perfusion.PerfusionScreen
 import com.chifuz.enfermerapp.ui.screens.sync.SyncScreen
-import com.chifuz.enfermerapp.ui.screens.sync.SyncViewModel
-import com.chifuz.enfermerapp.ui.screens.dosis.DosisViewModel
-import com.chifuz.enfermerapp.ui.screens.perfusion.PerfusionViewModel
+import com.chifuz.enfermerapp.ui.screens.edad.EdadScreen
 
 
 // Definición de las rutas y sus iconos (usando los que funcionan)
-sealed class Screen(val route: String, val title: String, val icon: Int) {
-    object Dosis : Screen("dosis", "", R.drawable.ic_dosis)
-    object Perfusion : Screen("perfusion", "", R.drawable.ic_perfusion)
+sealed class Screen(val route: String, val title: Int, val icon: Int) {
+    object Dosis : Screen("dosis", R.string.menu_dosis, R.drawable.ic_dosis)
+    object Perfusion : Screen("perfusion", R.string.menu_perfusion, R.drawable.ic_perfusion)
     // Ruta de sincronización base (usada por la barra inferior)
-    object Sync : Screen("sync", "", R.drawable.ic_gota)
+    object Sync : Screen("sync", R.string.menu_sync, R.drawable.ic_gota)
+
+    object Edad : Screen("edad", R.string.menu_edad_nav, R.drawable.ic_edad)
 
     // Constantes para la ruta con argumento
     companion object {
@@ -70,7 +65,8 @@ sealed class MenuItem(val title: Int, val icon: ImageVector) {
 val navItems = listOf(
     Screen.Dosis,
     Screen.Perfusion,
-    Screen.Sync
+    Screen.Sync,
+    Screen.Edad
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -100,8 +96,11 @@ fun AppNavHost() {
 
             TopAppBar(
                 title = {
+                    // Buscamos la pantalla actual
+                    val currentScreen = navItems.find { it.route == currentRoute }
                     Text(
-                        text = navItems.find { it.route == currentRoute }?.title ?: "EnfermerApp",
+                        // Si la encontramos, usamos stringResource con su ID, sino un fallback
+                        text = currentScreen?.let { stringResource(it.title) } ?: "EnfermerApp",
                         style = MaterialTheme.typography.titleLarge
                     )
                 },
@@ -184,8 +183,18 @@ fun AppNavHost() {
                     val selected = currentDestination?.destination?.hierarchy?.any { it.route?.contains(screen.route) == true } == true
                     NavigationBarItem(
                         // CAMBIO CLAVE: Usamos CustomIcon para renderizar el recurso Int
-                        icon = { CustomIcon(screen.icon, contentDescription = screen.title) },
-                        label = { Text(screen.title) },
+                        icon = {
+                            CustomIcon(
+                                id = screen.icon,
+                                contentDescription = stringResource(screen.title)
+                            )
+                        },                        label = {
+                            Text(
+                                text = stringResource(screen.title),
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        },
+                        alwaysShowLabel = true,
                         selected = selected,
                         // Aplicamos colores para los ítems de la barra inferior
                         colors = NavigationBarItemDefaults.colors(
@@ -236,6 +245,11 @@ fun AppNavHost() {
             ) { backStackEntry ->
                 val gttsMin = backStackEntry.arguments?.getInt(Screen.Companion.GTTS_MIN_KEY) ?: 0
                 SyncScreen(gttsMinInicial = gttsMin) // <--- Pasa el ritmo inicial importado
+            }
+
+            composable(Screen.Edad.route) {
+                // Aquí llamaremos a EdadScreen() en el siguiente paso
+                EdadScreen()
             }
         }
     }
@@ -324,25 +338,10 @@ fun DisclaimerDialog(onDismiss: () -> Unit) {
 }
 
 @Composable
-fun CustomIcon(@androidx.annotation.DrawableRes id: Int, contentDescription: String?) {
+fun CustomIcon(@DrawableRes id: Int, contentDescription: String?) {
     Icon(
         painter = painterResource(id = id),
         contentDescription = contentDescription,
-        modifier = Modifier.size(24.dp) // Tamaño estándar para NavigationBarItem
+        modifier = Modifier.size(24.dp)
     )
-}
-@Composable
-fun shareEnfermerApp() {
-    val context = LocalContext.current
-    val packageName = "com.chifuz.enfermerapp" // Tu ID confirmado
-    val playStoreUrl = "https://play.google.com/store/apps/details?id=$packageName"
-
-    val sendIntent = Intent().apply {
-        action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_TEXT, "¡Te recomiendo EnfermerApp! Descárgala aquí: $playStoreUrl")
-        type = "text/plain"
-    }
-
-    val shareIntent = Intent.createChooser(sendIntent, "Compartir EnfermerApp vía")
-    context.startActivity(shareIntent)
 }

@@ -28,7 +28,7 @@ android {
     }
     defaultConfig {
         applicationId = "com.chifuz.enfermerapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 18
         versionName = "1.8"

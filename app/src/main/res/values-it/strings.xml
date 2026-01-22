@@ -95,4 +95,42 @@
     <string name="disclaimer_sec3_body">Il Creatore dell\'applicazione (lo Sviluppatore) non \u00e8 responsabile per conseguenze dirette o indirette derivanti dall\'uso errato o negligente dei dati forniti. L\'uso \u00e8 sotto l\'esclusiva responsabilit\u00e0 del professionista e della struttura sanitaria.</string>
     <string name="disclaimer_sec4_title">4. Integrit\u00e0 e Formule:</string>
     <string name="disclaimer_sec4_body">Lo Sviluppatore si impegna a utilizzare formule universalmente accettate, ma l\'utente deve assicurarsi che siano appropriate per le linee guida della propria istituzione.</string>
+
+    <string name="menu_edad">Et\u00e0</string>
+    <string name="edad_title">Calcolatore di et\u00e0</string>
+    <string name="edad_result_title">Risultato del calcolo</string>
+    <string name="fecha_nacimiento">Data di nascita</string>
+    <string name="seleccionar_fecha">Seleziona data</string>
+    <string name="es_prematuro">\u00c8 prematuro? (&lt; 37 settimane)</string>
+    <string name="gestational_weeks">Settimane di gestazione</string>
+    <string name="btn_calcular_edad">CALCOLA ET\u00c0</string>
+    <string name="edad_cronologica">Et\u00e0 cronologica:</string>
+    <string name="edad_corregida">Et\u00e0 corretta:</string>
+    <string name="error_semanas">Intervallo valido: da 20 a 36 settimane</string>
+
+    <plurals name="años">
+        <item quantity="one">%d anno</item>
+        <item quantity="other">%d anni</item>
+    </plurals>
+    <plurals name="meses">
+        <item quantity="one">%d mese</item>
+        <item quantity="other">%d mesi</item>
+    </plurals>
+    <plurals name="semanas">
+        <item quantity="one">%d settimana</item>
+        <item quantity="other">%d settimane</item>
+    </plurals>
+    <plurals name="dias">
+        <item quantity="one">%d giorno</item>
+        <item quantity="other">%d giorni</item>
+    </plurals>
+
+    <string name="menu_dosis">Dose</string>
+    <string name="menu_perfusion">Flusso</string>
+    <string name="menu_sync">Sincronizza</string>
+    <string name="menu_edad_nav">Et\u00e0</string>
+
+    <string name="faltan_para_termino">Mancano %1$s al termine %2$s</string>
+    <string name="parentesis_semanas">(%1$d settimane)</string>
+    <string name="y_con_espacios"> e </string>
 </resources>

@@ -95,4 +95,42 @@
     <string name="disclaimer_sec3_body">The Creator of the application (the Developer) is not responsible for direct, indirect, incidental, or punitive consequences resulting from incorrect, inadequate, or negligent use of the data provided by EnfermerApp. The use of this application is under the sole responsibility of the professional using it and/or the healthcare center where treatments are applied.</string>
     <string name="disclaimer_sec4_title">4. Integrity and Formulas:</string>
     <string name="disclaimer_sec4_body">The Developer strives to use universally accepted formulas, but the user must ensure that these formulas are appropriate for their institution\'s clinical guidelines.</string>
+
+    <string name="menu_edad">Age</string>
+    <string name="edad_title">Age Calculator</string>
+    <string name="edad_result_title">Calculation Result</string>
+    <string name="fecha_nacimiento">Date of Birth</string>
+    <string name="seleccionar_fecha">Select date</string>
+    <string name="es_prematuro">Is it premature? (&lt; 37 weeks)</string>
+    <string name="gestational_weeks">Gestational weeks</string>
+    <string name="btn_calcular_edad">CALCULATE AGE</string>
+    <string name="edad_cronologica">Chronological Age:</string>
+    <string name="edad_corregida">Corrected Age:</string>
+    <string name="error_semanas">Valid range: 20 to 36 weeks</string>
+
+    <plurals name="años">
+        <item quantity="one">%d year</item>
+        <item quantity="other">%d years</item>
+    </plurals>
+    <plurals name="meses">
+        <item quantity="one">%d month</item>
+        <item quantity="other">%d months</item>
+    </plurals>
+    <plurals name="semanas">
+        <item quantity="one">%d week</item>
+        <item quantity="other">%d weeks</item>
+    </plurals>
+    <plurals name="dias">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+
+    <string name="menu_dosis">Dose</string>
+    <string name="menu_perfusion">Flow</string>
+    <string name="menu_sync">Sync</string>
+    <string name="menu_edad_nav">Age</string>
+
+    <string name="faltan_para_termino">"%1$s left until full term %2$s"</string>
+    <string name="parentesis_semanas">"(%1$d weeks)"</string>
+    <string name="y_con_espacios">" and "</string>
 </resources>

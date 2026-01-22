@@ -95,4 +95,43 @@
     <string name="disclaimer_sec3_body">O Criador do aplicativo (o Desenvolvedor) n\u00e3o se responsabiliza pelas consequ\u00eancias diretas, indiretas, incidentais ou punitivas resultantes do uso incorreto, inadequado ou negligente dos dados fornecidos pelo EnfermerApp. O uso deste aplicativo \u00e9 de exclusiva responsabilidade do profissional que o utiliza e/ou do centro de sa\u00fade onde os tratamentos s\u00e3o aplicados.</string>
     <string name="disclaimer_sec4_title">4. Integridade e F\u00f3rmulas:</string>
     <string name="disclaimer_sec4_body">O Desenvolvedor se empenha em utilizar f\u00f3rmulas universalmente aceitas, mas o usu\u00e1rio deve garantir que estas f\u00f3rmulas sejam apropriadas para as diretrizes cl\u00ednicas de sua institui\u00e7\u00e3o.</string>
+
+    <string name="menu_edad">Idade</string>
+    <string name="edad_title">Calculadora de Idade</string>
+    <string name="edad_result_title">Resultado do C\u00e1lculo</string>
+    <string name="fecha_nacimiento">Data de Nascimento</string>
+    <string name="seleccionar_fecha">Selecionar data</string>
+    <string name="es_prematuro">\u00c9 prematuro? (&lt; 37 semanas)</string>
+    <string name="gestational_weeks">Semanas de gesta\u00e7\u00e3o</string>
+    <string name="btn_calcular_edad">CALCULAR IDADE</string>
+    <string name="edad_cronologica">Idade Cronol\u00f3gica:</string>
+    <string name="edad_corregida">Idade Corrigida:</string>
+    <string name="error_semanas">Intervalo v\u00e1lido: 20 a 36 semanas</string>
+
+    <plurals name="años">
+        <item quantity="one">%d ano</item>
+        <item quantity="other">%d anos</item>
+    </plurals>
+    <plurals name="meses">
+        <item quantity="one">%d m\u00eas</item>
+        <item quantity="other">%d meses</item>
+    </plurals>
+    <plurals name="semanas">
+        <item quantity="one">%d semana</item>
+        <item quantity="other">%d semanas</item>
+    </plurals>
+    <plurals name="dias">
+        <item quantity="one">%d dia</item>
+        <item quantity="other">%d dias</item>
+    </plurals>
+
+    <string name="menu_dosis">Dose</string>
+    <string name="menu_perfusion">Vaz\u00e3o</string>
+    <string name="menu_sync">Sincronizar</string>
+    <string name="menu_edad_nav">Idade</string>
+
+    <string name="faltan_para_termino">Faltam %1$s para o termo %2$s</string>
+    <string name="parentesis_semanas">(%1$d semanas)</string>
+    <string name="y_con_espacios"> e </string>
+
 </resources>
