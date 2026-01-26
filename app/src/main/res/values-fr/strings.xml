@@ -105,7 +105,7 @@
     <string name="gestational_weeks">Semaines de gestation</string>
     <string name="btn_calcular_edad">CALCULER L\'\u00c2GE</string>
     <string name="edad_cronologica">\u00c2ge chronologique :</string>
-    <string name="edad_corregida">\u00c2ge corrig\u00e9 :</string>
+    <string name="edad_corregida">\u00c2ge corrig\u00e9 (R\u00e9f. 40 sem.) :</string>
     <string name="error_semanas">Plage valide : 20 \u00e0 36 semaines</string>
 
     <plurals name="años">
@@ -130,8 +130,36 @@
     <string name="menu_sync">Synchroniser</string>
     <string name="menu_edad_nav">\u00c2ge</string>
 
-    <string name="faltan_para_termino">%1$s restant avant le terme %2$s</string>
-    <string name="parentesis_semanas">(%1$d semaines)</string>
-    <string name="y_con_espacios"> et </string>
+    <string name="faltan_para_termino">"%1$s restant avant le terme %2$s"</string>
+    <string name="parentesis_semanas">"(%1$d semaines)"</string>
+    <string name="y_con_espacios">" et "</string>
+
+    <string name="concentracion_estrella_desc">Mode Concentration</string>
+    <string name="concentracion_titulo">Mode Concentration</string>
+    <string name="concentracion_oferta_desc">Activez le mode concentration pour travailler sans publicit\u00e9s plein \u00e9cran pendant les 4 prochaines heures en regardant une courte vid\u00e9o.\n\nId\u00e9al pour \u00e9viter les distractions pendant votre garde ou vos \u00e9tudes.</string>    <string name="concentracion_btn_activar">Regarder la vid\u00e9o et activer</string>
+    <string name="concentracion_btn_luego">Pas maintenant</string>
+    <string name="concentracion_activo_titulo">Mode Concentration Activ\u00e9</string>
+    <string name="concentracion_btn_entendido">Compris</string>
+    <string name="concentracion_toast_exito">Mode concentration activ\u00e9 pour 4 heures !</string>
+    <string name="concentracion_activo_desc">Aucune publicit\u00e9 pendant vos calculs. Se termine dans environ : %1$s</string>
+    <string name="tiempo_formato_horas_minutos">%1$d h %2$d min</string>
+    <string name="tiempo_formato_minutos">%1$d min</string>
+
+    <string name="notas_titulo">Notes</string>
+    <string name="notas_vacia">Aucune note enregistr\u00e9e</string>
+    <string name="notas_hint_titulo">Titre (facultatif)</string>
+    <string name="notas_hint_contenido">\u00c9crivez votre note ici\u2026</string>
+    <string name="notas_eliminar_titulo">Supprimer la note ?</string>
+    <string name="notas_aceptar">Accepter</string>
+    <string name="notas_cancelar">Annuler</string>
+    <string name="notas_nueva_nota">Nouvelle note</string>
+    <string name="notas_editar">Modifier la note</string>
+    <string name="notas_compartir_footer">\n\n\u270d\ufe0f Note cr\u00e9\u00e9e avec EnfermerApp</string>
+    <string name="notas_compartir_titulo">Envoyer la note via</string>
+    <string name="notas_eliminar_desc">Supprimer la note</string>
+    <string name="notas_compartir_desc">Partager la note</string>
+    <string name="notas_sin_titulo">Sans titre</string>
+    <string name="notas_buscar">Rechercher des notes\u2026</string>
+    <string name="notas_eliminar_pregunta">Voulez-vous vraiment supprimer cette note ? Cette action ne peut pas \u00eatre annul\u00e9e.</string>
 
 </resources>

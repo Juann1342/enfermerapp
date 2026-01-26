@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -31,6 +32,7 @@ import com.chifuz.enfermerapp.R
 import com.chifuz.enfermerapp.ads.AdsManager
 import com.chifuz.enfermerapp.ui.screens.dosis.CalculoTextField
 import com.chifuz.enfermerapp.ui.navigation.Screen
+import com.chifuz.enfermerapp.ads.AdLocation
 
 @Composable
 fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel = viewModel()) {
@@ -43,6 +45,10 @@ fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel 
     val isValidInput = uiState.volumen.toDoubleOrNull() != null &&
             uiState.tiempo.toDoubleOrNull() != null &&
             !uiState.volumenError && !uiState.tiempoError
+
+    LaunchedEffect(Unit) {
+        AdsManager.loadInterstitial(context, AdLocation.PERFUSION)
+    }
 
     Column(
         modifier = Modifier
@@ -177,8 +183,7 @@ fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel 
 
                 // 2. Ejecutamos el anuncio
                 activity?.let { act ->
-                    AdsManager.showInterstitial(act) {
-                        // Aquí el flujo continúa tras el anuncio
+                    AdsManager.showInterstitial(activity, AdLocation.PERFUSION) {
                         android.util.Log.d("ADS", "Intersticial de Perfusión cerrado")
                     }
                 }

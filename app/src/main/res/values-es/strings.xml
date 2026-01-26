@@ -117,8 +117,7 @@
     <string name="btn_calcular_edad">CALCULAR EDAD</string>
 
     <string name="edad_cronologica">Edad Cronológica:</string>
-    <string name="edad_corregida">Edad Corregida:</string>
-
+    <string name="edad_corregida">Edad Corregida (Ref. 40 sem.):</string>
     <string name="error_semanas">Rango válido: 20 a 36 semanas</string>
 
     <plurals name="años">
@@ -145,5 +144,35 @@
     <string name="faltan_para_termino">"Faltan %1$s para el término %2$s"</string>
     <string name="parentesis_semanas">"(%1$d semanas)"</string>
     <string name="y_con_espacios">" y "</string>
+
+        <string name="concentracion_estrella_desc">Modo Concentración</string>
+        <string name="concentracion_titulo">Modo Concentración</string>
+    <string name="concentracion_oferta_desc">Activa el modo concentraci\u00f3n para trabajar sin anuncios de pantalla completa durante las pr\u00f3ximas 4 horas viendo un video corto.\n\nIdeal para evitar distracciones durante tu guardia o estudio.</string>        <string name="concentracion_btn_activar">Ver video y activar</string>
+        <string name="concentracion_btn_luego">Ahora no</string>
+
+        <string name="concentracion_activo_titulo">Modo Concentración Activo</string>
+        <string name="concentracion_activo_desc">No verás anuncios mientras realizas tus cálculos. Finaliza en aproximadamente: %1$s</string>
+        <string name="concentracion_btn_entendido">Entendido</string>
+        <string name="concentracion_toast_exito">¡Modo concentración activado por 4 horas!</string>
+
+    <string name="tiempo_formato_horas_minutos">%1$d h %2$d min</string>
+    <string name="tiempo_formato_minutos">%1$d min</string>
+
+    <string name="notas_titulo">Notas</string>
+    <string name="notas_vacia">No hay notas guardadas</string>
+    <string name="notas_hint_titulo">Título (opcional)</string>
+    <string name="notas_hint_contenido">Escribe tu nota aquí…</string>
+    <string name="notas_eliminar_titulo">¿Eliminar nota?</string>
+    <string name="notas_aceptar">Aceptar</string>
+    <string name="notas_cancelar">Cancelar</string>
+    <string name="notas_nueva_nota">Nueva Nota</string>
+    <string name="notas_editar">Editar Nota</string>
+    <string name="notas_compartir_footer">\n\n\u270d\ufe0f Nota creada con EnfermerApp</string>
+    <string name="notas_compartir_titulo">Enviar nota v\u00eda</string>
+    <string name="notas_eliminar_desc">Eliminar nota</string>
+    <string name="notas_compartir_desc">Compartir nota</string>
+    <string name="notas_sin_titulo">Sin t\u00edtulo</string>
+    <string name="notas_buscar">Buscar notas\u2026</string>
+    <string name="notas_eliminar_pregunta">\u00bfEst\u00e1s seguro de que quieres eliminar esta nota? Esta acci\u00f3n no se puede deshacer.</string>
 
 </resources>

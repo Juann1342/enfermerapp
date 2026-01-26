@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,6 +37,7 @@ import com.chifuz.enfermerapp.ui.screens.dosis.DosisViewModel
 import com.chifuz.enfermerapp.ui.navigation.Screen
 import androidx.core.net.toUri
 import com.chifuz.enfermerapp.utils.PrefsManager
+import com.chifuz.enfermerapp.ads.AdLocation
 
 // Componente para un TextField estandarizado de la app
 @Composable
@@ -77,6 +79,9 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
             uiState.solvente.toDoubleOrNull() != null &&
             uiState.soluto.toDoubleOrNull() != null &&
             !uiState.dosisAdministrarError && !uiState.solventeError && !uiState.solutoError
+    LaunchedEffect(Unit) {
+        AdsManager.loadInterstitial(context, AdLocation.DOSIS)
+    }
 
     Column(
         modifier = Modifier
@@ -170,7 +175,8 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
                 } else {
                     // Si no es la vez 5 o 50, mostramos anuncio como siempre
                     activity?.let { act ->
-                        AdsManager.showInterstitial(act) {
+                        AdsManager.showInterstitial(activity, AdLocation.DOSIS) {
+                            // Aquí va lo que pase después del anuncio
                             Log.d("ADS", "Flujo continuado")
                         }
                     }

@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    kotlin("kapt")
 }
 
 
@@ -30,17 +31,34 @@ android {
         applicationId = "com.chifuz.enfermerapp"
         minSdk = 26
         targetSdk = 36
-        versionCode = 18
-        versionName = "1.8"
+        versionCode = 19
+        versionName = "1.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // --- CONFIGURACIÓN DE ADMOB ---
-        // Leemos de local.properties. Si no existe, ponemos un valor vacío seguro.
-        val interstitialId = localProperties.getProperty("ADMOB_INTERSTITIAL_ID") ?: ""
+// --- CONFIGURACIÓN DE ADMOB ---
         val appId = localProperties.getProperty("ADMOB_APP_ID") ?: ""
 
-        buildConfigField("String", "ADMOB_INTERSTITIAL_ID", "\"$interstitialId\"")
+        // Leemos los 3 IDs de local.properties
+        val adIdDosis = localProperties.getProperty("ADMOB_INTERSTITIAL_ID_DOSIS") ?: ""
+        val adIdEdad = localProperties.getProperty("ADMOB_INTERSTITIAL_ID_EDAD") ?: ""
+        val adIdPerfusion = localProperties.getProperty("ADMOB_INTERSTITIAL_ID_PERFUSION") ?: ""
+        val adNativeIdEdad = localProperties.getProperty("ADMOB_NATIVE_ID_EDAD") ?: ""
+        val rewardedId = localProperties.getProperty("ADMOB_REWARDED_ID") ?: ""
+
+        val adNativeIdNotas = localProperties.getProperty("ADMOB_NATIVE_ID_NOTAS") ?: ""
+        buildConfigField("String", "ADMOB_NATIVE_ID_NOTAS", "\"$adNativeIdNotas\"")
+
+        // Los exponemos a Kotlin mediante BuildConfig
+        buildConfigField("String", "ADMOB_INTERSTITIAL_ID_DOSIS", "\"$adIdDosis\"")
+        buildConfigField("String", "ADMOB_INTERSTITIAL_ID_EDAD", "\"$adIdEdad\"")
+        buildConfigField("String", "ADMOB_INTERSTITIAL_ID_PERFUSION", "\"$adIdPerfusion\"")
+
+        buildConfigField("String", "ADMOB_REWARDED_ID", "\"$rewardedId\"")
+        // Mantenemos el ID original para no romper nada que use la variable vieja (opcional/seguridad)
+        buildConfigField("String", "ADMOB_INTERSTITIAL_ID", "\"$adIdDosis\"")
+        buildConfigField("String", "ADMOB_NATIVE_ID_EDAD", "\"$adNativeIdEdad\"")
+
         manifestPlaceholders["admobAppId"] = appId
     }
 
@@ -78,4 +96,9 @@ dependencies {
 
     // Google Play Services Ads (AdMob)
     implementation("com.google.android.gms:play-services-ads:23.6.0")
+
+    val roomVersion = "2.6.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
 }

@@ -6,23 +6,32 @@ import android.content.ContextWrapper
 import android.content.Intent
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MoreVert // <--- NUEVA IMPORTACIÓN
 import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -32,10 +41,16 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.chifuz.enfermerapp.MainActivity
 import com.chifuz.enfermerapp.R
+import com.chifuz.enfermerapp.ads.AdsManager
+import com.chifuz.enfermerapp.data.EnfermerAppDatabase
+import com.chifuz.enfermerapp.data.repository.NotaRepository
 import com.chifuz.enfermerapp.ui.screens.dosis.DosisScreen
 import com.chifuz.enfermerapp.ui.screens.perfusion.PerfusionScreen
 import com.chifuz.enfermerapp.ui.screens.sync.SyncScreen
 import com.chifuz.enfermerapp.ui.screens.edad.EdadScreen
+import com.chifuz.enfermerapp.ui.screens.notas.NotasScreen
+import com.chifuz.enfermerapp.ui.screens.notas.NotasViewModel
+import com.chifuz.enfermerapp.ui.screens.notas.NotasViewModelFactory
 
 
 // Definición de las rutas y sus iconos (usando los que funcionan)
@@ -46,6 +61,8 @@ sealed class Screen(val route: String, val title: Int, val icon: Int) {
     object Sync : Screen("sync", R.string.menu_sync, R.drawable.ic_gota)
 
     object Edad : Screen("edad", R.string.menu_edad_nav, R.drawable.ic_edad)
+
+
 
     // Constantes para la ruta con argumento
     companion object {
@@ -82,6 +99,10 @@ fun AppNavHost() {
     // ESTADOS DE DIÁLOGOS
     var showDisclaimerDialog by remember { mutableStateOf(false) }
 
+    val isConcentrationModeActive = remember(navController.currentBackStackEntryAsState().value) {
+        AdsManager.isPremiumActive(context)
+    }
+
     // Función para encontrar la MainActivity desde cualquier Composable
     fun Context.findActivity(): MainActivity? = when (this) {
         is MainActivity -> this
@@ -89,17 +110,15 @@ fun AppNavHost() {
         else -> null
     }
 
+
     Scaffold(
         topBar = {
-            // Obtenemos la referencia a la actividad para leer el estado de privacidad
             val activity = context as? MainActivity
 
             TopAppBar(
                 title = {
-                    // Buscamos la pantalla actual
                     val currentScreen = navItems.find { it.route == currentRoute }
                     Text(
-                        // Si la encontramos, usamos stringResource con su ID, sino un fallback
                         text = currentScreen?.let { stringResource(it.title) } ?: "EnfermerApp",
                         style = MaterialTheme.typography.titleLarge
                     )
@@ -110,24 +129,77 @@ fun AppNavHost() {
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 ),
                 actions = {
+                    var showConcentrationDialog by remember { mutableStateOf(false) }
+                    val context = LocalContext.current
+                    val isPremium = remember(showConcentrationDialog) { AdsManager.isPremiumActive(context) }
+                    IconButton(onClick = { navController.navigate("notas_screen") }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_nota),
+                            contentDescription = stringResource(R.string.notas_titulo),
+                            modifier = Modifier.size(24.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    // BOTÓN DE LA ESTRELLA
+                    IconButton(onClick = { showConcentrationDialog = true }) {
+                        Icon(
+                            imageVector = Icons.Default.Star,
+                            contentDescription = stringResource(R.string.concentracion_estrella_desc),
+                            modifier = Modifier.size(28.dp),
+                            tint = if (isConcentrationModeActive) Color(0xFFFFD700)
+                            else MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
+
                     IconButton(onClick = { expanded = true }) {
                         Icon(
                             imageVector = Icons.Default.MoreVert,
+                            modifier = Modifier.size(28.dp),
                             contentDescription = stringResource(R.string.opciones)
                         )
                     }
+
+                    // LÓGICA DE DIÁLOGOS
+                    if (showConcentrationDialog) {
+                        if (isPremium) {
+                            // Obtenemos el texto ya formateado ("5 h 10 min" o "40 min")
+                            val tiempoRestante = AdsManager.getRemainingTimeFormatted(context)
+
+                            ConcentrationActiveDialog(
+                                tiempoTexto = tiempoRestante, // Cambiamos el parámetro a String
+                                onDismiss = { showConcentrationDialog = false }
+                            )
+                        } else {
+                            // Caso 2: Oferta para activar
+                            ConcentrationOfferDialog(
+                                onDismiss = { showConcentrationDialog = false },
+                                onWatchVideo = {
+                                    activity?.let {
+                                        AdsManager.showRewarded(it) {
+                                            showConcentrationDialog = false
+                                            android.widget.Toast.makeText(
+                                                context,
+                                                context.getString(R.string.concentracion_toast_exito),
+                                                android.widget.Toast.LENGTH_LONG
+                                            ).show()
+                                        }
+                                    }
+                                }
+                            )
+                        }
+                    }
+
                     DropdownMenu(
                         expanded = expanded,
                         onDismissRequest = { expanded = false }
                     ) {
-                        // --- BOTÓN DE PRIVACIDAD (Solo se muestra si es requerido) ---
+                        // ... (el resto de tus DropdownMenuItem se mantienen igual)
                         if (activity?.isPrivacyOptionsRequired == true) {
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.menu_privacy_settings)) },
                                 leadingIcon = { Icon(Icons.Default.PrivacyTip, contentDescription = null) },
                                 onClick = {
                                     expanded = false
-                                    // Abrimos el formulario de Google para que el usuario pueda cambiar su decisión
                                     com.google.android.ump.UserMessagingPlatform.showPrivacyOptionsForm(activity) { error ->
                                         if (error != null) {
                                             android.util.Log.e("UMP", "${error.errorCode}: ${error.message}")
@@ -137,7 +209,6 @@ fun AppNavHost() {
                             )
                         }
 
-                        // --- OPCIÓN: TÉRMINOS Y CONDICIONES ---
                         DropdownMenuItem(
                             text = { Text(stringResource(MenuItem.Terms.title)) },
                             leadingIcon = { Icon(MenuItem.Terms.icon, contentDescription = null) },
@@ -147,7 +218,6 @@ fun AppNavHost() {
                             }
                         )
 
-                        // --- OPCIÓN: COMPARTIR APP ---
                         DropdownMenuItem(
                             text = { Text(stringResource(MenuItem.Share.title)) },
                             leadingIcon = { Icon(MenuItem.Share.icon, contentDescription = null) },
@@ -156,16 +226,10 @@ fun AppNavHost() {
                                 val playStoreUrl = "https://play.google.com/store/apps/details?id=com.chifuz.enfermerapp"
                                 val sendIntent = Intent().apply {
                                     action = Intent.ACTION_SEND
-                                    putExtra(
-                                        Intent.EXTRA_TEXT,
-                                        context.getString(R.string.compartir_app_msg, playStoreUrl)
-                                    )
+                                    putExtra(Intent.EXTRA_TEXT, context.getString(R.string.compartir_app_msg, playStoreUrl))
                                     type = "text/plain"
                                 }
-                                val shareIntent = Intent.createChooser(
-                                    sendIntent,
-                                    context.getString(R.string.compartir_via)
-                                )
+                                val shareIntent = Intent.createChooser(sendIntent, context.getString(R.string.compartir_via))
                                 context.startActivity(shareIntent)
                             }
                         )
@@ -251,6 +315,20 @@ fun AppNavHost() {
                 // Aquí llamaremos a EdadScreen() en el siguiente paso
                 EdadScreen()
             }
+            composable("notas_screen") {
+                val context = LocalContext.current
+
+                val database = remember { EnfermerAppDatabase.getDatabase(context) }
+                val repository = remember { NotaRepository(database.notaDao()) }
+                val viewModel: NotasViewModel = viewModel(
+                    factory = NotasViewModelFactory(repository)
+                )
+
+                NotasScreen(
+                    viewModel = viewModel,
+                    isConcentrationModeActive = isConcentrationModeActive
+                )
+            }
         }
     }
 
@@ -261,6 +339,8 @@ fun AppNavHost() {
 
 
 }
+
+
 
 // Composable del diálogo de Descargo de Responsabilidad
 @Composable
@@ -345,3 +425,46 @@ fun CustomIcon(@DrawableRes id: Int, contentDescription: String?) {
         modifier = Modifier.size(24.dp)
     )
 }
+
+@Composable
+fun ConcentrationOfferDialog(onDismiss: () -> Unit, onWatchVideo: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = { Icon(Icons.Default.WorkspacePremium, contentDescription = null, tint = MaterialTheme.colorScheme.primary) },
+        title = { Text(text = stringResource(R.string.concentracion_titulo)) },
+        text = { Text(text = stringResource(R.string.concentracion_oferta_desc), textAlign = TextAlign.Center) },
+        confirmButton = {
+            Button(onClick = onWatchVideo, modifier = Modifier.fillMaxWidth()) {
+                Text(stringResource(R.string.concentracion_btn_activar))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss, modifier = Modifier.fillMaxWidth()) {
+                Text(stringResource(R.string.concentracion_btn_luego), color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }
+    )
+}
+
+@Composable
+fun ConcentrationActiveDialog(tiempoTexto: String, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = { Icon(Icons.Default.CheckCircle, contentDescription = null, tint = androidx.compose.ui.graphics.Color(0xFF4CAF50)) },
+        title = { Text(text = stringResource(R.string.concentracion_activo_titulo)) },
+        text = {
+            Text(
+                // tiempoTexto se insertará en el %1$s del string
+                text = stringResource(R.string.concentracion_activo_desc, tiempoTexto),
+                textAlign = TextAlign.Center
+            )
+        },
+        confirmButton = {
+            Button(onClick = onDismiss, modifier = Modifier.fillMaxWidth()) {
+                Text(stringResource(R.string.concentracion_btn_entendido))
+            }
+        }
+    )
+}
+
+

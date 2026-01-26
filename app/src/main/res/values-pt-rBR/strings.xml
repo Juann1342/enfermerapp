@@ -105,7 +105,7 @@
     <string name="gestational_weeks">Semanas de gesta\u00e7\u00e3o</string>
     <string name="btn_calcular_edad">CALCULAR IDADE</string>
     <string name="edad_cronologica">Idade Cronol\u00f3gica:</string>
-    <string name="edad_corregida">Idade Corrigida:</string>
+    <string name="edad_corregida">Idade Corrigida (Ref. 40 sem.):</string>
     <string name="error_semanas">Intervalo v\u00e1lido: 20 a 36 semanas</string>
 
     <plurals name="años">
@@ -130,8 +130,36 @@
     <string name="menu_sync">Sincronizar</string>
     <string name="menu_edad_nav">Idade</string>
 
-    <string name="faltan_para_termino">Faltam %1$s para o termo %2$s</string>
-    <string name="parentesis_semanas">(%1$d semanas)</string>
-    <string name="y_con_espacios"> e </string>
+    <string name="faltan_para_termino">"Faltam %1$s para o termo %2$s"</string>
+    <string name="parentesis_semanas">"(%1$d semanas)"</string>
+    <string name="y_con_espacios">" e "</string>
+
+    <string name="concentracion_estrella_desc">Modo Concentra\u00e7\u00e3o</string>
+    <string name="concentracion_titulo">Modo Concentra\u00e7\u00e3o</string>
+    <string name="concentracion_oferta_desc">Ative o modo concentra\u00e7\u00e3o para trabalhar sem an\u00fancios de tela cheia pelas pr\u00f3ximas 4 horas assistindo a um v\u00eddeo curto.\n\nIdeal para evitar distra\u00e7\u00f5es durante o seu plant\u00e3o ou estudos.</string>    <string name="concentracion_btn_activar">Ver v\u00eddeo e ativar</string>
+    <string name="concentracion_btn_luego">Agora n\u00e3o</string>
+    <string name="concentracion_activo_titulo">Modo Concentra\u00e7\u00e3o Ativo</string>
+    <string name="concentracion_btn_entendido">Entendido</string>
+    <string name="concentracion_toast_exito">Modo concentra\u00e7\u00e3o ativado por 4 horas!</string>
+    <string name="concentracion_activo_desc">Voc\u00ea n\u00e3o ver\u00e1 an\u00fancios enquanto realiza seus c\u00e1lculos. Termina em aproximadamente: %1$s</string>
+    <string name="tiempo_formato_horas_minutos">%1$d h %2$d min</string>
+    <string name="tiempo_formato_minutos">%1$d min</string>
+
+    <string name="notas_titulo">Notas</string>
+    <string name="notas_vacia">Nenhuma nota salva</string>
+    <string name="notas_hint_titulo">T\u00edtulo (opcional)</string>
+    <string name="notas_hint_contenido">Escreva sua nota aqui\u2026</string>
+    <string name="notas_eliminar_titulo">Excluir nota?</string>
+    <string name="notas_aceptar">Aceitar</string>
+    <string name="notas_cancelar">Cancelar</string>
+    <string name="notas_nueva_nota">Nova nota</string>
+    <string name="notas_editar">Editar nota</string>
+    <string name="notas_compartir_footer">\n\n\u270d\ufe0f Nota criada com EnfermerApp</string>
+    <string name="notas_compartir_titulo">Enviar nota via</string>
+    <string name="notas_eliminar_desc">Excluir nota</string>
+    <string name="notas_compartir_desc">Compartilhar nota</string>
+    <string name="notas_sin_titulo">Sem t\u00edtulo</string>
+    <string name="notas_buscar">Buscar notas\u2026</string>
+    <string name="notas_eliminar_pregunta">Tem certeza de que deseja excluir esta nota? Esta a\u00e7\u00e3o n\u00e3o pode ser desfeita.</string>
 
 </resources>

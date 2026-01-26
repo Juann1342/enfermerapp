@@ -27,6 +27,7 @@ import com.chifuz.enfermerapp.ads.AdsManager
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import com.chifuz.enfermerapp.ads.AdLocation
 
 // Extensión necesaria para encontrar la Activity y mostrar ads
 fun Context.findActivity(): Activity? = when (this) {
@@ -38,12 +39,16 @@ fun Context.findActivity(): Activity? = when (this) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
+
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     val activity = remember(context) { context.findActivity() }
 
     var showDatePicker by remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState()
+    LaunchedEffect(Unit) {
+        AdsManager.loadInterstitial(context, AdLocation.EDAD)
+    }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(rememberScrollState()),
@@ -123,6 +128,18 @@ fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
                 Text(stringResource(R.string.btn_calcular_edad))
             }
         }
+
+
+
+
+// NUEVO: El Native Ad con un margen adecuado
+        Spacer(modifier = Modifier.height(32.dp)) // Margen para que respire
+
+        NativeAdEdad(
+            modifier = Modifier
+                .padding(horizontal = 4.dp)
+                .padding(bottom = 16.dp) // Evita que pegue a la barra inferior
+        )
     }
 
     // --- DIÁLOGO DE RESULTADOS ---
@@ -136,7 +153,7 @@ fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
             onDismiss = {
                 viewModel.dismissDialog()
                 activity?.let { act ->
-                    AdsManager.showInterstitial(act) {
+                    AdsManager.showInterstitial(activity, AdLocation.EDAD) {
                         android.util.Log.d("ADS", "Intersticial de Edad cerrado")
                     }
                 }

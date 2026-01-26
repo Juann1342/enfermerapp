@@ -105,7 +105,7 @@
     <string name="gestational_weeks">Settimane di gestazione</string>
     <string name="btn_calcular_edad">CALCOLA ET\u00c0</string>
     <string name="edad_cronologica">Et\u00e0 cronologica:</string>
-    <string name="edad_corregida">Et\u00e0 corretta:</string>
+    <string name="edad_corregida">Et\u00e0 corretta (Rif. 40 set.):</string>
     <string name="error_semanas">Intervallo valido: da 20 a 36 settimane</string>
 
     <plurals name="años">
@@ -130,7 +130,35 @@
     <string name="menu_sync">Sincronizza</string>
     <string name="menu_edad_nav">Et\u00e0</string>
 
-    <string name="faltan_para_termino">Mancano %1$s al termine %2$s</string>
-    <string name="parentesis_semanas">(%1$d settimane)</string>
-    <string name="y_con_espacios"> e </string>
+    <string name="faltan_para_termino">"Mancano %1$s al termine %2$s"</string>
+    <string name="parentesis_semanas">"(%1$d settimane)"</string>
+    <string name="y_con_espacios">" e "</string>
+
+    <string name="concentracion_estrella_desc">Modalit\u00e0 Concentrazione</string>
+    <string name="concentracion_titulo">Modalit\u00e0 Concentrazione</string>
+    <string name="concentracion_oferta_desc">Attiva la modalit\u00e0 concentrazione per lavorare senza annunci a schermo intero per le prossime 4 ore guardando un breve video.\n\nIdeale per evitare distrazioni durante il turno o lo studio.</string>    <string name="concentracion_btn_activar">Guarda il video e attiva</string>
+    <string name="concentracion_btn_luego">Non ora</string>
+    <string name="concentracion_activo_titulo">Modalit\u00e0 Concentrazione Attiva</string>
+    <string name="concentracion_btn_entendido">Ho capito</string>
+    <string name="concentracion_toast_exito">Modalit\u00e0 concentrazione attivata per 4 ore!</string>
+    <string name="tiempo_formato_horas_minutos">%1$d h %2$d min</string>
+    <string name="tiempo_formato_minutos">%1$d min</string>
+    <string name="concentracion_activo_desc">Non vedrai annunci durante i tuoi calcoli. Termina tra circa: %1$s</string>
+
+    <string name="notas_titulo">Note</string>
+    <string name="notas_vacia">Nessuna nota salvata</string>
+    <string name="notas_hint_titulo">Titolo (opzionale)</string>
+    <string name="notas_hint_contenido">Scrivi la tua nota qui\u2026</string>
+    <string name="notas_eliminar_titulo">Eliminare la nota?</string>
+    <string name="notas_aceptar">Accetta</string>
+    <string name="notas_cancelar">Annulla</string>
+    <string name="notas_nueva_nota">Nuova nota</string>
+    <string name="notas_editar">Modifica nota</string>
+    <string name="notas_compartir_footer">\n\n\u270d\ufe0f Nota creata con EnfermerApp</string>
+    <string name="notas_compartir_titulo">Invia nota tramite</string>
+    <string name="notas_eliminar_desc">Elimina nota</string>
+    <string name="notas_compartir_desc">Condividi nota</string>
+    <string name="notas_sin_titulo">Senza titolo</string>
+    <string name="notas_buscar">Cerca note\u2026</string>
+    <string name="notas_eliminar_pregunta">Sei sicuro di voler eliminare questa nota? Questa azione non pu\u00f2 essere annullata.</string>
 </resources>

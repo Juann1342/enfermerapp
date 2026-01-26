@@ -105,7 +105,7 @@
     <string name="gestational_weeks">Gestational weeks</string>
     <string name="btn_calcular_edad">CALCULATE AGE</string>
     <string name="edad_cronologica">Chronological Age:</string>
-    <string name="edad_corregida">Corrected Age:</string>
+    <string name="edad_corregida">Corrected Age (40w ref):</string>
     <string name="error_semanas">Valid range: 20 to 36 weeks</string>
 
     <plurals name="años">
@@ -133,4 +133,32 @@
     <string name="faltan_para_termino">"%1$s left until full term %2$s"</string>
     <string name="parentesis_semanas">"(%1$d weeks)"</string>
     <string name="y_con_espacios">" and "</string>
+
+    <string name="concentracion_estrella_desc">Focus Mode</string>
+    <string name="concentracion_titulo">Focus Mode</string>
+    <string name="concentracion_oferta_desc">Enable focus mode to work without full-screen ads for the next 4 hours by watching a short video.\n\nPerfect for avoiding distractions during your shift or studies.</string>    <string name="concentracion_btn_activar">Watch video and enable</string>
+    <string name="concentracion_btn_luego">Not now</string>
+    <string name="concentracion_activo_titulo">Focus Mode Active</string>
+    <string name="concentracion_btn_entendido">Got it</string>
+    <string name="concentracion_toast_exito">Focus mode activated for 4 hours!</string>
+    <string name="concentracion_activo_desc">No ads will be shown while performing your calculations. Ends in approximately: %1$s</string>
+    <string name="tiempo_formato_horas_minutos">%1$d h %2$d min</string>
+    <string name="tiempo_formato_minutos">%1$d min</string>
+
+    <string name="notas_titulo">Notes</string>
+    <string name="notas_vacia">No notes saved</string>
+    <string name="notas_hint_titulo">Title (optional)</string>
+    <string name="notas_hint_contenido">Write your note here\u2026</string>
+    <string name="notas_eliminar_titulo">Delete note?</string>
+    <string name="notas_aceptar">Accept</string>
+    <string name="notas_cancelar">Cancel</string>
+    <string name="notas_nueva_nota">New Note</string>
+    <string name="notas_editar">Edit Note</string>
+    <string name="notas_compartir_footer">\n\n\u270d\ufe0f Note created with EnfermerApp</string>
+    <string name="notas_compartir_titulo">Send note via</string>
+    <string name="notas_eliminar_desc">Delete note</string>
+    <string name="notas_compartir_desc">Share note</string>
+    <string name="notas_sin_titulo">Untitled</string>
+    <string name="notas_buscar">Search notes\u2026</string>
+    <string name="notas_eliminar_pregunta">Are you sure you want to delete this note? This action cannot be undone.</string>
 </resources>
