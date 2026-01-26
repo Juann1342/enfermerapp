@@ -175,4 +175,16 @@
     <string name="notas_buscar">Buscar notas\u2026</string>
     <string name="notas_eliminar_pregunta">\u00bfEst\u00e1s seguro de que quieres eliminar esta nota? Esta acci\u00f3n no se puede deshacer.</string>
 
+    <string name="units_title">Conversor de Unidades</string>
+    <string name="menu_units">Unidades</string>
+    <string name="units_cat_peso">Peso</string>
+    <string name="units_cat_volumen">Volumen</string>
+    <string name="units_cat_infusion">Infusi\u00f3n</string>
+    <string name="units_cat_dosis">Dosis/Peso</string>
+    <string name="units_cat_temp">Temp.</string>
+    <string name="units_label_valor">Valor a convertir</string>
+    <string name="units_label_peso_paciente">Peso del paciente (kg)</string>
+    <string name="units_btn_convertir">Convertir</string>
+    <string name="units_result_hint">El resultado aparecer\u00e1 aqu\u00ed</string>
+
 </resources>

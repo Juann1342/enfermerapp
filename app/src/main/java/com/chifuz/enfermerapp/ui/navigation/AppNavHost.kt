@@ -51,6 +51,7 @@ import com.chifuz.enfermerapp.ui.screens.edad.EdadScreen
 import com.chifuz.enfermerapp.ui.screens.notas.NotasScreen
 import com.chifuz.enfermerapp.ui.screens.notas.NotasViewModel
 import com.chifuz.enfermerapp.ui.screens.notas.NotasViewModelFactory
+import com.chifuz.enfermerapp.ui.screens.units.UnitsScreen
 
 
 // Definición de las rutas y sus iconos (usando los que funcionan)
@@ -62,6 +63,7 @@ sealed class Screen(val route: String, val title: Int, val icon: Int) {
 
     object Edad : Screen("edad", R.string.menu_edad_nav, R.drawable.ic_edad)
 
+    object Units : Screen("units", R.string.menu_units, R.drawable.ic_age2) //cambiar
 
 
     // Constantes para la ruta con argumento
@@ -83,7 +85,8 @@ val navItems = listOf(
     Screen.Dosis,
     Screen.Perfusion,
     Screen.Sync,
-    Screen.Edad
+    Screen.Edad,
+    Screen.Units
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -132,6 +135,8 @@ fun AppNavHost() {
                     var showConcentrationDialog by remember { mutableStateOf(false) }
                     val context = LocalContext.current
                     val isPremium = remember(showConcentrationDialog) { AdsManager.isPremiumActive(context) }
+
+
                     IconButton(onClick = { navController.navigate("notas_screen") }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_nota),
@@ -314,6 +319,9 @@ fun AppNavHost() {
             composable(Screen.Edad.route) {
                 // Aquí llamaremos a EdadScreen() en el siguiente paso
                 EdadScreen()
+            }
+            composable(Screen.Units.route) {
+                UnitsScreen()
             }
             composable("notas_screen") {
                 val context = LocalContext.current

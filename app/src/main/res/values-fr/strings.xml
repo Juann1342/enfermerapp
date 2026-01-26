@@ -162,4 +162,16 @@
     <string name="notas_buscar">Rechercher des notes\u2026</string>
     <string name="notas_eliminar_pregunta">Voulez-vous vraiment supprimer cette note ? Cette action ne peut pas \u00eatre annul\u00e9e.</string>
 
+    <string name="units_title">Convertisseur d\'Unit\u00e9s</string>
+    <string name="menu_units">Unit\u00e9s</string>
+    <string name="units_cat_peso">Poids</string>
+    <string name="units_cat_volumen">Volume</string>
+    <string name="units_cat_infusion">Perfusion</string>
+    <string name="units_cat_dosis">Dose/Poids</string>
+    <string name="units_cat_temp">Temp.</string>
+    <string name="units_label_valor">Valeur \u00e0 convertir</string>
+    <string name="units_label_peso_paciente">Poids du patient (kg)</string>
+    <string name="units_btn_convertir">Convertir</string>
+    <string name="units_result_hint">Le r\u00e9sultat s\'affichera ici</string>
+
 </resources>
