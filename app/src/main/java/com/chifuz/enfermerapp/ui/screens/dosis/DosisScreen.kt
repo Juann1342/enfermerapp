@@ -93,6 +93,7 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
         Text(
             text = stringResource(R.string.dosis_title),
             style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(bottom = 24.dp)
         )
 

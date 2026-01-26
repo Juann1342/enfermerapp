@@ -47,6 +47,11 @@ android {
         val rewardedId = localProperties.getProperty("ADMOB_REWARDED_ID") ?: ""
 
         val adNativeIdNotas = localProperties.getProperty("ADMOB_NATIVE_ID_NOTAS") ?: ""
+        val adIdUnits = localProperties.getProperty("ADMOB_INTERSTITIAL_ID_UNITS") ?: ""
+        val nativeIdUnits = localProperties.getProperty("ADMOB_NATIVE_ID_UNITS") ?: ""
+
+        buildConfigField("String", "ADMOB_INTERSTITIAL_ID_UNITS", "\"$adIdUnits\"")
+        buildConfigField("String", "ADMOB_NATIVE_ID_UNITS", "\"$nativeIdUnits\"")
         buildConfigField("String", "ADMOB_NATIVE_ID_NOTAS", "\"$adNativeIdNotas\"")
 
         // Los exponemos a Kotlin mediante BuildConfig

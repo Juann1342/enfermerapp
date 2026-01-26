@@ -1,5 +1,8 @@
 package com.chifuz.enfermerapp.ui.screens.units
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -19,6 +23,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.chifuz.enfermerapp.R
+import com.chifuz.enfermerapp.ads.AdLocation
+import com.chifuz.enfermerapp.ads.AdsManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,6 +33,12 @@ fun UnitsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
+    val activity = remember(context) { context.findActivity() }
+
+    LaunchedEffect(Unit) {
+        AdsManager.loadInterstitial(context, AdLocation.UNITS)
+    }
 
     Column(
         modifier = Modifier
@@ -35,6 +47,13 @@ fun UnitsScreen(
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        Text(
+            text = stringResource(R.string.units_title),
+            style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(top = 24.dp, bottom =  24.dp)
+        )
         // 1. Selector de Categoría
         ScrollableTabRow(
             selectedTabIndex = uiState.category.ordinal,
@@ -89,6 +108,13 @@ fun UnitsScreen(
             Text(stringResource(R.string.units_btn_convertir), style = MaterialTheme.typography.titleMedium)
         }
 
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // NUEVO: Native Ad con margen
+        NativeAdUnitsComponent()
+
+        Spacer(modifier = Modifier.weight(1f))
+
         // 5. Espacio para el anuncio nativo al final
         Spacer(modifier = Modifier.weight(1f))
 
@@ -101,7 +127,16 @@ fun UnitsScreen(
         UnitsResultDialog(
             result = uiState.result,
             unit = uiState.toUnit,
-            onDismiss = { viewModel.hideResultDialog() }
+            onDismiss = {
+                viewModel.hideResultDialog()
+
+                activity?.let { act ->
+                    AdsManager.showInterstitial(act, AdLocation.UNITS) {
+                        // Flujo después del anuncio
+                    }
+                }
+
+            }
         )
     }
 }
@@ -128,7 +163,6 @@ fun UnitsResultDialog(result: String, unit: String, onDismiss: () -> Unit) {
                 Text(
                     text = "$result $unit",
                     style = MaterialTheme.typography.displaySmall,
-                    fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
                 )
             }
@@ -217,4 +251,11 @@ fun UnitDropDown(
             }
         }
     }
+}
+
+// Función de extensión para obtener la Activity desde el contexto de Compose
+private tailrec fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }

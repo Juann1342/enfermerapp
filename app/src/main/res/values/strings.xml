@@ -172,5 +172,4 @@
     <string name="units_label_valor">Value to convert</string>
     <string name="units_label_peso_paciente">Patient weight (kg)</string>
     <string name="units_btn_convertir">Convert</string>
-    <string name="units_result_hint">Result will appear here</string>
-</resources>
+    <string name="units_result_hint">Conversion result</string></resources>

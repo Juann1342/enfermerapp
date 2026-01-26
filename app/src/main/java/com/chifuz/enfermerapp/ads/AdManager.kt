@@ -14,7 +14,7 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 
 enum class AdLocation {
-    DOSIS, EDAD, PERFUSION
+    DOSIS, EDAD, PERFUSION,UNITS
 }
 
 object AdsManager {
@@ -23,11 +23,13 @@ object AdsManager {
     private var mInterstitialAdEdad: InterstitialAd? = null
     private var mInterstitialAdPerfusion: InterstitialAd? = null
 
+    private var mInterstitialAdUnits: InterstitialAd? = null
+
     private const val TAG = "AdsManager"
 
     private const val MAX_ADS_PER_HOUR = 5
     private const val COOLDOWN_MILLIS = 2 * 60 * 1000L
-    private const val HOUR_MILLIS = 60 * 60 * 1000L
+    private const val HOUR_MILLIS = 40 * 60 * 1000L
 
     private val adTimestamps = mutableListOf<Long>()
     private var lastAdShownTime: Long = 0
@@ -49,13 +51,13 @@ object AdsManager {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val adFreeUntil = prefs.getLong(KEY_AD_FREE_UNTIL, 0L)
         val diff = adFreeUntil - System.currentTimeMillis()
-        return if (diff > 0) (diff / (1000 * 60 * 60)).toInt() else 0
+        return if (diff > 0) (diff / (1000 * 40 * 60)).toInt() else 0
     }
 
     // Guarda el tiempo (12 horas desde ahora)
     private fun setAdFreePeriod(context: Context) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val twelveHoursInMs = 4 * 60 * 60 * 1000L // 6 horas
+        val twelveHoursInMs = 4 * 60 * 60 * 1000L // 4 horas
         val newTime = System.currentTimeMillis() + twelveHoursInMs
         prefs.edit().putLong(KEY_AD_FREE_UNTIL, newTime).apply()
     }
@@ -114,6 +116,7 @@ object AdsManager {
             AdLocation.DOSIS -> BuildConfig.ADMOB_INTERSTITIAL_ID_DOSIS
             AdLocation.EDAD -> BuildConfig.ADMOB_INTERSTITIAL_ID_EDAD
             AdLocation.PERFUSION -> BuildConfig.ADMOB_INTERSTITIAL_ID_PERFUSION
+            AdLocation.UNITS -> BuildConfig.ADMOB_INTERSTITIAL_ID_UNITS
         }
     }
 
@@ -122,6 +125,7 @@ object AdsManager {
             AdLocation.DOSIS -> mInterstitialAd
             AdLocation.EDAD -> mInterstitialAdEdad
             AdLocation.PERFUSION -> mInterstitialAdPerfusion
+            AdLocation.UNITS -> mInterstitialAdUnits
         }
     }
 
@@ -130,6 +134,7 @@ object AdsManager {
             AdLocation.DOSIS -> mInterstitialAd = ad
             AdLocation.EDAD -> mInterstitialAdEdad = ad
             AdLocation.PERFUSION -> mInterstitialAdPerfusion = ad
+            AdLocation.UNITS -> mInterstitialAdUnits = ad
         }
     }
 

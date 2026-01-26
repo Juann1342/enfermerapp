@@ -60,6 +60,7 @@ fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel 
         Text(
             text = stringResource(R.string.perfusion_velocidad_goteo),
             style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(bottom = 24.dp)
         )
 

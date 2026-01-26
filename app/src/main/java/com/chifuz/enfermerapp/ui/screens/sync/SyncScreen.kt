@@ -78,6 +78,7 @@ fun SyncScreen(gttsMinInicial: Int = 0, viewModel: SyncViewModel = viewModel()) 
         Text(
             text = stringResource(R.string.sync_title),
             style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(bottom = 16.dp) // Menos espacio
         )
 
