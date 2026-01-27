@@ -117,7 +117,7 @@
     <string name="btn_calcular_edad">CALCULAR EDAD</string>
 
     <string name="edad_cronologica">Edad Cronológica:</string>
-    <string name="edad_corregida">Edad Corregida (Ref. 40 sem.):</string>
+    <string name="edad_corregida">Edad Corregida:</string>
     <string name="error_semanas">Rango válido: 20 a 36 semanas</string>
 
     <plurals name="años">
@@ -186,4 +186,13 @@
     <string name="units_label_peso_paciente">Peso del paciente (kg)</string>
     <string name="units_btn_convertir">Convertir</string>
     <string name="units_result_hint">Resultado de la conversi\u00f3n</string>
+
+    <string name="dosis_tab_estandar">Manual</string>
+    <string name="dosis_tab_peso">Por Peso</string>
+    <string name="dosis_label_por_kilo">Dosis por Kg (mg/mcg)</string>
+    <string name="dosis_label_peso_paciente">Peso del Paciente (kg)</string>
+    <string name="dosis_label_maxima">Dosis Máxima (Opcional)</string>
+    <string name="dosis_advertencia_excedida">¡Atención! La dosis calculada supera el límite máximo de la guardia. Se ha ajustado al valor máximo permitido.</string>
+    <string name="dosis_resultado_peso">Dosis sugerida para el paciente</string>
+    <string name="criterio_termino_label">Semanas de criterio de término:</string>
 </resources>

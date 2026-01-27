@@ -3,13 +3,14 @@ package com.chifuz.enfermerapp.ui.screens.edad
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.util.Log
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
-
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,6 +21,7 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.chifuz.enfermerapp.R
@@ -46,12 +48,16 @@ fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
 
     var showDatePicker by remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState()
+
     LaunchedEffect(Unit) {
         AdsManager.loadInterstitial(context, AdLocation.EDAD)
     }
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(rememberScrollState()),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -72,14 +78,13 @@ fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
-                    // Usamos stringResource para que cambie de idioma
                     Text(
                         text = stringResource(R.string.fecha_nacimiento),
                         style = MaterialTheme.typography.labelMedium
                     )
                     Text(
                         text = uiState.fechaNacimiento?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                            ?: stringResource(R.string.seleccionar_fecha), // Fallback traducido
+                            ?: stringResource(R.string.seleccionar_fecha),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold
                     )
@@ -87,7 +92,7 @@ fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
                 Icon(
                     imageVector = Icons.Default.CalendarMonth,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary // Le damos un toque de color al icono
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -96,7 +101,6 @@ fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
 
         // --- LÓGICA DE PREMATURO ---
         if (uiState.fechaNacimiento != null) {
-            // Solo mostramos la opción si es menor de 2 años (24 meses)
             val meses = java.time.temporal.ChronoUnit.MONTHS.between(uiState.fechaNacimiento, java.time.LocalDate.now())
 
             if (meses < 24) {
@@ -106,9 +110,17 @@ fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
                 }
 
                 if (uiState.esPrematuro) {
+                    // Selector horizontal de semanas de término
+                    SemanasTerminoSelector(
+                        selected = uiState.semanasCriterioTermino,
+                        onSelected = viewModel::onSemanasCriterioTerminoSelected
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
                     OutlinedTextField(
                         value = uiState.semanasGestacion,
-                        onValueChange = { viewModel.onSemanasChanged(it) },
+                        onValueChange = { viewModel.onSemanasGestacionChanged(it) },
                         label = { Text(stringResource(R.string.gestational_weeks)) },
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -121,7 +133,7 @@ fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
-                onClick = { viewModel.calcularYMostrar() },
+                onClick = { viewModel.calcularYMostrar(debeMostrarDialog = true) },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = uiState.esCalculable
             ) {
@@ -129,39 +141,34 @@ fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
             }
         }
 
-
-
-
-// NUEVO: El Native Ad con un margen adecuado
-        Spacer(modifier = Modifier.height(32.dp)) // Margen para que respire
-
+        // --- NATIVE AD ---
+        Spacer(modifier = Modifier.height(32.dp))
         NativeAdEdad(
             modifier = Modifier
                 .padding(horizontal = 4.dp)
-                .padding(bottom = 16.dp) // Evita que pegue a la barra inferior
+                .padding(bottom = 16.dp)
         )
     }
 
-    // --- DIÁLOGO DE RESULTADOS ---
+    // --- DIÁLOGOS ---
     if (uiState.showResultDialog) {
         EdadResultDialog(
             anios = uiState.resultadoCronologico?.años ?: 0,
             cronologica = formatEdad(uiState.resultadoCronologico),
-            // Solo pasamos el objeto, el diálogo se encarga del resto
             resultadoCorregido = uiState.resultadoCorregido,
             mostrarCorregida = uiState.mostrarCorregida,
+            criterioTermino = uiState.semanasCriterioTermino,
             onDismiss = {
-                viewModel.dismissDialog()
+                viewModel.hideResultDialog()
                 activity?.let { act ->
-                    AdsManager.showInterstitial(activity, AdLocation.EDAD) {
-                        android.util.Log.d("ADS", "Intersticial de Edad cerrado")
+                    AdsManager.showInterstitial(act, AdLocation.EDAD) {
+                        Log.d("ADS", "Intersticial de Edad cerrado")
                     }
                 }
             }
         )
     }
 
-    // --- DATE PICKER ---
     if (showDatePicker) {
         DatePickerDialog(
             onDismissRequest = { showDatePicker = false },
@@ -177,24 +184,46 @@ fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
     }
 }
 
-
-
 @Composable
-fun formatEdad(resultado: EdadResultado?): String {
-    if (resultado == null) return ""
-    val partes = mutableListOf<String>()
-    if (resultado.años > 0) partes.add(pluralStringResource(R.plurals.años, resultado.años, resultado.años))
-    if (resultado.meses > 0) partes.add(pluralStringResource(R.plurals.meses, resultado.meses, resultado.meses))
-    partes.add(pluralStringResource(R.plurals.dias, resultado.dias, resultado.dias))
-    return partes.joinToString(", ")
+fun SemanasTerminoSelector(
+    selected: Int,
+    onSelected: (Int) -> Unit
+) {
+    Column(modifier = Modifier.padding(vertical = 8.dp)) {
+        Text(
+            text = stringResource(R.string.criterio_termino_label),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            (37..40).forEach { semana ->
+                FilterChip(
+                    selected = selected == semana,
+                    onClick = { onSelected(semana) },
+                    label = { Text("$semana") },
+                    colors = FilterChipDefaults.filterChipColors(
+                        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                )
+            }
+        }
+    }
 }
 
 @Composable
 fun EdadResultDialog(
     anios: Int,
     cronologica: String,
-    resultadoCorregido: EdadResultado?, // Cambiamos String por el Objeto para tener los datos
+    resultadoCorregido: EdadResultado?,
     mostrarCorregida: Boolean,
+    criterioTermino: Int,
     onDismiss: () -> Unit
 ) {
     val icon = when {
@@ -218,7 +247,7 @@ fun EdadResultDialog(
             Text(
                 text = stringResource(R.string.edad_result_title),
                 style = MaterialTheme.typography.titleLarge,
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
         },
@@ -227,34 +256,31 @@ fun EdadResultDialog(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Cronológica
-                Text(stringResource(R.string.edad_cronologica), style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(R.string.edad_cronologica), style = MaterialTheme.typography.titleSmall)
                 Text(
                     text = cronologica,
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                    textAlign = TextAlign.Center
                 )
 
                 if (mostrarCorregida && resultadoCorregido != null) {
                     HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
-                    Text(stringResource(R.string.edad_corregida), style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.edad_corregida), style = MaterialTheme.typography.titleSmall)
 
                     val textoFinal = if (resultadoCorregido.años == -1) {
-                        // Mostramos lo que falta para llegar a término
-                        formatTiempoFaltante(resultadoCorregido)
+                        formatTiempoFaltante(resultadoCorregido, criterioTermino)
                     } else {
-                        // Mostramos la Edad Corregida real (ej: 2 meses y 5 días)
                         formatEdad(resultadoCorregido)
                     }
 
                     Text(
                         text = textoFinal,
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.tertiary,
                         fontWeight = FontWeight.Bold,
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                        textAlign = TextAlign.Center
                     )
                 }
             }
@@ -267,22 +293,23 @@ fun EdadResultDialog(
     )
 }
 
-
 @Composable
-fun formatTiempoFaltante(resultado: EdadResultado?): String {
+fun formatTiempoFaltante(resultado: EdadResultado?, criterio: Int): String {
     if (resultado == null) return ""
-
-    // Obtenemos los textos de plurales (ej: "8 semanas", "4 días")
     val semanasStr = pluralStringResource(R.plurals.semanas, resultado.meses, resultado.meses)
     val diasStr = pluralStringResource(R.plurals.dias, resultado.dias, resultado.dias)
-
-    // Obtenemos el " y " y la meta
     val conjuncion = stringResource(R.string.y_con_espacios)
-    val meta = stringResource(R.string.parentesis_semanas, 40)
-
-    // Construimos la frase: "8 semanas" + " y " + "4 días"
+    val meta = stringResource(R.string.parentesis_semanas, criterio)
     val tiempo = "$semanasStr$conjuncion$diasStr"
-
-    // Retornamos: "Faltan 8 semanas y 4 días para el término (40 semanas)"
     return stringResource(R.string.faltan_para_termino, tiempo, meta)
+}
+
+@Composable
+fun formatEdad(resultado: EdadResultado?): String {
+    if (resultado == null) return ""
+    val partes = mutableListOf<String>()
+    if (resultado.años > 0) partes.add(pluralStringResource(R.plurals.años, resultado.años, resultado.años))
+    if (resultado.meses > 0) partes.add(pluralStringResource(R.plurals.meses, resultado.meses, resultado.meses))
+    partes.add(pluralStringResource(R.plurals.dias, resultado.dias, resultado.dias))
+    return partes.joinToString(", ")
 }

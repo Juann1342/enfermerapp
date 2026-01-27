@@ -105,7 +105,7 @@
     <string name="gestational_weeks">Gestational weeks</string>
     <string name="btn_calcular_edad">CALCULATE AGE</string>
     <string name="edad_cronologica">Chronological Age:</string>
-    <string name="edad_corregida">Corrected Age (40w ref):</string>
+    <string name="edad_corregida">Corrected Age:</string>
     <string name="error_semanas">Valid range: 20 to 36 weeks</string>
 
     <plurals name="años">
@@ -172,4 +172,17 @@
     <string name="units_label_valor">Value to convert</string>
     <string name="units_label_peso_paciente">Patient weight (kg)</string>
     <string name="units_btn_convertir">Convert</string>
-    <string name="units_result_hint">Conversion result</string></resources>
+    <string name="units_result_hint">Conversion result</string>
+
+    <string name="dosis_tab_estandar">Manual</string>
+    <string name="dosis_tab_peso">By Weight</string>
+    <string name="dosis_label_por_kilo">Dose per Kg (mg/mcg)</string>
+    <string name="dosis_label_peso_paciente">Patient Weight (kg)</string>
+    <string name="dosis_label_maxima">Maximum Dose (Optional)</string>
+    <string name="dosis_advertencia_excedida">Warning! The calculated dose exceeds the unit\'s maximum limit. It has been adjusted to the maximum allowed value.</string>
+    <string name="dosis_resultado_peso">Suggested dose for patient</string>
+    <string name="criterio_termino_label">Term criteria weeks:</string>
+
+
+</resources>
+

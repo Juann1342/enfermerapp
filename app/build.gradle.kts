@@ -50,6 +50,10 @@ android {
         val adIdUnits = localProperties.getProperty("ADMOB_INTERSTITIAL_ID_UNITS") ?: ""
         val nativeIdUnits = localProperties.getProperty("ADMOB_NATIVE_ID_UNITS") ?: ""
 
+        val adIdDosisPeso = localProperties.getProperty("ADMOB_INTERSTITIAL_ID_DOSIS_PESO") ?: ""
+        buildConfigField("String", "ADMOB_INTERSTITIAL_ID_DOSIS_PESO", "\"$adIdDosisPeso\"")
+
+
         buildConfigField("String", "ADMOB_INTERSTITIAL_ID_UNITS", "\"$adIdUnits\"")
         buildConfigField("String", "ADMOB_NATIVE_ID_UNITS", "\"$nativeIdUnits\"")
         buildConfigField("String", "ADMOB_NATIVE_ID_NOTAS", "\"$adNativeIdNotas\"")

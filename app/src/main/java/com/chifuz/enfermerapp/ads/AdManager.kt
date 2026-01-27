@@ -14,7 +14,7 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 
 enum class AdLocation {
-    DOSIS, EDAD, PERFUSION,UNITS
+    DOSIS,DOSIS_PESO, EDAD, PERFUSION,UNITS
 }
 
 object AdsManager {
@@ -24,6 +24,9 @@ object AdsManager {
     private var mInterstitialAdPerfusion: InterstitialAd? = null
 
     private var mInterstitialAdUnits: InterstitialAd? = null
+
+    private var mInterstitialAdDosisPeso: InterstitialAd? = null
+
 
     private const val TAG = "AdsManager"
 
@@ -117,6 +120,8 @@ object AdsManager {
             AdLocation.EDAD -> BuildConfig.ADMOB_INTERSTITIAL_ID_EDAD
             AdLocation.PERFUSION -> BuildConfig.ADMOB_INTERSTITIAL_ID_PERFUSION
             AdLocation.UNITS -> BuildConfig.ADMOB_INTERSTITIAL_ID_UNITS
+            AdLocation.DOSIS_PESO -> BuildConfig.ADMOB_INTERSTITIAL_ID_DOSIS_PESO
+
         }
     }
 
@@ -126,6 +131,8 @@ object AdsManager {
             AdLocation.EDAD -> mInterstitialAdEdad
             AdLocation.PERFUSION -> mInterstitialAdPerfusion
             AdLocation.UNITS -> mInterstitialAdUnits
+            AdLocation.DOSIS_PESO -> mInterstitialAdDosisPeso
+
         }
     }
 
@@ -135,6 +142,8 @@ object AdsManager {
             AdLocation.EDAD -> mInterstitialAdEdad = ad
             AdLocation.PERFUSION -> mInterstitialAdPerfusion = ad
             AdLocation.UNITS -> mInterstitialAdUnits = ad
+            AdLocation.DOSIS_PESO -> mInterstitialAdDosisPeso = ad
+
         }
     }
 

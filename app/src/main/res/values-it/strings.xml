@@ -105,7 +105,7 @@
     <string name="gestational_weeks">Settimane di gestazione</string>
     <string name="btn_calcular_edad">CALCOLA ET\u00c0</string>
     <string name="edad_cronologica">Et\u00e0 cronologica:</string>
-    <string name="edad_corregida">Et\u00e0 corretta (Rif. 40 set.):</string>
+    <string name="edad_corregida">Et\u00e0 corretta:</string>
     <string name="error_semanas">Intervallo valido: da 20 a 36 settimane</string>
 
     <plurals name="años">
@@ -172,4 +172,16 @@
     <string name="units_label_valor">Valore da convertire</string>
     <string name="units_label_peso_paciente">Peso del paziente (kg)</string>
     <string name="units_btn_convertir">Converti</string>
-    <string name="units_result_hint">Risultato della conversione</string></resources>
+    <string name="units_result_hint">Risultato della conversione</string>
+
+
+    <string name="dosis_tab_estandar">Manuale</string>
+    <string name="dosis_tab_peso">Per Peso</string>
+    <string name="dosis_label_por_kilo">Dose per Kg (mg/mcg)</string>
+    <string name="dosis_label_peso_paciente">Peso del Paziente (kg)</string>
+    <string name="dosis_label_maxima">Dose Massima (Opzionale)</string>
+    <string name="dosis_advertencia_excedida">Attenzione! La dose calcolata supera il limite massimo del reparto. È stata adattata al valore massimo consentito.</string>
+    <string name="dosis_resultado_peso">Dose suggerita per il paziente</string>
+    <string name="criterio_termino_label">Settimane del criterio di termine:</string>
+
+</resources>
