@@ -183,4 +183,8 @@
     <string name="dosis_advertencia_excedida">Attention ! La dose calculée dépasse la limite maximale du service. Elle a été ajustée à la valeur maximale autorisée.</string>
     <string name="dosis_resultado_peso">Dose suggérée pour le patient</string>
     <string name="criterio_termino_label">Semaines de critère de terme :</string>
+
+    <string name="concentracion_buscando_ad">Recherche d\'une annonce disponible\u2026</string>
+    <string name="concentracion_btn_cargando">Chargement\u2026</string>
+    <string name="concentracion_toast_error">Aucune annonce disponible pour le moment. Veuillez r\u00e9essayer plus tard.</string>
 </resources>

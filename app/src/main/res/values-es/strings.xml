@@ -195,4 +195,8 @@
     <string name="dosis_advertencia_excedida">¡Atención! La dosis calculada supera el límite máximo de la guardia. Se ha ajustado al valor máximo permitido.</string>
     <string name="dosis_resultado_peso">Dosis sugerida para el paciente</string>
     <string name="criterio_termino_label">Semanas de criterio de término:</string>
+
+    <string name="concentracion_buscando_ad">Buscando anuncio disponible\u2026</string>
+    <string name="concentracion_btn_cargando">Cargando\u2026</string>
+    <string name="concentracion_toast_error">No hay anuncios disponibles en este momento. Intente luego.</string>
 </resources>

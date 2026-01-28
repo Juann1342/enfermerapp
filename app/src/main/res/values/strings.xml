@@ -183,6 +183,10 @@
     <string name="dosis_resultado_peso">Suggested dose for patient</string>
     <string name="criterio_termino_label">Term criteria weeks:</string>
 
+    <string name="concentracion_buscando_ad">Searching for available ad\u2026</string>
+    <string name="concentracion_btn_cargando">Loading\u2026</string>
+    <string name="concentracion_toast_error">No ads available right now. Please try again later.</string>
+
 
 </resources>
 

@@ -182,4 +182,8 @@
     <string name="dosis_advertencia_excedida">Atenção! A dose calculada excede o limite máximo da unidade. Foi ajustada para o valor máximo permitido.</string>
     <string name="dosis_resultado_peso">Dose sugerida para o paciente</string>
     <string name="criterio_termino_label">Semanas de critério de termo:</string>
+
+    <string name="concentracion_buscando_ad">Buscando an\u00fancio dispon\u00edvel\u2026</string>
+    <string name="concentracion_btn_cargando">Carregando\u2026</string>
+    <string name="concentracion_toast_error">N\u00e3o h\u00e1 an\u00fancios dispon\u00edveis no momento. Tente mais tarde.</string>
 </resources>
