@@ -18,6 +18,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -47,16 +48,25 @@ fun CalculoTextField(
         isError = isError,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-        trailingIcon = { Text(unit, style = MaterialTheme.typography.bodyLarge) },
+        trailingIcon = {
+            Text(
+                text = unit,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(end = 8.dp)
+            )
+        },
         supportingText = {
             if (isError) {
                 Text(stringResource(R.string.valor_invalido))
             }
         },
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewModel()) {
     val context = LocalContext.current
@@ -64,14 +74,14 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
     var showRateDialog by remember { mutableStateOf(false) }
     val uiState by viewModel.uiState.collectAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
+    val scrollState = rememberScrollState()
 
-    // Carga de anuncios para ambos flujos
     LaunchedEffect(Unit) {
         AdsManager.loadInterstitial(context, AdLocation.DOSIS)
         AdsManager.loadInterstitial(context, AdLocation.DOSIS_PESO)
+        viewModel.limpiarDatos()
     }
 
-    // Validación dinámica según la pestaña activa
     val isValidInput = if (uiState.calcType == DosisCalcType.ESTANDAR) {
         uiState.dosisAdministrar.toDoubleOrNull() != null &&
                 uiState.solvente.toDoubleOrNull() != null &&
@@ -84,45 +94,49 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(scrollState)
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = stringResource(R.string.dosis_title),
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 20.dp)
         )
 
-        // Selector de modo: Estándar vs Por Peso
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        // Selector de modo refinado
+        SingleChoiceSegmentedButtonRow(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)
         ) {
-            Button(
+            SegmentedButton(
+                selected = uiState.calcType == DosisCalcType.ESTANDAR,
                 onClick = { viewModel.updateCalcType(DosisCalcType.ESTANDAR) },
-                modifier = Modifier.weight(1f),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (uiState.calcType == DosisCalcType.ESTANDAR) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = if (uiState.calcType == DosisCalcType.ESTANDAR) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
+                shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+                colors = SegmentedButtonDefaults.colors(
+                    activeContainerColor = MaterialTheme.colorScheme.primary,
+                    activeContentColor = MaterialTheme.colorScheme.onPrimary,
+                    inactiveContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             ) {
                 Text(stringResource(R.string.dosis_tab_estandar))
             }
-            Button(
+            SegmentedButton(
+                selected = uiState.calcType == DosisCalcType.POR_PESO,
                 onClick = { viewModel.updateCalcType(DosisCalcType.POR_PESO) },
-                modifier = Modifier.weight(1f),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (uiState.calcType == DosisCalcType.POR_PESO) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = if (uiState.calcType == DosisCalcType.POR_PESO) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
+                shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+                colors = SegmentedButtonDefaults.colors(
+                    activeContainerColor = MaterialTheme.colorScheme.primary,
+                    activeContentColor = MaterialTheme.colorScheme.onPrimary,
+                    inactiveContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             ) {
                 Text(stringResource(R.string.dosis_tab_peso))
             }
         }
 
-        // Renderizado condicional de campos
         if (uiState.calcType == DosisCalcType.ESTANDAR) {
             CalculoTextField(
                 value = uiState.dosisAdministrar,
@@ -130,7 +144,7 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
                 label = stringResource(R.string.dosis_label_admin),
                 unit = "mg",
                 isError = false,
-                modifier = Modifier.padding(bottom = 16.dp)
+                modifier = Modifier.padding(bottom = 12.dp)
             )
             CalculoTextField(
                 value = uiState.solvente,
@@ -138,7 +152,7 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
                 label = stringResource(R.string.dosis_label_vol_medic),
                 unit = "ml",
                 isError = false,
-                modifier = Modifier.padding(bottom = 16.dp)
+                modifier = Modifier.padding(bottom = 12.dp)
             )
             CalculoTextField(
                 value = uiState.soluto,
@@ -146,7 +160,7 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
                 label = stringResource(R.string.dosis_label_concentracion),
                 unit = "mg",
                 isError = false,
-                modifier = Modifier.padding(bottom = 24.dp)
+                modifier = Modifier.padding(bottom = 16.dp)
             )
         } else {
             CalculoTextField(
@@ -155,7 +169,7 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
                 label = stringResource(R.string.dosis_label_por_kilo),
                 unit = uiState.unidadSeleccionada,
                 isError = false,
-                modifier = Modifier.padding(bottom = 16.dp)
+                modifier = Modifier.padding(bottom = 12.dp)
             )
             CalculoTextField(
                 value = uiState.pesoPaciente,
@@ -163,7 +177,7 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
                 label = stringResource(R.string.dosis_label_peso_paciente),
                 unit = "kg",
                 isError = false,
-                modifier = Modifier.padding(bottom = 16.dp)
+                modifier = Modifier.padding(bottom = 12.dp)
             )
             CalculoTextField(
                 value = uiState.dosisMaxima,
@@ -171,7 +185,7 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
                 label = stringResource(R.string.dosis_label_maxima),
                 unit = uiState.unidadSeleccionada,
                 isError = false,
-                modifier = Modifier.padding(bottom = 24.dp)
+                modifier = Modifier.padding(bottom = 16.dp)
             )
         }
 
@@ -181,13 +195,17 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
                 viewModel.calcularDosis()
             },
             enabled = isValidInput,
-            modifier = Modifier.fillMaxWidth().height(56.dp)
+            modifier = Modifier.fillMaxWidth().height(56.dp),
+            shape = MaterialTheme.shapes.large
         ) {
-            Text(stringResource(R.string.dosis_btn_calcular))
+            Icon(Icons.Default.CheckCircle, contentDescription = null)
+            Spacer(Modifier.width(8.dp))
+            Text(stringResource(R.string.dosis_btn_calcular).uppercase())
         }
+
+
     }
 
-    // Lógica de Diálogos y Anuncios
     if (uiState.showResultDialog && uiState.resultadoFinal != null) {
         if (uiState.calcType == DosisCalcType.ESTANDAR) {
             DosisEstandarDialog(
@@ -225,7 +243,6 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
     }
 }
 
-// Función para centralizar la lógica de Ads y Rating después de un cálculo
 private fun ejecutarFlujoPostCalculo(
     context: Context,
     activity: Activity?,
@@ -248,14 +265,15 @@ private fun ejecutarFlujoPostCalculo(
 fun DosisEstandarDialog(resultadoMl: String, dosisAdmin: String, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        confirmButton = { Button(onClick = onDismiss) { Text(stringResource(R.string.aceptar)) } },
-        icon = { Icon(Icons.Default.CheckCircle, contentDescription = null, tint = MaterialTheme.colorScheme.primary) },
-        title = { Text(stringResource(R.string.dosis_result_title)) },
+        confirmButton = { Button(onClick = onDismiss, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.aceptar)) } },
+        icon = { Icon(Icons.Default.CheckCircle, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(40.dp)) },
+        title = { Text(stringResource(R.string.dosis_result_title), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()) },
         text = {
             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                 Text(text = stringResource(R.string.dosis_volume_extract), style = MaterialTheme.typography.titleMedium)
-                Text(text = "$resultadoMl ml", style = MaterialTheme.typography.displaySmall, color = MaterialTheme.colorScheme.primary)
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(Modifier.height(8.dp))
+                Text(text = "$resultadoMl ml", style = MaterialTheme.typography.displayMedium, color = MaterialTheme.colorScheme.primary)
+                Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = stringResource(R.string.dosis_instruction_line, resultadoMl, dosisAdmin),
                     style = MaterialTheme.typography.bodyLarge,
@@ -270,32 +288,39 @@ fun DosisEstandarDialog(resultadoMl: String, dosisAdmin: String, onDismiss: () -
 fun DosisPorPesoDialog(resultado: String, unidad: String, esAdvertencia: Boolean, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        confirmButton = { Button(onClick = onDismiss) { Text(stringResource(R.string.aceptar)) } },
+        confirmButton = { Button(onClick = onDismiss, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.aceptar)) } },
         icon = {
             Icon(
                 imageVector = if (esAdvertencia) Icons.Default.Warning else Icons.Default.CheckCircle,
                 contentDescription = null,
                 tint = if (esAdvertencia) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(40.dp)
             )
         },
-        title = { Text(stringResource(R.string.dosis_result_title)) },
+        title = { Text(stringResource(R.string.dosis_result_title), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()) },
         text = {
             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                 Text(text = stringResource(R.string.dosis_resultado_peso), style = MaterialTheme.typography.titleMedium)
+                Spacer(Modifier.height(8.dp))
                 Text(
                     text = "$resultado $unidad",
-                    style = MaterialTheme.typography.displaySmall,
+                    style = MaterialTheme.typography.displayMedium,
                     color = if (esAdvertencia) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
                 )
                 if (esAdvertencia) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = stringResource(R.string.dosis_advertencia_excedida),
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodySmall,
-                        textAlign = TextAlign.Center
-                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Surface(
+                        color = MaterialTheme.colorScheme.errorContainer,
+                        shape = MaterialTheme.shapes.small
+                    ) {
+                        Text(
+                            text = stringResource(R.string.dosis_advertencia_excedida),
+                            color = MaterialTheme.colorScheme.onErrorContainer,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.padding(8.dp),
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }
@@ -306,11 +331,11 @@ fun DosisPorPesoDialog(resultado: String, unidad: String, esAdvertencia: Boolean
 fun RatingDialog(onDismiss: () -> Unit, onRate: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        icon = { Icon(Icons.Default.Favorite, contentDescription = null, tint = androidx.compose.ui.graphics.Color(0xFFE91E63), modifier = Modifier.size(40.dp)) },
+        icon = { Icon(Icons.Default.Favorite, contentDescription = null, tint = Color(0xFFE91E63), modifier = Modifier.size(40.dp)) },
         title = { Text(text = stringResource(R.string.rating_title), style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()) },
         text = { Text(text = stringResource(R.string.rating_message), style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center) },
-        confirmButton = { Button(onClick = onRate) { Text(stringResource(R.string.rating_confirm)) } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.ahora_no_gracias), color = MaterialTheme.colorScheme.onSurfaceVariant) } }
+        confirmButton = { Button(onClick = onRate, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.rating_confirm)) } },
+        dismissButton = { TextButton(onClick = onDismiss, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.ahora_no_gracias), color = MaterialTheme.colorScheme.onSurfaceVariant) } }
     )
 }
 

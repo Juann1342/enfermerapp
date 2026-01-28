@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -62,18 +63,19 @@ fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
     ) {
         Text(
             text = stringResource(R.string.edad_title),
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(bottom = 24.dp)
+            modifier = Modifier.padding(bottom = 16.dp),
+            textAlign = TextAlign.Center
         )
 
-        // --- SELECTOR DE FECHA ---
+
         OutlinedCard(
             onClick = { showDatePicker = true },
             modifier = Modifier.fillMaxWidth()
         ) {
             Row(
-                modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                modifier = Modifier.padding(12.dp).fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -97,56 +99,70 @@ fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         // --- LÓGICA DE PREMATURO ---
         if (uiState.fechaNacimiento != null) {
             val meses = java.time.temporal.ChronoUnit.MONTHS.between(uiState.fechaNacimiento, java.time.LocalDate.now())
 
             if (meses < 24) {
-                Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                    Checkbox(checked = uiState.esPrematuro, onCheckedChange = { viewModel.onEsPrematuroChanged(it) })
-                    Text(stringResource(R.string.es_prematuro))
+                // Caja compacta para prematuros
+                Surface(
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                    shape = MaterialTheme.shapes.medium,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(8.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Checkbox(checked = uiState.esPrematuro, onCheckedChange = { viewModel.onEsPrematuroChanged(it) })
+                            Text(stringResource(R.string.es_prematuro), style = MaterialTheme.typography.bodyMedium)
+                        }
+
+                        if (uiState.esPrematuro) {
+                            SemanasTerminoSelector(
+                                selected = uiState.semanasCriterioTermino,
+                                onSelected = viewModel::onSemanasCriterioTerminoSelected
+                            )
+
+                            OutlinedTextField(
+                                value = uiState.semanasGestacion,
+                                onValueChange = { viewModel.onSemanasGestacionChanged(it) },
+                                label = { Text(stringResource(R.string.gestational_weeks)) },
+                                modifier = Modifier.fillMaxWidth(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                isError = uiState.errorSemanas,
+                                singleLine = true,
+                                shape = MaterialTheme.shapes.medium,
+                                supportingText = { if(uiState.errorSemanas) Text(stringResource(R.string.error_semanas)) }
+                            )
+                        }
+                    }
                 }
 
-                if (uiState.esPrematuro) {
-                    // Selector horizontal de semanas de término
-                    SemanasTerminoSelector(
-                        selected = uiState.semanasCriterioTermino,
-                        onSelected = viewModel::onSemanasCriterioTerminoSelected
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    OutlinedTextField(
-                        value = uiState.semanasGestacion,
-                        onValueChange = { viewModel.onSemanasGestacionChanged(it) },
-                        label = { Text(stringResource(R.string.gestational_weeks)) },
-                        modifier = Modifier.fillMaxWidth(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        isError = uiState.errorSemanas,
-                        supportingText = { if(uiState.errorSemanas) Text(stringResource(R.string.error_semanas)) }
-                    )
-                }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
+// Botón Calcular con formato unificado
             Button(
                 onClick = { viewModel.calcularYMostrar(debeMostrarDialog = true) },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = uiState.esCalculable
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+                enabled = uiState.esCalculable,
+                shape = MaterialTheme.shapes.large
             ) {
-                Text(stringResource(R.string.btn_calcular_edad))
+                Icon(Icons.Default.CheckCircle, contentDescription = null)
+                Spacer(Modifier.width(8.dp))
+                Text(stringResource(R.string.btn_calcular_edad).uppercase())
             }
         }
 
         // --- NATIVE AD ---
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(24.dp))
         NativeAdEdad(
             modifier = Modifier
-                .padding(horizontal = 4.dp)
-                .padding(bottom = 16.dp)
+                //.padding(horizontal = 4.dp)
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
         )
     }
 

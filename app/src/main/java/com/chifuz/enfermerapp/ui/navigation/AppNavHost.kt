@@ -201,16 +201,28 @@ fun AppNavHost() {
             )
         },
         bottomBar = {
-            NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
+            NavigationBar(containerColor = MaterialTheme.colorScheme.surface, tonalElevation = 8.dp
+            ) {
                 navItems.forEach { screen ->
                     val selected = currentDestination?.destination?.hierarchy?.any { it.route?.contains(screen.route) == true } == true
                     NavigationBarItem(
                         icon = { CustomIcon(id = screen.icon, contentDescription = stringResource(screen.title)) },
                         label = { Text(text = stringResource(screen.title), style = MaterialTheme.typography.labelSmall) },
                         selected = selected,
+                        colors = NavigationBarItemDefaults.colors(
+                            // El fondo de la "pastilla" cuando está seleccionado (celestito de la TopBar)
+                            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                            // El color del icono cuando está seleccionado
+                            selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            // El color del texto cuando está seleccionado
+                            selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            // Colores para el estado no seleccionado
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                        ),
                         onClick = {
                             navController.navigate(screen.route) {
-                                popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                                popUpTo(navController.graph.findStartDestination().id) { saveState = false }
                                 launchSingleTop = true
                                 restoreState = false
                             }

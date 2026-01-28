@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -34,13 +35,13 @@ fun NotasScreen(
     val notas by viewModel.notas.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
 
-    // ESTADOS PARA DIÁLOGOS
     var notaAEditar by remember { mutableStateOf<Nota?>(null) }
     var notaAEliminar by remember { mutableStateOf<Nota?>(null) }
     var mostrarDialogoEdicion by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
+            // Buscador refinado
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { viewModel.onSearchQueryChange(it) },
@@ -48,44 +49,37 @@ fun NotasScreen(
                     .fillMaxWidth()
                     .padding(16.dp),
                 placeholder = { Text(stringResource(R.string.notas_buscar)) },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = MaterialTheme.colorScheme.primary) },
                 singleLine = true,
-                shape = RoundedCornerShape(12.dp)
+                shape = MaterialTheme.shapes.medium,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+                )
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
+            ExtendedFloatingActionButton(
                 onClick = {
                     notaAEditar = null
                     mostrarDialogoEdicion = true
                 },
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-            ) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.notas_nueva_nota))
-            }
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                icon = { Icon(Icons.Default.Add, null) },
+                text = { Text(stringResource(R.string.notas_nueva_nota).uppercase()) }
+            )
         }
     ) { padding ->
         if (notas.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(R.string.notas_vacia),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+            EmptyNotasPlaceholder(padding)
         } else {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding),
                 contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(12.dp) // Más espacio entre notas
             ) {
                 itemsIndexed(notas) { index, nota ->
                     NotaItem(
@@ -97,15 +91,17 @@ fun NotasScreen(
                         onDelete = { notaAEliminar = nota }
                     )
 
+                    // Inserción de Ad Nativo con margen
                     if ((index + 1) % 3 == 0) {
+                        Spacer(modifier = Modifier.height(8.dp))
                         NativeAdNotasComponent()
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
             }
         }
     }
 
-    // DIÁLOGO: CREAR O EDITAR
     if (mostrarDialogoEdicion) {
         NotaEditDialog(
             nota = notaAEditar,
@@ -117,10 +113,11 @@ fun NotasScreen(
         )
     }
 
-    // DIÁLOGO: CONFIRMAR ELIMINACIÓN
+    // Alerta de eliminación consistente
     notaAEliminar?.let { nota ->
         AlertDialog(
             onDismissRequest = { notaAEliminar = null },
+            icon = { Icon(Icons.Default.Delete, null, tint = MaterialTheme.colorScheme.error) },
             title = { Text(stringResource(R.string.notas_eliminar_titulo)) },
             text = { Text(stringResource(R.string.notas_eliminar_pregunta)) },
             confirmButton = {
@@ -129,13 +126,14 @@ fun NotasScreen(
                         viewModel.eliminarNota(nota)
                         notaAEliminar = null
                     },
+                    modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) {
                     Text(stringResource(R.string.notas_aceptar))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { notaAEliminar = null }) {
+                TextButton(onClick = { notaAEliminar = null }, modifier = Modifier.fillMaxWidth()) {
                     Text(stringResource(R.string.notas_cancelar))
                 }
             }
@@ -156,7 +154,9 @@ fun NotaItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
+            .clickable { onClick() },
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -167,7 +167,8 @@ fun NotaItem(
                     Text(
                         text = if (nota.titulo.isNotBlank()) nota.titulo else stringResource(R.string.notas_sin_titulo),
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = MaterialTheme.colorScheme.primary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -176,43 +177,29 @@ fun NotaItem(
                         Text(
                             text = nota.contenido,
                             style = MaterialTheme.typography.bodyMedium,
-                            maxLines = 4,
+                            maxLines = 3,
                             overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.padding(top = 4.dp)
+                            modifier = Modifier.padding(top = 4.dp),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
 
-                Row {
-                    IconButton(
-                        onClick = {
-                            val fullText = "${if (nota.titulo.isNotBlank()) "${nota.titulo}\n" else ""}${nota.contenido}$promoFooter"
-                            val intent = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
-                                type = "text/plain"
-                                putExtra(android.content.Intent.EXTRA_TEXT, fullText)
-                            }
-                            context.startActivity(android.content.Intent.createChooser(intent, compartirTitulo))
-                        },
-                        modifier = Modifier.size(32.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Share,
-                            contentDescription = stringResource(R.string.notas_compartir_desc),
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(20.dp)
-                        )
+                // Acciones rápidas
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(onClick = {
+                        val fullText = "${if (nota.titulo.isNotBlank()) "${nota.titulo}\n" else ""}${nota.contenido}$promoFooter"
+                        val intent = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(android.content.Intent.EXTRA_TEXT, fullText)
+                        }
+                        context.startActivity(android.content.Intent.createChooser(intent, compartirTitulo))
+                    }) {
+                        Icon(Icons.Default.Share, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
                     }
 
-                    IconButton(
-                        onClick = onDelete,
-                        modifier = Modifier.size(32.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = stringResource(R.string.notas_eliminar_desc),
-                            tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f),
-                            modifier = Modifier.size(20.dp)
-                        )
+                    IconButton(onClick = onDelete) {
+                        Icon(Icons.Default.Delete, null, tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f), modifier = Modifier.size(20.dp))
                     }
                 }
             }
@@ -220,10 +207,8 @@ fun NotaItem(
             Text(
                 text = formatTimestamp(nota.timestamp),
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                 textAlign = TextAlign.End
             )
         }
@@ -242,7 +227,10 @@ fun NotaEditDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text(text = if (nota == null) stringResource(R.string.notas_nueva_nota) else stringResource(R.string.notas_editar))
+            Text(
+                text = if (nota == null) stringResource(R.string.notas_nueva_nota) else stringResource(R.string.notas_editar),
+                style = MaterialTheme.typography.titleLarge
+            )
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -251,34 +239,61 @@ fun NotaEditDialog(
                     onValueChange = { titulo = it },
                     label = { Text(stringResource(R.string.notas_hint_titulo)) },
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
+                    shape = MaterialTheme.shapes.medium
                 )
                 OutlinedTextField(
                     value = contenido,
                     onValueChange = { contenido = it },
                     label = { Text(stringResource(R.string.notas_hint_contenido)) },
                     modifier = Modifier.fillMaxWidth(),
-                    minLines = 3
+                    minLines = 5,
+                    shape = MaterialTheme.shapes.medium
                 )
             }
         },
         confirmButton = {
             Button(
                 onClick = { onSave(titulo, contenido) },
-                enabled = contenido.isNotBlank()
+                enabled = contenido.isNotBlank(),
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.large
             ) {
-                Text(stringResource(R.string.notas_aceptar))
+                Icon(Icons.Default.CheckCircle, null)
+                Spacer(Modifier.width(8.dp))
+                Text(stringResource(R.string.notas_aceptar).uppercase())
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            TextButton(onClick = onDismiss, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.notas_cancelar))
             }
         }
     )
 }
 
-// FUNCIONES DE UTILIDAD (AL FINAL PARA MEJOR SCOPE)
+@Composable
+fun EmptyNotasPlaceholder(padding: PaddingValues) {
+    Box(
+        modifier = Modifier.fillMaxSize().padding(padding),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Icon(
+                Icons.Default.Search,
+                contentDescription = null,
+                modifier = Modifier.size(64.dp),
+                tint = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+            )
+            Text(
+                text = stringResource(R.string.notas_vacia),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+            )
+        }
+    }
+}
+
 fun formatTimestamp(timestamp: Long): String {
     val sdf = SimpleDateFormat("dd/MM HH:mm", Locale.getDefault())
     return sdf.format(Date(timestamp))

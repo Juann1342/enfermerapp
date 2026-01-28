@@ -93,4 +93,8 @@ class DosisViewModel : ViewModel() {
     }
 
     fun hideResultDialog() = _uiState.update { it.copy(showResultDialog = false) }
+
+    fun limpiarDatos() {
+        _uiState.update { DosisUiState(calcType = it.calcType) }
+    }
 }

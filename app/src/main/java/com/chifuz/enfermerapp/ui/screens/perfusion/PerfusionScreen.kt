@@ -3,15 +3,15 @@ package com.chifuz.enfermerapp.ui.screens.perfusion
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,9 +21,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController // <--- NUEVO
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -34,14 +36,14 @@ import com.chifuz.enfermerapp.ui.screens.dosis.CalculoTextField
 import com.chifuz.enfermerapp.ui.navigation.Screen
 import com.chifuz.enfermerapp.ads.AdLocation
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel = viewModel()) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
-    val activity = remember(context) { context.findActivity() } //
-    val keyboardController = LocalSoftwareKeyboardController.current // <--- NUEVO
+    val activity = remember(context) { context.findActivity() }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
-    // Comprobamos si todos los campos tienen un valor válido para habilitar el botón
     val isValidInput = uiState.volumen.toDoubleOrNull() != null &&
             uiState.tiempo.toDoubleOrNull() != null &&
             !uiState.volumenError && !uiState.tiempoError
@@ -59,37 +61,55 @@ fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel 
     ) {
         Text(
             text = stringResource(R.string.perfusion_velocidad_goteo),
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(bottom = 24.dp)
+            modifier = Modifier.padding(bottom = 24.dp),
+            textAlign = TextAlign.Center
         )
 
-        // --- 1. Selección de Gotero (Toggle Buttons) ---
-        Text(
-            text = stringResource(R.string.perfusion_label_gotero),
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier
-                .align(Alignment.Start)
-                .padding(bottom = 8.dp)
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        // --- 1. Selección de Gotero (Segmented Buttons) ---
+
+
+        SingleChoiceSegmentedButtonRow(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)
         ) {
-            GoteroToggleButton(
-                text = stringResource(R.string.perfusion_micro),
-                isSelected = uiState.selectedGotero == GoteroType.MICRO,
+            SegmentedButton(
+                selected = uiState.selectedGotero == GoteroType.MICRO,
                 onClick = { viewModel.selectGotero(GoteroType.MICRO) },
-                modifier = Modifier.weight(1f)
-            )
-            GoteroToggleButton(
-                text = stringResource(R.string.perfusion_macro),
-                isSelected = uiState.selectedGotero == GoteroType.MACRO,
+                shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+                colors = SegmentedButtonDefaults.colors(
+                    activeContainerColor = MaterialTheme.colorScheme.primary,
+                    activeContentColor = MaterialTheme.colorScheme.onPrimary,
+                    inactiveContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                ),
+                modifier = Modifier.weight(1f),
+            ) {
+                Text(stringResource(R.string.perfusion_micro),
+                    style = MaterialTheme.typography.labelSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis)
+            }
+            SegmentedButton(
+                selected = uiState.selectedGotero == GoteroType.MACRO,
                 onClick = { viewModel.selectGotero(GoteroType.MACRO) },
-                modifier = Modifier.weight(1f)
-            )
+                shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+                colors = SegmentedButtonDefaults.colors(
+                    activeContainerColor = MaterialTheme.colorScheme.primary,
+                    activeContentColor = MaterialTheme.colorScheme.onPrimary,
+                    inactiveContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+
+                ),
+                modifier = Modifier.weight(1f),
+            ) {
+                Text(
+                    text = stringResource(R.string.perfusion_macro),
+                    style = MaterialTheme.typography.labelSmall, // Fuente más pequeña para seguridad
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
 
         // --- 2. Volumen (ml) ---
@@ -99,211 +119,136 @@ fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel 
             label = stringResource(R.string.perfusion_label_volumen_perfundir),
             unit = "ml",
             isError = uiState.volumenError,
-            modifier = Modifier.padding(bottom = 24.dp)
+            modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        // --- 3. Tiempo (Input y Toggle Buttons para Unidad) ---
-        Text(
-            text = stringResource(R.string.perfusion_label_tiempo_perfusion),
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier
-                .align(Alignment.Start)
-                .padding(bottom = 8.dp)
+
+        CalculoTextField(
+            value = uiState.tiempo,
+            onValueChange = viewModel::updateTiempo,
+            label = stringResource(R.string.perfusion_tiempo),
+            unit = if (uiState.selectedTimeUnit == TimeUnit.HOURS) "hrs" else "min",
+            isError = uiState.tiempoError,
+            modifier = Modifier.padding(bottom = 12.dp)
         )
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.5f), RoundedCornerShape(12.dp))
-                .padding(4.dp),
-            verticalAlignment = Alignment.CenterVertically
+        SingleChoiceSegmentedButtonRow(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)
         ) {
-            // Input de Tiempo
-            CalculoTextField(
-                value = uiState.tiempo,
-                onValueChange = viewModel::updateTiempo,
-                label = stringResource(R.string.perfusion_tiempo),
-                unit = if (uiState.selectedTimeUnit == TimeUnit.HOURS) "hrs" else "min",
-                isError = uiState.tiempoError,
-                modifier = Modifier.weight(0.6f)
-            )
-
-            // Toggle Buttons de Unidad de Tiempo
-            Row(
-                modifier = Modifier
-                    .weight(0.4f)
-                    .padding(start = 8.dp),
-                horizontalArrangement = Arrangement.End
+            SegmentedButton(
+                selected = uiState.selectedTimeUnit == TimeUnit.HOURS,
+                onClick = { viewModel.selectTimeUnit(TimeUnit.HOURS) },
+                shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+                colors = SegmentedButtonDefaults.colors(
+                    activeContainerColor = MaterialTheme.colorScheme.primary,
+                    activeContentColor = MaterialTheme.colorScheme.onPrimary,
+                    inactiveContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             ) {
-                TimeUnitToggleButton(
-                    text = stringResource(R.string.perfusion_hours),
-                    isSelected = uiState.selectedTimeUnit == TimeUnit.HOURS,
-                    onClick = { viewModel.selectTimeUnit(TimeUnit.HOURS) }
+                Text(stringResource(R.string.perfusion_hours))
+            }
+            SegmentedButton(
+                selected = uiState.selectedTimeUnit == TimeUnit.MINUTES,
+                onClick = { viewModel.selectTimeUnit(TimeUnit.MINUTES) },
+                shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+                colors = SegmentedButtonDefaults.colors(
+                    activeContainerColor = MaterialTheme.colorScheme.primary,
+                    activeContentColor = MaterialTheme.colorScheme.onPrimary,
+                    inactiveContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                Spacer(modifier = Modifier.width(4.dp))
-                TimeUnitToggleButton(
-                    text = stringResource(R.string.perfusion_minutes),
-                    isSelected = uiState.selectedTimeUnit == TimeUnit.MINUTES,
-                    onClick = { viewModel.selectTimeUnit(TimeUnit.MINUTES) }
-                )
+            ) {
+                Text(stringResource(R.string.perfusion_minutes))
             }
         }
 
+        Spacer(modifier = Modifier.height(24.dp))
 
-        Spacer(modifier = Modifier.height(32.dp))
-
-        // Botón CALCULAR
         Button(
             onClick = {
-                keyboardController?.hide() // <--- OCULTAR TECLADO
+                keyboardController?.hide()
                 viewModel.calcularPerfusion()
             },
             enabled = isValidInput && !uiState.isCalculating,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
+            modifier = Modifier.fillMaxWidth().height(56.dp),
+            shape = MaterialTheme.shapes.large
         ) {
             if (uiState.isCalculating) {
-                CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(24.dp))
             } else {
-                Text(stringResource(R.string.dosis_btn_calcular))
+                Icon(Icons.Default.CheckCircle, contentDescription = null)
+                Spacer(Modifier.width(8.dp))
+                Text(stringResource(R.string.dosis_btn_calcular).uppercase())
             }
         }
     }
 
-    // --- NUEVO: Diálogo de Resultado de Perfusión ---
     if (uiState.showResultDialog && uiState.resultadoMlHr != null) {
         PerfusionResultDialog(
             resultadoMlHr = uiState.resultadoMlHr!!,
             resultadoMlMin = uiState.resultadoMlMin!!,
             resultadoGttsMin = uiState.resultadoGttsMin!!,
-            resultadoGttsMinInt = uiState.resultadoGttsMinInt, // <--- PASAMOS EL INT
+            resultadoGttsMinInt = uiState.resultadoGttsMinInt,
             onDismiss = {
-                // 1. Ocultamos el diálogo primero
                 viewModel.hideResultDialog()
-
-                // 2. Ejecutamos el anuncio
-                activity?.let { act ->
-                    AdsManager.showInterstitial(activity, AdLocation.PERFUSION) {
-                        android.util.Log.d("ADS", "Intersticial de Perfusión cerrado")
+                activity?.let {
+                    AdsManager.showInterstitial(it, AdLocation.PERFUSION) {
+                        Log.d("ADS", "Intersticial de Perfusión cerrado")
                     }
                 }
             },
             onSync = {
                 viewModel.hideResultDialog()
-
-                val gttsMin = uiState.resultadoGttsMinInt  // <-- el que sí está actualizado
-
-                val route = "${Screen.Sync.route}/$gttsMin"
-
+                val route = "${Screen.Sync.route}/${uiState.resultadoGttsMinInt}"
                 navController.navigate(route) {
                     popUpTo(navController.graph.findStartDestination().id)
                     launchSingleTop = true
                 }
-
             }
-
         )
     }
 }
 
-private tailrec fun Context.findActivity(): Activity? = when (this) {
-    is Activity -> this
-    is ContextWrapper -> baseContext.findActivity()
-    else -> null
-}
-
-// Composable para los botones de selección de gotero
-@Composable
-fun GoteroToggleButton(
-    text: String,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val colors = if (isSelected) {
-        ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
-        )
-    } else {
-        ButtonDefaults.outlinedButtonColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface
-        )
-    }
-
-    OutlinedButton(
-        onClick = onClick,
-        colors = colors,
-        border = if (!isSelected) BorderStroke(1.dp, MaterialTheme.colorScheme.outline) else null,
-        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 12.dp),
-        modifier = modifier.height(IntrinsicSize.Min)
-    ) {
-        Text(text, style = MaterialTheme.typography.bodySmall)
-    }
-}
-
-// Composable para los botones de selección de unidad de tiempo
-@Composable
-fun TimeUnitToggleButton(
-    text: String,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-) {
-    val containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface
-    val contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
-
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = containerColor,
-            contentColor = contentColor
-        ),
-        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
-        modifier = Modifier.width(IntrinsicSize.Max)
-    ) {
-        Text(text, style = MaterialTheme.typography.labelLarge)
-    }
-}
-
-// NUEVO: Diálogo de Resultado de Perfusión
 @Composable
 fun PerfusionResultDialog(
     resultadoMlHr: String,
     resultadoMlMin: String,
     resultadoGttsMin: String,
-    resultadoGttsMinInt: Int, // <--- RECIBE EL INT SEGURO
+    resultadoGttsMinInt: Int,
     onDismiss: () -> Unit,
-    onSync: (Int) -> Unit // Función para navegar a la sincronización
+    onSync: (Int) -> Unit
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
         icon = {
             Icon(
                 imageVector = Icons.Default.Info,
-                contentDescription = stringResource(R.string.perfusion_resultado_perfusion),
+                contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(40.dp)
             )
         },
-        title = { Text(stringResource(R.string.perfusion_resultados_perfusion), style = MaterialTheme.typography.titleLarge) },
+        title = { Text(stringResource(R.string.perfusion_resultados_perfusion), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()) },
         text = {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                // Bloque 1: Velocidad principal
+            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = stringResource(R.string.perfusion_goteo_objetivo),
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                    style = MaterialTheme.typography.titleMedium
                 )
+                Spacer(Modifier.height(8.dp))
                 Text(
                     text = stringResource(R.string.perfusion_gtts_unit, resultadoGttsMin),
-                    style = MaterialTheme.typography.displayMedium,
+                    style = MaterialTheme.typography.displaySmall,
                     color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(bottom = 12.dp)
+                    maxLines = 1,
+                    softWrap = false,
+                    overflow = TextOverflow.Visible
                 )
 
-                // Bloque 2: Detalles de volumen
-                Divider(Modifier.padding(vertical = 8.dp).fillMaxWidth())
+                Spacer(modifier = Modifier.height(16.dp))
+                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+
                 ResultRow(
                     label = stringResource(R.string.perfusion_label_velocidad),
                     value = stringResource(R.string.perfusion_value_ml_hr, resultadoMlHr),
@@ -314,26 +259,24 @@ fun PerfusionResultDialog(
                     value = stringResource(R.string.perfusion_value_ml_min, resultadoMlMin),
                     unitColor = MaterialTheme.colorScheme.primary
                 )
-                Spacer(modifier = Modifier.height(8.dp))
             }
         },
-        // Botones de acción
         confirmButton = {
-            Button(onClick = onDismiss) {
-                Text( stringResource(R.string.aceptar))
+            Button(onClick = onDismiss, modifier = Modifier.fillMaxWidth()) {
+                Text(stringResource(R.string.aceptar))
             }
         },
         dismissButton = {
-            // Usamos el Int seguro del ViewModel
             if (resultadoGttsMinInt > 0) {
                 OutlinedButton(
-                    onClick = { onSync(resultadoGttsMinInt) }, // <--- USAMOS EL INT SEGURO
+                    onClick = { onSync(resultadoGttsMinInt) },
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary),
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.secondary)
                 ) {
-                    Icon(Icons.Default.PlayArrow, contentDescription = stringResource(R.string.perfusion_btn_sync))
-                    Spacer(Modifier.width(4.dp))
-                    Text( stringResource(R.string.perfusion_btn_sync))
+                    Icon(Icons.Default.PlayArrow, contentDescription = null)
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(R.string.perfusion_btn_sync))
                 }
             }
         }
@@ -343,10 +286,16 @@ fun PerfusionResultDialog(
 @Composable
 fun ResultRow(label: String, value: String, unitColor: androidx.compose.ui.graphics.Color) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(label, style = MaterialTheme.typography.bodyLarge)
         Text(value, style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold), color = unitColor)
     }
+}
+
+private tailrec fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }

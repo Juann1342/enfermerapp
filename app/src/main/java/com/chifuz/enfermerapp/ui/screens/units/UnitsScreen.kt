@@ -5,12 +5,13 @@ import android.content.Context
 import android.content.ContextWrapper
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.*
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,19 +48,29 @@ fun UnitsScreen(
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
+        // Título unificado
         Text(
             text = stringResource(R.string.units_title),
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(top = 24.dp, bottom =  24.dp)
+            modifier = Modifier.padding(top = 24.dp, bottom = 16.dp),
+            textAlign = TextAlign.Center
         )
-        // 1. Selector de Categoría
+
+        // Categorías con TabRow refinado
         ScrollableTabRow(
             selectedTabIndex = uiState.category.ordinal,
-            edgePadding = 8.dp,
+            edgePadding = 0.dp,
             containerColor = Color.Transparent,
-            divider = {}
+            divider = {},
+            indicator = { tabPositions ->
+                if (uiState.category.ordinal < tabPositions.size) {
+                    TabRowDefaults.SecondaryIndicator(
+                        Modifier.tabIndicatorOffset(tabPositions[uiState.category.ordinal]),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
         ) {
             UnitCategory.entries.forEach { cat ->
                 Tab(
@@ -72,7 +83,11 @@ fun UnitsScreen(
                                 UnitCategory.VOLUMEN -> stringResource(R.string.units_cat_volumen)
                                 UnitCategory.INFUSION -> stringResource(R.string.units_cat_infusion)
                                 UnitCategory.TEMPERATURA -> stringResource(R.string.units_cat_temp)
-                            }
+                            },
+                            style = if (uiState.category == cat)
+                                MaterialTheme.typography.labelLarge
+                            else
+                                MaterialTheme.typography.labelMedium
                         )
                     }
                 )
@@ -81,7 +96,7 @@ fun UnitsScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 2. Input Principal
+        // Input Principal con el estilo unificado
         OutlinedTextField(
             value = uiState.inputValue,
             onValueChange = { viewModel.onInputChanged(it) },
@@ -89,53 +104,45 @@ fun UnitsScreen(
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             singleLine = true,
-            isError = uiState.error
+            isError = uiState.error,
+            shape = MaterialTheme.shapes.medium
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-        // 3. Selectores
+        // Selectores de unidades
         UnitSelectors(uiState, viewModel)
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // 4. Botón Convertir
+        // Botón Convertir con Icono y Uppercase
         Button(
             onClick = { viewModel.convert() },
             modifier = Modifier.fillMaxWidth().height(56.dp),
-            shape = RoundedCornerShape(12.dp)
+            shape = MaterialTheme.shapes.large
         ) {
-            Text(stringResource(R.string.units_btn_convertir), style = MaterialTheme.typography.titleMedium)
+            Icon(Icons.Default.CheckCircle, contentDescription = null)
+            Spacer(Modifier.width(8.dp))
+            Text(stringResource(R.string.units_btn_convertir).uppercase())
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // NUEVO: Native Ad con margen
+        // Native Ad con su espacio respetado
         NativeAdUnitsComponent()
 
-        Spacer(modifier = Modifier.weight(1f))
-
-        // 5. Espacio para el anuncio nativo al final
-        Spacer(modifier = Modifier.weight(1f))
-
-        // Aquí llamarás a SmallNativeAd() en el futuro
         Spacer(modifier = Modifier.height(16.dp))
     }
 
-    // DIÁLOGO DE RESULTADO
     if (uiState.showResultDialog) {
         UnitsResultDialog(
             result = uiState.result,
             unit = uiState.toUnit,
             onDismiss = {
                 viewModel.hideResultDialog()
-
                 activity?.let { act ->
-                    AdsManager.showInterstitial(act, AdLocation.UNITS) {
-                        // Flujo después del anuncio
-                    }
+                    AdsManager.showInterstitial(act, AdLocation.UNITS) {}
                 }
-
             }
         )
     }
@@ -153,23 +160,28 @@ fun UnitsResultDialog(result: String, unit: String, onDismiss: () -> Unit) {
         title = {
             Text(
                 text = stringResource(R.string.units_result_hint),
-                style = MaterialTheme.typography.headlineSmall,
+                style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
         },
         text = {
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(
                     text = "$result $unit",
-                    style = MaterialTheme.typography.displaySmall,
-                    color = MaterialTheme.colorScheme.primary
+                    style = MaterialTheme.typography.displayMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    textAlign = TextAlign.Center
                 )
             }
         }
     )
 }
 
+// ... UnitSelectors y UnitDropDown se mantienen con su lógica pero usando MaterialTheme.shapes.medium
 @Composable
 fun UnitSelectors(uiState: UnitsUiState, viewModel: UnitsViewModel) {
     val options = when (uiState.category) {
