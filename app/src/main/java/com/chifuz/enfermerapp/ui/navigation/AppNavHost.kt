@@ -302,16 +302,75 @@ fun CustomIcon(@DrawableRes id: Int, contentDescription: String?) {
 
 @Composable
 fun DisclaimerDialog(onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        confirmButton = { Button(onClick = onDismiss) { Text(stringResource(R.string.entendido)) } },
-        icon = { Icon(imageVector = Icons.Default.Info, contentDescription = null, tint = MaterialTheme.colorScheme.secondary) },
-        title = { Text(stringResource(R.string.disclaimer_title), style = MaterialTheme.typography.titleLarge) },
-        text = {
-            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                Text(text = stringResource(R.string.disclaimer_intro), style = MaterialTheme.typography.bodyMedium)
-                // Aquí irían el resto de secciones del disclaimer...
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            confirmButton = {
+                Button(onClick = onDismiss) {
+                    Text(stringResource(R.string.entendido))
+                }
+            },
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Info,
+                    contentDescription = stringResource(R.string.informacion),
+                    tint = MaterialTheme.colorScheme.secondary
+                )
+            },
+            title = { Text(stringResource(R.string.disclaimer_title), style = MaterialTheme.typography.titleLarge) },
+            text = {
+                Column(
+                    modifier = Modifier.verticalScroll(rememberScrollState())
+                ) {
+                    Text(
+                        text = stringResource(R.string.disclaimer_intro),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    // 1. Herramienta de Soporte
+                    Text(
+                        text = stringResource(R.string.disclaimer_sec1_title),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                    Text(
+                        text = stringResource(R.string.disclaimer_sec1_body),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    // 2. Validación de Cálculos
+                    Text(
+                        text = stringResource(R.string.disclaimer_sec2_title),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                    Text(
+                        text = stringResource(R.string.disclaimer_sec2_body),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    // 3. Descargo de Responsabilidad Legal
+                    Text(
+                        text = stringResource(R.string.disclaimer_sec3_title),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                    Text(
+                        text = stringResource(R.string.disclaimer_sec3_body),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    // 4. Integridad de los Datos y Fórmulas
+                    Text(
+                        text = stringResource(R.string.disclaimer_sec4_title),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                    Text(
+                        text = stringResource(R.string.disclaimer_sec4_body),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
             }
-        }
-    )
-}
+        )
+    }
+
