@@ -19,3 +19,24 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# --- REGLAS PARA ROOM (Tus Notas) ---
+-keepclassmembers class * extends androidx.room.RoomDatabase {
+    <init>(...);
+}
+-keep class * extends androidx.room.RoomDatabase
+-keep class com.chifuz.enfermerapp.data.model.** { *; }
+-keep interface com.chifuz.enfermerapp.data.dao.** { *; }
+
+# --- REGLAS PARA ADMOB ---
+-keep public class com.google.android.gms.ads.** { *; }
+-keep public class com.google.ads.** { *; }
+
+# --- REGLAS PARA TUS IDS (BuildConfig) ---
+# Esto evita que R8 borre las constantes que leés de local.properties
+-keep class com.chifuz.enfermerapp.BuildConfig { *; }
+
+# --- REGLAS PARA VIEWMODELS Y COMPOSE ---
+-keepclassmembers class * extends androidx.lifecycle.ViewModel {
+    <init>(...);
+}

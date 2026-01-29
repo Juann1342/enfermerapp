@@ -31,8 +31,8 @@ android {
         applicationId = "com.chifuz.enfermerapp"
         minSdk = 26
         targetSdk = 36
-        versionCode = 19
-        versionName = "1.9"
+        versionCode = 2
+        versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -75,6 +75,25 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true // Asegúrate de que esto esté en true
+    }
+
+    buildTypes {
+        getByName("release") {
+            // 1. Activa la eliminación de código no usado (Minificación)
+            isMinifyEnabled = true
+
+            // 2. Activa la eliminación de recursos (imágenes/xml) no usados
+            isShrinkResources = true
+
+            // 3. Aplica las reglas de protección que definiremos abajo
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+
+            // Aquí irá tu firma digital cuando la generes
+            // signingConfig = signingConfigs.getByName("release")
+        }
     }
 }
 
