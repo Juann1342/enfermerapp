@@ -88,8 +88,16 @@ class UnitsViewModel : ViewModel() {
         }
 
         _uiState.update {
+            val formattedResult = when {
+                res == 0.0 -> "0"
+                res >= 100 -> String.format("%.2f", res) // 125.50
+                res >= 1 -> if (res % 1 == 0.0) res.toInt().toString() else String.format("%.2f", res)
+                res >= 0.01 -> String.format("%.2f", res) // 0.05
+                else -> String.format("%.4f", res).trimEnd('0').trimEnd('.') // 0.0005 sin ceros basura al final
+            }
+
             it.copy(
-                result = if (res % 1 == 0.0) res.toInt().toString() else String.format("%.2f", res),
+                result = formattedResult,
                 showResultDialog = true
             )
         }

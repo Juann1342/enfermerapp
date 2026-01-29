@@ -190,8 +190,13 @@ fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
             onDismissRequest = { showDatePicker = false },
             confirmButton = {
                 TextButton(onClick = {
-                    datePickerState.selectedDateMillis?.let {
-                        viewModel.onFechaSeleccionada(Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate())
+                    datePickerState.selectedDateMillis?.let { milisegundos ->
+                        // LA CORRECCIÓN: Cambiamos systemDefault() por UTC
+                        val fechaCorregida = Instant.ofEpochMilli(milisegundos)
+                            .atZone(ZoneId.of("UTC"))
+                            .toLocalDate()
+
+                        viewModel.onFechaSeleccionada(fechaCorregida)
                     }
                     showDatePicker = false
                 }) { Text(stringResource(R.string.aceptar)) }

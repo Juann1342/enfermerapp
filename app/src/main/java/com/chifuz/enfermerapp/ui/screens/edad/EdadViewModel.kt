@@ -30,19 +30,31 @@ class EdadViewModel : ViewModel() {
 
     fun onSemanasCriterioTerminoSelected(semanas: Int) {
         _uiState.update { it.copy(semanasCriterioTermino = semanas) }
-        // Solo disparamos el diálogo si ya era calculable (tenía semanas de gestación)
-        if (_uiState.value.esCalculable) {
-            calcularYMostrar(debeMostrarDialog = true)
-        } else {
-            validarYPrepararCalculo()
-        }
-    }
 
-    fun onFechaSeleccionada(fecha: LocalDate) {
-        _uiState.update { it.copy(fechaNacimiento = fecha) }
+        // CORRECCIÓN: Quitamos el "calcularYMostrar(true)" que disparaba el diálogo.
+        // Simplemente validamos; si es calculable, actualizará el resultado en el fondo
+        // sin interrumpir al usuario con el diálogo emergente.
         validarYPrepararCalculo()
     }
 
+    fun onFechaSeleccionada(fecha: LocalDate) {
+        val hoy = LocalDate.now()
+        // Calculamos si tiene 24 meses o más
+        val meses = java.time.temporal.ChronoUnit.MONTHS.between(fecha, hoy)
+        val esMayorDeDosAnios = meses >= 24
+
+        _uiState.update {
+            it.copy(
+                fechaNacimiento = fecha,
+                // LIMPIEZA: Si tiene más de 2 años, reseteamos datos de prematurez
+                esPrematuro = if (esMayorDeDosAnios) false else it.esPrematuro,
+                semanasGestacion = if (esMayorDeDosAnios) "" else it.semanasGestacion,
+                resultadoCorregido = if (esMayorDeDosAnios) null else it.resultadoCorregido,
+                mostrarCorregida = if (esMayorDeDosAnios) false else it.mostrarCorregida
+            )
+        }
+        validarYPrepararCalculo()
+    }
     fun onEsPrematuroChanged(esPrematuro: Boolean) {
         _uiState.update { it.copy(esPrematuro = esPrematuro, mostrarCorregida = esPrematuro) }
         validarYPrepararCalculo()

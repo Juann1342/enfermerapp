@@ -25,13 +25,13 @@ object AdsManager {
     private var mInterstitialAdDosisPeso: InterstitialAd? = null
 
     private var isRewardedLoading = false
-
     private const val TAG = "AdsManager"
 
-    // --- CONFIGURACIÓN DE TIEMPOS (Refinado a 4 Horas) ---
-    private const val MAX_ADS_PER_PERIOD = 5
-    private const val COOLDOWN_MILLIS = 2 * 60 * 1000L // 2 minutos entre anuncios
-    private const val FOUR_HOURS_MILLIS = 4 * 60 * 60 * 1000L // Ventana de 4 horas
+    // --- NUEVA CONFIGURACIÓN DE TIEMPOS SEPARADA ---
+    private const val MAX_INTERSTITIALS_PER_HOUR = 5
+    private const val COOLDOWN_MILLIS = 2 * 60 * 1000L      // 2 minutos entre anuncios
+    private const val ONE_HOUR_MILLIS = 60 * 60 * 1000L    // Ventana de 1 hora para el límite de 5
+    private const val FOUR_HOURS_MILLIS = 4 * 60 * 60 * 1000L // Duración del Modo Concentración
 
     private val adTimestamps = mutableListOf<Long>()
     private var lastAdShownTime: Long = 0
@@ -46,20 +46,13 @@ object AdsManager {
         return System.currentTimeMillis() < adFreeUntil
     }
 
-    /**
-     * Calcula cuántas horas completas quedan de modo concentración.
-     */
     fun getRemainingHours(context: Context): Int {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val adFreeUntil = prefs.getLong(KEY_AD_FREE_UNTIL, 0L)
         val diff = adFreeUntil - System.currentTimeMillis()
-        // Usamos 60 minutos reales para el cálculo de "horas"
         return if (diff > 0) (diff / (1000 * 60 * 60)).toInt() else 0
     }
 
-    /**
-     * Activa el periodo libre de anuncios por 4 horas.
-     */
     private fun setAdFreePeriod(context: Context) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val newTime = System.currentTimeMillis() + FOUR_HOURS_MILLIS
@@ -79,13 +72,13 @@ object AdsManager {
         val minutes = totalMinutes % 60
 
         return if (hours > 0) {
-            context.getString(R.string.tiempo_formato_horas_minutos, hours, minutes)
+            context.getString(R.string.tiempo_formato_horas_minutos, hours.toInt(), minutes.toInt())
         } else {
-            context.getString(R.string.tiempo_formato_minutos, minutes)
+            context.getString(R.string.tiempo_formato_minutos, minutes.toInt())
         }
     }
 
-    // ... (loadRewarded y showRewarded se mantienen igual, llamando a setAdFreePeriod)
+    // --- REWARDED LOGIC ---
     fun loadRewarded(context: Context) {
         val adRequest = AdRequest.Builder().build()
         RewardedAd.load(context, BuildConfig.ADMOB_REWARDED_ID, adRequest, object : RewardedAdLoadCallback() {
@@ -101,7 +94,6 @@ object AdsManager {
         }
 
         if (mRewardedAd != null) {
-            // Si ya existe, lo mostramos directo
             mRewardedAd?.show(activity) {
                 setAdFreePeriod(activity)
                 onRewardEarned()
@@ -109,15 +101,13 @@ object AdsManager {
                 loadRewarded(activity)
             }
         } else {
-            // Si no existe, avisamos que vamos a intentar cargar
             if (!isRewardedLoading) {
-                onAdAvailable(false) // Indica a la UI que empiece a cargar (el loader)
+                onAdAvailable(false)
                 loadRewardedWithCallback(activity) { success ->
                     if (success) {
                         showRewarded(activity, onAdAvailable, onRewardEarned)
                     } else {
-                        // Si después de cargar sigue nulo (timeout o error)
-                        onAdAvailable(true) // Avisamos para ocultar loader y mostrar error
+                        onAdAvailable(true)
                     }
                 }
             }
@@ -127,8 +117,6 @@ object AdsManager {
     private fun loadRewardedWithCallback(context: Context, onResult: (Boolean) -> Unit) {
         isRewardedLoading = true
         val adRequest = AdRequest.Builder().build()
-
-        // Timeout de seguridad: si en 8 segundos no cargó, cancelamos
         val handler = android.os.Handler(android.os.Looper.getMainLooper())
         val timeoutRunnable = Runnable {
             if (isRewardedLoading) {
@@ -154,8 +142,7 @@ object AdsManager {
         })
     }
 
-    // --- LÓGICA DE INTERSTITIALS ---
-
+    // --- INTERSTITIAL LOGIC ---
     private fun getAdUnitId(location: AdLocation): String = when (location) {
         AdLocation.DOSIS -> BuildConfig.ADMOB_INTERSTITIAL_ID_DOSIS
         AdLocation.EDAD -> BuildConfig.ADMOB_INTERSTITIAL_ID_EDAD
@@ -193,19 +180,26 @@ object AdsManager {
     }
 
     private fun canShowAd(context: Context): Boolean {
-        if (isPremiumActive(context)) return false
-
-        val now = System.currentTimeMillis()
-        // Limpiamos timestamps fuera de la ventana de 4 horas
-        adTimestamps.removeAll { now - it > FOUR_HOURS_MILLIS }
-
-        if (adTimestamps.size >= MAX_ADS_PER_PERIOD) {
-            Log.d(TAG, "Límite de anuncios ($MAX_ADS_PER_PERIOD) en 4 horas alcanzado")
+        // ESCENARIO 3: Si está el modo concentración (4 horas), no mostramos NADA.
+        if (isPremiumActive(context)) {
+            Log.d(TAG, "Modo concentración activo: No se muestra Interstitial.")
             return false
         }
 
+        val now = System.currentTimeMillis()
+
+        // ESCENARIO 2: Máximo 5 por HORA.
+        // Limpiamos los registros que tengan más de 1 hora (no 4).
+        adTimestamps.removeAll { now - it > ONE_HOUR_MILLIS }
+
+        if (adTimestamps.size >= MAX_INTERSTITIALS_PER_HOUR) {
+            Log.d(TAG, "Límite de 5 anuncios por hora alcanzado.")
+            return false
+        }
+
+        // ESCENARIO 1: Uno cada 2 minutos (Cooldown).
         if (now - lastAdShownTime < COOLDOWN_MILLIS) {
-            Log.d(TAG, "Periodo de enfriamiento activo")
+            Log.d(TAG, "Periodo de enfriamiento de 2 min activo.")
             return false
         }
 
