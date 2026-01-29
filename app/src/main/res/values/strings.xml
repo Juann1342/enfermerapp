@@ -187,6 +187,8 @@
     <string name="concentracion_btn_cargando">Loading\u2026</string>
     <string name="concentracion_toast_error">No ads available right now. Please try again later.</string>
 
+    <string name="concentracion_toast_fail">No ads available</string>
+
 
 </resources>
 

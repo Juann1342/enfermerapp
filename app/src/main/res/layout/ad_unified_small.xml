@@ -9,7 +9,16 @@
         android:orientation="vertical"
         android:padding="8.dp"
         android:background="#F5F5F5">
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Anuncio"
+            android:textSize="10sp"
+            android:textColor="#FFFFFF"
+            android:background="#FFCC00"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:textStyle="bold" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

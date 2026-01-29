@@ -188,4 +188,6 @@
 
     <string name="concentracion_toast_error">Al momento non ci sono annunci disponibili. Riprova pi\u00f9 tardi.</string>
 
+    <string name="concentracion_toast_fail">Nessun annuncio disponibile</string>
+
 </resources>

@@ -199,4 +199,6 @@
     <string name="concentracion_buscando_ad">Buscando anuncio disponible\u2026</string>
     <string name="concentracion_btn_cargando">Cargando\u2026</string>
     <string name="concentracion_toast_error">No hay anuncios disponibles en este momento. Intente luego.</string>
+
+    <string name="concentracion_toast_fail">No hay anuncios disponibles</string>
 </resources>

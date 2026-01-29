@@ -39,8 +39,10 @@ fun NativeAdEdad(modifier: Modifier = Modifier) {
     // Carga del anuncio nativo
     DisposableEffect(Unit) {
         val adLoader = AdLoader.Builder(context, BuildConfig.ADMOB_NATIVE_ID_EDAD)
-            .forNativeAd { nativeAd ->
-                adStatus.value = nativeAd
+            .forNativeAd { ad ->
+                // Si ya había un anuncio (por una carga previa lenta), lo destruimos
+                adStatus.value?.destroy()
+                adStatus.value = ad
             }
             .withAdListener(object : AdListener() {
                 override fun onAdFailedToLoad(error: LoadAdError) {
@@ -52,7 +54,9 @@ fun NativeAdEdad(modifier: Modifier = Modifier) {
         adLoader.loadAd(AdRequest.Builder().build())
 
         onDispose {
+            // Al salir de la pantalla, destruimos el anuncio actual y limpiamos el estado
             adStatus.value?.destroy()
+            adStatus.value = null
         }
     }
 

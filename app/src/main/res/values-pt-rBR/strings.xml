@@ -186,4 +186,6 @@
     <string name="concentracion_buscando_ad">Buscando an\u00fancio dispon\u00edvel\u2026</string>
     <string name="concentracion_btn_cargando">Carregando\u2026</string>
     <string name="concentracion_toast_error">N\u00e3o h\u00e1 an\u00fancios dispon\u00edveis no momento. Tente mais tarde.</string>
+
+    <string name="concentracion_toast_fail">Nenhum an\u00fancio dispon\u00edvel</string>
 </resources>

@@ -3,6 +3,7 @@ package com.chifuz.enfermerapp.ui.navigation
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -146,18 +147,23 @@ fun AppNavHost() {
                                 onWatchVideo = {
                                     isLoadingAd = true
                                     activity?.let {
+                                        isLoadingAd = true // Iniciamos el loader antes de llamar al manager
                                         AdsManager.showRewarded(
                                             activity = it,
-                                            onAdAvailable = { isDone -> if (isDone) isLoadingAd = false },
+                                            onAdAvailable = { isDone ->
+                                                // isDone == true significa que el proceso terminó (ya sea por éxito o por timeout)
+                                                if (isDone) {
+                                                    isLoadingAd = false
+                                                    // Si el anuncio no se cargó (mRewardedAd sigue null en el manager)
+                                                    Toast.makeText(context, context.getString(R.string.concentracion_toast_fail), Toast.LENGTH_LONG).show()
+
+                                                }
+                                            },
                                             onRewardEarned = {
                                                 isLoadingAd = false
                                                 showConcentrationDialog = false
-                                                refreshTrigger++ // Refresca el color de la estrella
-                                                android.widget.Toast.makeText(
-                                                    context,
-                                                    context.getString(R.string.concentracion_toast_exito),
-                                                    android.widget.Toast.LENGTH_LONG
-                                                ).show()
+                                                refreshTrigger++
+                                                Toast.makeText(context, context.getString(R.string.concentracion_toast_exito), Toast.LENGTH_LONG).show()
                                             }
                                         )
                                     }

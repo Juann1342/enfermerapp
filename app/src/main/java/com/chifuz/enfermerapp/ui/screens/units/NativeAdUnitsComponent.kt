@@ -12,6 +12,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,18 +36,28 @@ fun NativeAdUnitsComponent() {
     val context = LocalContext.current
     var nativeAd by remember { mutableStateOf<NativeAd?>(null) }
 
-    val adLoader = remember {
-        AdLoader.Builder(context, BuildConfig.ADMOB_NATIVE_ID_UNITS)
-            .forNativeAd { ad -> nativeAd = ad }
+
+    DisposableEffect(Unit) {
+        val adLoader = AdLoader.Builder(context, BuildConfig.ADMOB_NATIVE_ID_UNITS) // O _NOTAS
+            .forNativeAd { ad ->
+                // 1. IMPORTANTE: Si ya había un anuncio cargándose, lo destruimos antes de poner el nuevo
+                nativeAd?.destroy()
+                nativeAd = ad
+            }
             .withAdListener(object : AdListener() {
                 override fun onAdFailedToLoad(error: LoadAdError) {
-                    Log.e("AdMob", "Native Units Ad failed: ${error.message}")
+                    Log.e("AdMob", "Error cargando anuncio: ${error.message}")
                 }
             }).build()
-    }
 
-    LaunchedEffect(Unit) {
         adLoader.loadAd(AdRequest.Builder().build())
+
+        onDispose {
+            Log.d("AdMob", "Limpiando recursos al salir")
+            // 2. IMPORTANTE: Destruimos el anuncio y ponemos la variable en null
+            nativeAd?.destroy()
+            nativeAd = null
+        }
     }
 
     nativeAd?.let { ad ->

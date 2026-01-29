@@ -1,6 +1,7 @@
 package com.chifuz.enfermerapp.ui.screens.notas
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.ImageView
@@ -12,6 +13,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +27,7 @@ import com.chifuz.enfermerapp.R
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdView
 
@@ -35,19 +38,31 @@ fun NativeAdNotasComponent() {
     var nativeAd by remember { mutableStateOf<NativeAd?>(null) }
 
     // El AdLoader usa el ID específico de Notas que inyectamos por Gradle
-    val adLoader = remember {
-        AdLoader.Builder(context, BuildConfig.ADMOB_NATIVE_ID_NOTAS)
-            .forNativeAd { ad -> nativeAd = ad }
+
+    DisposableEffect(Unit) {
+        val adLoader = AdLoader.Builder(context, BuildConfig.ADMOB_NATIVE_ID_NOTAS) // O _NOTAS
+            .forNativeAd { ad ->
+                // 1. IMPORTANTE: Si ya había un anuncio cargándose, lo destruimos antes de poner el nuevo
+                nativeAd?.destroy()
+                nativeAd = ad
+            }
             .withAdListener(object : AdListener() {
-                // Podríamos registrar errores aquí si fuera necesario
-            })
-            .build()
+                override fun onAdFailedToLoad(error: LoadAdError) {
+                    Log.e("AdMob", "Error cargando anuncio: ${error.message}")
+                }
+            }).build()
+
+        adLoader.loadAd(AdRequest.Builder().build())
+
+        onDispose {
+            Log.d("AdMob", "Limpiando recursos al salir")
+            // 2. IMPORTANTE: Destruimos el anuncio y ponemos la variable en null
+            nativeAd?.destroy()
+            nativeAd = null
+        }
     }
 
-    // Cargamos el anuncio solo una vez
-    remember {
-        adLoader.loadAd(AdRequest.Builder().build())
-    }
+
 
     nativeAd?.let { ad ->
         Card(
