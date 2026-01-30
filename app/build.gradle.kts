@@ -1,3 +1,4 @@
+import java.io.File
 import java.util.Properties
 import java.io.FileInputStream
 
@@ -31,7 +32,7 @@ android {
         applicationId = "com.chifuz.enfermerapp"
         minSdk = 26
         targetSdk = 36
-        versionCode = 2
+        versionCode = 20
         versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -77,22 +78,40 @@ android {
         buildConfig = true // Asegúrate de que esto esté en true
     }
 
+// 1. Configuramos la firma tomando los datos de local.properties
+    signingConfigs {
+        create("release") {
+            val path = localProperties.getProperty("KEY_PATH")
+            val sPass = localProperties.getProperty("KEY_PASSWORD")
+            val alias = localProperties.getProperty("ALIAS_NAME")
+            val kPass = localProperties.getProperty("ALIAS_PASSWORD")
+
+            if (path != null && sPass != null && alias != null && kPass != null) {
+                // Ahora que importamos File, esto funcionará perfecto
+                storeFile = File(path)
+                storePassword = sPass
+                keyAlias = alias
+                keyPassword = kPass
+            }
+        }
+    }
+
     buildTypes {
         getByName("release") {
-            // 1. Activa la eliminación de código no usado (Minificación)
+            // Activa la eliminación de código no usado (Minificación/R8)
             isMinifyEnabled = true
 
-            // 2. Activa la eliminación de recursos (imágenes/xml) no usados
+            // Activa la eliminación de recursos (imágenes/xml) no usados
             isShrinkResources = true
 
-            // 3. Aplica las reglas de protección que definiremos abajo
+            // --- VINCULAMOS LA FIRMA AQUÍ ---
+            // Esto permite que el botón "Run" funcione en modo release
+            signingConfig = signingConfigs.getByName("release")
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-
-            // Aquí irá tu firma digital cuando la generes
-            // signingConfig = signingConfigs.getByName("release")
         }
     }
 }
