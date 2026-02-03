@@ -32,8 +32,8 @@ android {
         applicationId = "com.chifuz.enfermerapp"
         minSdk = 26
         targetSdk = 36
-        versionCode = 20
-        versionName = "2.0"
+        versionCode = 21
+        versionName = "2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -96,6 +96,7 @@ android {
         }
     }
 
+
     buildTypes {
         getByName("release") {
             // Activa la eliminación de código no usado (Minificación/R8)
@@ -108,12 +109,17 @@ android {
             // Esto permite que el botón "Run" funcione en modo release
             signingConfig = signingConfigs.getByName("release")
 
+            ndk {
+                debugSymbolLevel = "SYMBOL_TABLE"
+            }
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
+
 }
 
 dependencies {

@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chifuz.enfermerapp.R
 import com.chifuz.enfermerapp.data.model.Nota
 import java.text.SimpleDateFormat
@@ -32,9 +33,8 @@ fun NotasScreen(
     viewModel: NotasViewModel,
     isConcentrationModeActive: Boolean
 ) {
-    val notas by viewModel.notas.collectAsState()
-    val searchQuery by viewModel.searchQuery.collectAsState()
-
+    val notas by viewModel.notas.collectAsStateWithLifecycle()
+    val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
     var notaAEditar by remember { mutableStateOf<Nota?>(null) }
     var notaAEliminar by remember { mutableStateOf<Nota?>(null) }
     var mostrarDialogoEdicion by remember { mutableStateOf(false) }
