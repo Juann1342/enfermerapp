@@ -270,5 +270,11 @@
     <string name="help_edad_prema_body">To correct the age, the missing weeks of gestation are subtracted from the chronological age.\n\n<b>Important:</b> If the baby has not yet reached the expected due date, the result will indicate the time remaining to reach that milestone.</string>
     <string name="help_edad_tip_header">Application Reference</string>
     <string name="help_edad_tip_body">Pediatric follow-up protocols typically apply corrected age adjustment until 2 years of age.</string>
+
+    <string name="menu_settings">Settings</string>
+    <string name="settings_dark_mode">Dark Mode</string>
+    <string name="settings_language">App Language</string>
+    <string name="aceptar_theme">OK</string>
+    <string name="opciones_theme">Options</string>
 </resources>
 

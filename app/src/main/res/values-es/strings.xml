@@ -286,4 +286,11 @@
     <string name="help_edad_tip_header">Referencia de Aplicación</string>
     <string name="help_edad_tip_body">Los protocolos de seguimiento pediátrico suelen aplicar el ajuste de edad corregida hasta los 2 años de vida del lactante.</string>
 
+    <string name="menu_settings">Ajustes</string>
+    <string name="settings_dark_mode">Modo Oscuro</string>
+    <string name="settings_language">Idioma de la aplicación</string>
+    <string name="aceptar_theme">ACEPTAR</string>
+
+    <string name="opciones_theme">Opciones</string>
+
 </resources>

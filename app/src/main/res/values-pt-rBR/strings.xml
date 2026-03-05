@@ -272,4 +272,10 @@
     <string name="help_edad_tip_header">Referência de Aplicação</string>
     <string name="help_edad_tip_body">Protocolos de acompanhamento pediátrico costumam aplicar o ajuste de idade corrigida até os 2 anos de vida.</string>
 
+    <string name="menu_settings">Configurações</string>
+    <string name="settings_dark_mode">Modo Escuro</string>
+    <string name="settings_language">Idioma do aplicativo</string>
+    <string name="aceptar_theme">OK</string>
+    <string name="opciones_theme">Opções</string>
+
 </resources>

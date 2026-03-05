@@ -44,16 +44,11 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun EnfermerAppTheme(
     // CAMBIO CLAVE: Siempre forzamos el tema claro
-    darkTheme: Boolean = false,
-    // Mantenemos dynamicColor en false para evitar colores del sistema
+    darkTheme: Boolean,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    // Al forzar darkTheme = false, siempre se elegirá LightColorScheme
-    val colorScheme = when {
-        darkTheme -> DarkColorScheme // Esta rama ya no se alcanzará
-        else -> LightColorScheme
-    }
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
     MaterialTheme(
         colorScheme = colorScheme,

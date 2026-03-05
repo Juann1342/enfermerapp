@@ -36,6 +36,7 @@ import com.chifuz.enfermerapp.ads.AdsManager
 import com.chifuz.enfermerapp.data.EnfermerAppDatabase
 import com.chifuz.enfermerapp.data.repository.NotaRepository
 import com.chifuz.enfermerapp.ui.components.AboutDialog
+import com.chifuz.enfermerapp.ui.components.SettingsDialog
 import com.chifuz.enfermerapp.ui.screens.dosis.DosisScreen
 import com.chifuz.enfermerapp.ui.screens.perfusion.PerfusionScreen
 import com.chifuz.enfermerapp.ui.screens.sync.SyncScreen
@@ -44,6 +45,7 @@ import com.chifuz.enfermerapp.ui.screens.notas.NotasScreen
 import com.chifuz.enfermerapp.ui.screens.notas.NotasViewModel
 import com.chifuz.enfermerapp.ui.screens.notas.NotasViewModelFactory
 import com.chifuz.enfermerapp.ui.screens.units.UnitsScreen
+import com.chifuz.enfermerapp.utils.PrefsManager
 
 sealed class Screen(val route: String, val title: Int, val icon: Int) {
     object Dosis : Screen("dosis", R.string.menu_dosis, R.drawable.ic_dosis)
@@ -67,7 +69,8 @@ val navItems = listOf(Screen.Dosis, Screen.Perfusion, Screen.Sync, Screen.Edad, 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppNavHost() {
+fun AppNavHost(onThemeChanged: (Boolean) -> Unit, // Callback para el tema
+               onLangChanged: (String) -> Unit   ) {// Callback para el idioma
     val context = LocalContext.current
     val navController = rememberNavController()
     val currentDestination by navController.currentBackStackEntryAsState()
@@ -85,6 +88,8 @@ fun AppNavHost() {
 
     val activity = context as? MainActivity
     var showAboutDialog by remember { mutableStateOf(false) }
+    var showSettingsDialog by remember { mutableStateOf(false) }
+
 
     Scaffold(
         topBar = {
@@ -176,6 +181,14 @@ fun AppNavHost() {
                     }
 
                     DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.menu_settings)) },
+                            leadingIcon = { Icon(Icons.Default.Settings, contentDescription = null) },
+                            onClick = {
+                                expanded = false
+                                showSettingsDialog = true
+                            }
+                        )
                         if (activity?.isPrivacyOptionsRequired == true) {
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.menu_privacy_settings)) },
@@ -270,6 +283,15 @@ fun AppNavHost() {
     if (showDisclaimerDialog) DisclaimerDialog(onDismiss = { showDisclaimerDialog = false })
     if (showAboutDialog) {
         AboutDialog(onDismiss = { showAboutDialog = false })
+    }
+    if (showSettingsDialog) {
+        SettingsDialog(
+            currentDark = PrefsManager.isDarkMode(context),
+            currentLang = PrefsManager.getLang(context),
+            onDismiss = { showSettingsDialog = false },
+            onThemeChanged = onThemeChanged, // Se lo pasamos a la Activity
+            onLangChanged = onLangChanged    // Se lo pasamos a la Activity
+        )
     }
 }
 

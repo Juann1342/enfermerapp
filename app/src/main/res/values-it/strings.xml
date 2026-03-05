@@ -273,4 +273,10 @@
     <string name="help_edad_tip_header">Riferimento d\'Applicazione</string>
     <string name="help_edad_tip_body">I protocolli di follow-up pediatrico applicano solitamente l\'aggiustamento dell\'età corretta fino ai 2 anni di vita.</string>
 
+    <string name="menu_settings">Impostazioni</string>
+    <string name="settings_dark_mode">Modalità Scura</string>
+    <string name="settings_language">Lingua dell\'applicazione</string>
+    <string name="aceptar_theme">OK</string>
+    <string name="opciones_theme">Opzioni</string>
+
 </resources>

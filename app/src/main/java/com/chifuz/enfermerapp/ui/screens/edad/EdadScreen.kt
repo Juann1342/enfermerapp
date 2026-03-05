@@ -185,7 +185,7 @@ fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
         }
 
         // --- DIÁLOGOS ---
-        
+
         if (showHelp) {
             EdadHelpDialog(onDismiss = { showHelp = false })
         }

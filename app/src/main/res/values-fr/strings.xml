@@ -274,4 +274,10 @@
     <string name="help_edad_tip_header">Référence d\'Application</string>
     <string name="help_edad_tip_body">Les protocoles de suivi pédiatrique appliquent généralement l\'ajustement de l\'âge corrigé jusqu\'à l\'âge de 2 ans.</string>
 
+    <string name="menu_settings">Paramètres</string>
+    <string name="settings_dark_mode">Mode Sombre</string>
+    <string name="settings_language">Langue de l\'application</string>
+    <string name="aceptar_theme">ACCEPTER</string>
+    <string name="opciones_theme">Options</string>
+
 </resources>
