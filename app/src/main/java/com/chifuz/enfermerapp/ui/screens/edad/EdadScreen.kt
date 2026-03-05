@@ -12,6 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -31,6 +32,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import com.chifuz.enfermerapp.ads.AdLocation
+import com.chifuz.enfermerapp.ui.components.EdadHelpDialog
 
 // Extensión necesaria para encontrar la Activity y mostrar ads
 fun Context.findActivity(): Activity? = when (this) {
@@ -48,12 +50,14 @@ fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
     val activity = remember(context) { context.findActivity() }
 
     var showDatePicker by remember { mutableStateOf(false) }
+    var showHelp by remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState()
 
     LaunchedEffect(Unit) {
         AdsManager.loadInterstitial(context, AdLocation.EDAD)
     }
 
+    Box(modifier = Modifier.fillMaxSize()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -166,7 +170,26 @@ fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
         )
     }
 
-    // --- DIÁLOGOS ---
+
+        IconButton(
+            onClick = { showHelp = true },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(8.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Info,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
+            )
+        }
+
+        // --- DIÁLOGOS ---
+        
+        if (showHelp) {
+            EdadHelpDialog(onDismiss = { showHelp = false })
+        }
+
     if (uiState.showResultDialog) {
         EdadResultDialog(
             anios = uiState.resultadoCronologico?.años ?: 0,
@@ -203,6 +226,8 @@ fun EdadScreen(viewModel: EdadViewModel = viewModel()) {
             }
         ) { DatePicker(state = datePickerState) }
     }
+}
+
 }
 
 @Composable

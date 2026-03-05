@@ -189,4 +189,89 @@
     <string name="concentracion_toast_error">Aucune annonce disponible pour le moment. Veuillez r\u00e9essayer plus tard.</string>
 
     <string name="concentracion_toast_fail">Aucune publicit\u00e9 disponible</string>
+
+    <string name="menu_about">À propos de EnfermerApp</string>
+    <string name="about_title">À PROPOS DE ENFERMERAPP</string>
+    <string name="about_btn_close">FERMER</string>
+    <string name="about_btn_rate">NOTER SUR LE PLAY STORE</string>
+    <string name="about_review_prompt">L\'application vous est-elle utile ? Votre avis nous aide à continuer de progresser.</string>
+    <string name="about_footer">Développé par ChifuzApps</string>
+    <string name="about_content">
+    EnfermerApp est née d\'un besoin réel : disposer d\'outils de calcul fiables qui ne font pas défaut en plein milieu d\'une garde. Ce projet est le fruit d\'une collaboration entre des développeurs de logiciels et des professionnels infirmiers en activité.\n\n
+    Priorité à l\'Urgence\n
+    Nous savons que chaque seconde compte. C\'est pourquoi l\'application est optimisée pour vous donner le résultat souhaité instantanément. Aucune publicité plein écran ne s\'affichera avant que vous n\'ayez consulté le résultat de votre calcul, garantissant ainsi la réactivité que votre travail exige.\n\n
+    Mode Concentration\n
+    Pour les moments de forte activité où vous ne pouvez tolérer aucune distraction, nous avons conçu le \"Mode Concentration\". En visionnant une seule courte vidéo, vous libérez l\'application des publicités plein écran pendant 4 heures, vous permettant de consacrer toute votre attention aux soins des patients.\n\n
+    Confidentialité et Support\n
+    Votre vie privée est notre priorité : nous ne collectons aucune donnée personnelle. Si vous avez des suggestions ou des points à améliorer, écrivez-nous à contact@chifuzapps.com.\n\n
+    Merci de nous avoir choisis pour vous accompagner dans votre pratique clinique quotidienne.
+</string>
+
+
+    <string name="help_dosis_title">Guide de Calcul de Dose</string>
+    <string name="help_btn_ok">COMPRIS</string>
+
+    <string name="help_std_intro">Ce calcul utilise la règle de trois simple pour obtenir le volume exact (ml) à prélever d\'un médicament selon la prescription médicale.</string>
+    <string name="help_std_terms_header">Glossaire des Termes</string>
+    <string name="help_std_term_dosis">• <b>Dose à administrer :</b> La quantité prescrite par le médecin pour le patient.</string>
+    <string name="help_std_term_volumen">• <b>Volume du médicament :</b> Le liquide total contenu dans l\'ampoule ou le flacon (Solvant).</string>
+    <string name="help_std_term_concentracion">• <b>Concentration totale :</b> Le total de mg ou d\'unités présents dans ce volume (Soluté).</string>
+
+    <string name="help_std_formula_header">Formule Appliquée (Règle de 3)</string>
+    <string name="help_std_formula_body">\"Résultat (ml) = (Dose souhaitée × Volume ampoule) / Concentration totale\"</string>
+
+    <string name="help_weight_intro">Utilisé lorsque la dose est calculée en fonction de la masse corporelle du patient, garantissant un dosage personnalisé.</string>
+    <string name="help_weight_term_dosis">• <b>Dose par Kg :</b> Quantité de médicament indiquée par kilo de poids (ex: 5mg/kg).</string>
+    <string name="help_weight_term_peso">• <b>Poids du patient :</b> Poids actuel en kilogrammes.</string>
+    <string name="help_weight_term_max">• <b>Dose Maximale (Optionnel) :</b> Limite de sécurité. L\'application vous avertira si le calcul dépasse cette valeur.</string>
+
+    <string name="help_weight_formula_header">Formule Appliquée</string>
+    <string name="help_weight_formula_body">\"Dose Totale = Dose par Kg × Poids du Patient\"</string>
+
+
+    <string name="help_perfusion_title">Guide de Calcul de Perfusion</string>
+
+    <string name="help_perfusion_intro">Ce module permet de calculer le débit d\'infusion des solutions parentérales en fonction du volume total et de la durée prescrite.</string>
+
+    <string name="help_perfusion_factors_header">Équivalences (Facteur de Gouttes)</string>
+    <string name="help_perfusion_factor_macro">• <b>Macro-gouttes :</b> Basé sur un rapport de 20 gouttes pour 1 ml.</string>
+    <string name="help_perfusion_factor_micro">• <b>Micro-gouttes :</b> Basé sur un rapport de 60 micro-gouttes pour 1 ml.</string>
+
+    <string name="help_perfusion_results_header">Interprétation des Résultats</string>
+    <string name="help_perfusion_res_gtts">• <b>Gouttes/min :</b> Le rythme de goutte-à-goutte physique à régler sur le dispositif.</string>
+    <string name="help_perfusion_res_mlhr">• <b>Débit (ml/h) :</b> Flux volumétrique par heure, couramment utilisé sur les pompes à perfusion.</string>
+    <string name="help_perfusion_res_mlmin">• <b>Débit (ml/min) :</b> Quantité de solution administrée au patient par minute.</string>
+
+    <string name="help_perfusion_formula_header">Formule Appliquée</string>
+    <string name="help_perfusion_formula_body">\"Gouttes/min = (Volume × Facteur) / Temps (min)\"</string>
+
+    <string name="help_perfusion_sync_header">Synchronisation du Rythme</string>
+    <string name="help_perfusion_sync_body">L\'option \"Synchroniser\" ouvre un métronome visuel et sonore ajusté au résultat obtenu, vous permettant de calibrer le goutte-à-goutte manuel avec une précision totale.</string>
+
+
+
+    <string name="help_sync_title">Synchronisation du Rythme</string>
+    <string name="help_sync_intro">Cet outil vous permet de valider ou de calibrer le goutte-à-goutte manuel de deux manières différentes.</string>
+
+    <string name="help_sync_manual_header">Mode Manuel (Tapping)</string>
+    <string name="help_sync_manual_body">Appuyez sur le bouton bleu central **chaque fois que vous voyez une goutte tomber** dans la chambre compte-gouttes. L\'application calculera la moyenne entre les pressions pour vous indiquer le rythme réel actuel (GTT/MIN).</string>
+
+    <string name="help_sync_metro_header">Mode Métronome</string>
+    <string name="help_sync_metro_body">Génère un signal visuel et sonore constant. Réglez le régulateur de débit de la perfusion jusqu\'à ce que les gouttes tombent **exactement en même temps** que l\'impulsion du métronome.</string>
+
+    <string name="help_sync_tip_header">Conseil de Précision</string>
+    <string name="help_sync_tip_body">Pour un résultat plus stable en mode manuel, il est recommandé d\'effectuer au moins 5 ou 6 pressions consécutives.</string>
+
+
+    <string name="help_edad_title">Guide de l\'Âge du Nourrisson</string>
+    <string name="help_edad_intro">Le calcul de l\'âge corrigé est essentiel pour évaluer la croissance et le développement neurocognitif des enfants nés prématurément.</string>
+    <string name="help_edad_cron_header">Âge Chronologique</string>
+    <string name="help_edad_cron_body">Le temps écoulé depuis le moment réel de la naissance. Il se calcule en soustrayant la date de naissance de la date actuelle.</string>
+    <string name="help_edad_corr_header">Âge Corrigé</string>
+    <string name="help_edad_corr_body">L\'âge qu\'aurait l\'enfant s\'il était né à la date prévue d\'accouchement. Il est utilisé pour ajuster les attentes en matière de développement physique et moteur.</string>
+    <string name="help_edad_prema_header">Calcul pour Prématurés</string>
+    <string name="help_edad_prema_body">Pour corriger l\'âge, on soustrait les semaines de gestation manquantes de l\'âge chronologique.\n\n<b>Important :</b> Si le bébé n\'a pas encore atteint sa date de terme, le résultat indiquera le temps restant pour atteindre cette étape.</string>
+    <string name="help_edad_tip_header">Référence d\'Application</string>
+    <string name="help_edad_tip_body">Les protocoles de suivi pédiatrique appliquent généralement l\'ajustement de l\'âge corrigé jusqu\'à l\'âge de 2 ans.</string>
+
 </resources>

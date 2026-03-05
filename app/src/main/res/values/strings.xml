@@ -189,6 +189,86 @@
 
     <string name="concentracion_toast_fail">No ads available</string>
 
+    <string name="menu_about">About EnfermerApp</string>
+    <string name="about_title">ABOUT ENFERMERAPP</string>
+    <string name="about_btn_close">CLOSE</string>
+    <string name="about_btn_rate">RATE ON PLAY STORE</string>
+    <string name="about_review_prompt">Is this app helpful? Your review helps us keep growing.</string>
+    <string name="about_footer">Developed by ChifuzApps</string>
+    <string name="about_content">
+    EnfermerApp was born from a real need: reliable calculation tools that won\'t fail you in the middle of a shift. This project is the result of a collaboration between software developers and active nursing professionals.\n\n
+    Priority in Emergencies\n
+    We know every second counts. That\'s why the app is optimized to give you the results you need instantly. No full-screen ads will be shown until after you have viewed your calculation result, ensuring the speed your work demands.\n\n
+    Focus Mode\n
+    For those high-demand moments where you need zero distractions, we designed \"Focus Mode.\" By watching a single short video, you can clear the app of full-screen ads for 4 hours, allowing you to focus all your attention on patient care.\n\n
+    Privacy and Support\n
+    Your privacy comes first: we do not collect personal data. If you have any suggestions or find something to improve, please email us at contact@chifuzapps.com.\n\n
+    Thank you for choosing us to support you in your daily clinical practice.
+</string>
 
+    <string name="help_dosis_title">Dosage Calculation Guide</string>
+    <string name="help_btn_ok">UNDERSTOOD</string>
+
+    <string name="help_std_intro">This calculation uses the simple rule of three to obtain the exact volume (ml) to be drawn from a medication based on medical orders.</string>
+    <string name="help_std_terms_header">Glossary of Terms</string>
+    <string name="help_std_term_dosis">• <b>Dose to administer:</b> The amount prescribed by the doctor for the patient.</string>
+    <string name="help_std_term_volumen">• <b>Medication volume:</b> The total liquid contained in the ampoule or vial (Solvent).</string>
+    <string name="help_std_term_concentracion">• <b>Total concentration:</b> The total mg or units present in that volume (Solute).</string>
+
+    <string name="help_std_formula_header">Applied Formula (Rule of 3)</string>
+    <string name="help_std_formula_body">\"Result (ml) = (Desired dose × Ampoule volume) / Total concentration\"</string>
+
+    <string name="help_weight_intro">Used when the dose is calculated based on the patient\'s body mass, ensuring personalized dosing.</string>
+    <string name="help_weight_term_dosis">• <b>Dose per Kg:</b> Amount of drug indicated for each kilo of weight (e.g., 5mg/kg).</string>
+    <string name="help_weight_term_peso">• <b>Patient weight:</b> Current weight in kilograms.</string>
+    <string name="help_weight_term_max">• <b>Maximum Dose (Optional):</b> Safety limit. The app will notify you if the calculation exceeds this value.</string>
+
+    <string name="help_weight_formula_header">Applied Formula</string>
+    <string name="help_weight_formula_body">\"Total Dose = Dose per Kg × Patient Weight\"</string>
+
+
+    <string name="help_perfusion_title">Infusion Calculation Guide</string>
+
+    <string name="help_perfusion_intro">This module allows you to calculate the infusion rate of parenteral solutions based on the total volume and the prescribed time.</string>
+
+    <string name="help_perfusion_factors_header">Equivalencies (Drop Factor)</string>
+    <string name="help_perfusion_factor_macro">• <b>Macrodrip:</b> Assumes a ratio of 20 drops per 1 ml.</string>
+    <string name="help_perfusion_factor_micro">• <b>Microdrip:</b> Assumes a ratio of 60 microdrops per 1 ml.</string>
+
+    <string name="help_perfusion_results_header">Interpreting Results</string>
+    <string name="help_perfusion_res_gtts">• <b>Drops/min:</b> The physical drip rate you must set in the delivery system.</string>
+    <string name="help_perfusion_res_mlhr">• <b>Rate (ml/h):</b> Volumetric flow per hour, frequently used in infusion pumps.</string>
+    <string name="help_perfusion_res_mlmin">• <b>Flow (ml/min):</b> Amount of solution administered to the patient per minute.</string>
+
+    <string name="help_perfusion_formula_header">Applied Formula</string>
+    <string name="help_perfusion_formula_body">\"Drops/min = (Volume × Factor) / Time (min)\"</string>
+
+    <string name="help_perfusion_sync_header">Rhythm Synchronization</string>
+    <string name="help_perfusion_sync_body">The \"Sync\" option opens a visual and audible metronome adjusted to the calculated result, allowing you to calibrate manual dripping with total precision.</string>
+
+
+    <string name="help_sync_title">Rhythm Synchronization</string>
+    <string name="help_sync_intro">This tool allows you to validate or calibrate manual dripping in two different ways.</string>
+
+    <string name="help_sync_manual_header">Manual Mode (Tapping)</string>
+    <string name="help_sync_manual_body">Tap the central blue button **each time you see a drop fall** in the drip chamber. The app will average the time between taps to show you the current actual rate (GTT/MIN).</string>
+
+    <string name="help_sync_metro_header">Metronome Mode</string>
+    <string name="help_sync_metro_body">Generates a constant visual and audible signal. Adjust the IV flow control clamp until the drops fall **at exactly the same time** as the metronome pulse.</string>
+
+    <string name="help_sync_tip_header">Precision Tip</string>
+    <string name="help_sync_tip_body">For a more stable result in manual mode, it is recommended to perform at least 5 or 6 consecutive taps.</string>
+
+
+    <string name="help_edad_title">Infant Age Guide</string>
+    <string name="help_edad_intro">Corrected age calculation is essential for evaluating the growth and neurocognitive development of preterm infants.</string>
+    <string name="help_edad_cron_header">Chronological Age</string>
+    <string name="help_edad_cron_body">The time elapsed since the actual moment of birth. It is calculated by subtracting the birth date from the current date.</string>
+    <string name="help_edad_corr_header">Corrected Age</string>
+    <string name="help_edad_corr_body">The age the child would be if born on the expected due date. It is used to adjust expectations for physical and motor development.</string>
+    <string name="help_edad_prema_header">Preterm Calculation</string>
+    <string name="help_edad_prema_body">To correct the age, the missing weeks of gestation are subtracted from the chronological age.\n\n<b>Important:</b> If the baby has not yet reached the expected due date, the result will indicate the time remaining to reach that milestone.</string>
+    <string name="help_edad_tip_header">Application Reference</string>
+    <string name="help_edad_tip_body">Pediatric follow-up protocols typically apply corrected age adjustment until 2 years of age.</string>
 </resources>
 

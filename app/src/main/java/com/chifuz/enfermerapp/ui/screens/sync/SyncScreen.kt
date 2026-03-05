@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Stop
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.chifuz.enfermerapp.R
+import com.chifuz.enfermerapp.ui.components.SyncHelpDialog
 import com.chifuz.enfermerapp.utils.VibrationManager
 
 @Composable
@@ -38,6 +40,7 @@ fun SyncScreen(gttsMinInicial: Int = 0, viewModel: SyncViewModel = viewModel()) 
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val vibrationManager = remember { VibrationManager(context) }
+    var showHelp by remember { mutableStateOf(false) }
 
     DisposableEffect(lifecycleOwner) {
         lifecycleOwner.lifecycle.addObserver(vibrationManager)
@@ -58,57 +61,78 @@ fun SyncScreen(gttsMinInicial: Int = 0, viewModel: SyncViewModel = viewModel()) 
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = stringResource(R.string.sync_title),
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(bottom = 16.dp),
-            textAlign = TextAlign.Center
-        )
-
-        DropTapButton(
-            mode = uiState.mode,
-            onTap = viewModel::recordDrop,
-            onStopMetronome = viewModel::toggleMetronomeMode,
-            isMetronomeBlinking = uiState.metronomeBlink
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(0.95f),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ControlActionButton(
-                icon = Icons.Default.Refresh,
-                text = stringResource(R.string.sync_reiniciar),
-                onClick = viewModel::reset,
-                modifier = Modifier.weight(1f)
+            Text(
+                text = stringResource(R.string.sync_title),
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(bottom = 16.dp),
+                textAlign = TextAlign.Center
             )
 
-            ControlActionButton(
-                icon = if (uiState.mode == SyncMode.METRONOME) Icons.Default.Stop else Icons.Default.PlayArrow,
-                text = if (uiState.mode == SyncMode.METRONOME) stringResource(R.string.sync_detener) else stringResource(R.string.sync_iniciar),
-                onClick = viewModel::toggleMetronomeMode,
-                enabled = uiState.currentGttsMin > 0 || uiState.mode == SyncMode.METRONOME,
-                modifier = Modifier.weight(1f)
+            DropTapButton(
+                mode = uiState.mode,
+                onTap = viewModel::recordDrop,
+                onStopMetronome = viewModel::toggleMetronomeMode,
+                isMetronomeBlinking = uiState.metronomeBlink
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(0.95f),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                ControlActionButton(
+                    icon = Icons.Default.Refresh,
+                    text = stringResource(R.string.sync_reiniciar),
+                    onClick = viewModel::reset,
+                    modifier = Modifier.weight(1f)
+                )
+
+                ControlActionButton(
+                    icon = if (uiState.mode == SyncMode.METRONOME) Icons.Default.Stop else Icons.Default.PlayArrow,
+                    text = if (uiState.mode == SyncMode.METRONOME) stringResource(R.string.sync_detener) else stringResource(
+                        R.string.sync_iniciar
+                    ),
+                    onClick = viewModel::toggleMetronomeMode,
+                    enabled = uiState.currentGttsMin > 0 || uiState.mode == SyncMode.METRONOME,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            SyncResultCard(
+                gttsMin = uiState.currentGttsMin,
+                status = stringResource(id = uiState.statusMessage, uiState.statusArg),
+                mode = uiState.mode
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        IconButton(
+            onClick = { showHelp = true },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(8.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Info,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
+            )
+        }
 
-        SyncResultCard(
-            gttsMin = uiState.currentGttsMin,
-            status = stringResource(id = uiState.statusMessage, uiState.statusArg),
-            mode = uiState.mode
-        )
+        if (showHelp) {
+            SyncHelpDialog(onDismiss = { showHelp = false })
+        }
     }
 }
 

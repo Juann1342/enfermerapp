@@ -35,6 +35,7 @@ import com.chifuz.enfermerapp.R
 import com.chifuz.enfermerapp.ads.AdsManager
 import com.chifuz.enfermerapp.data.EnfermerAppDatabase
 import com.chifuz.enfermerapp.data.repository.NotaRepository
+import com.chifuz.enfermerapp.ui.components.AboutDialog
 import com.chifuz.enfermerapp.ui.screens.dosis.DosisScreen
 import com.chifuz.enfermerapp.ui.screens.perfusion.PerfusionScreen
 import com.chifuz.enfermerapp.ui.screens.sync.SyncScreen
@@ -83,6 +84,7 @@ fun AppNavHost() {
     }
 
     val activity = context as? MainActivity
+    var showAboutDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -121,7 +123,8 @@ fun AppNavHost() {
                     val starColor = if (isConcentrationModeActive) Color(0xFFFFD700) else MaterialTheme.colorScheme.onSurfaceVariant
                     IconButton(onClick = { showConcentrationDialog = true }) {
                         Icon(
-                            imageVector = if (isConcentrationModeActive) Icons.Default.Star else Icons.Default.WorkspacePremium,
+                          //  imageVector = if (isConcentrationModeActive) Icons.Default.Star else Icons.Default.WorkspacePremium,
+                            imageVector = Icons.Default.Star,
                             contentDescription = null,
                             tint = starColor,
                             modifier = Modifier.size(32.dp)
@@ -202,6 +205,14 @@ fun AppNavHost() {
                                 context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.compartir_via)))
                             }
                         )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.menu_about)) },
+                            leadingIcon = { Icon(Icons.Default.Info, contentDescription = null) },
+                            onClick = {
+                                expanded = false
+                                showAboutDialog = true
+                            }
+                        )
                     }
                 }
             )
@@ -257,6 +268,9 @@ fun AppNavHost() {
     }
 
     if (showDisclaimerDialog) DisclaimerDialog(onDismiss = { showDisclaimerDialog = false })
+    if (showAboutDialog) {
+        AboutDialog(onDismiss = { showAboutDialog = false })
+    }
 }
 
 @Composable

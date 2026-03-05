@@ -17,7 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -35,6 +37,7 @@ import com.chifuz.enfermerapp.ads.AdsManager
 import com.chifuz.enfermerapp.ui.screens.dosis.CalculoTextField
 import com.chifuz.enfermerapp.ui.navigation.Screen
 import com.chifuz.enfermerapp.ads.AdLocation
+import com.chifuz.enfermerapp.ui.components.PerfusionHelpDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,6 +45,7 @@ fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel 
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     val activity = remember(context) { context.findActivity() }
+    var showHelp by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val isValidInput = uiState.volumen.toDoubleOrNull() != null &&
@@ -52,161 +56,185 @@ fun PerfusionScreen(navController: NavController, viewModel: PerfusionViewModel 
         AdsManager.loadInterstitial(context, AdLocation.PERFUSION)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = stringResource(R.string.perfusion_velocidad_goteo),
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(bottom = 24.dp),
-            textAlign = TextAlign.Center
-        )
-
-        // --- 1. Selección de Gotero (Segmented Buttons) ---
-
-
-        SingleChoiceSegmentedButtonRow(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            SegmentedButton(
-                selected = uiState.selectedGotero == GoteroType.MICRO,
-                onClick = { viewModel.selectGotero(GoteroType.MICRO) },
-                shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
-                colors = SegmentedButtonDefaults.colors(
-                    activeContainerColor = MaterialTheme.colorScheme.primary,
-                    activeContentColor = MaterialTheme.colorScheme.onPrimary,
-                    inactiveContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                ),
-                modifier = Modifier.weight(1f),
-            ) {
-                Text(stringResource(R.string.perfusion_micro),
-                    style = MaterialTheme.typography.labelSmall,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis)
-            }
-            SegmentedButton(
-                selected = uiState.selectedGotero == GoteroType.MACRO,
-                onClick = { viewModel.selectGotero(GoteroType.MACRO) },
-                shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
-                colors = SegmentedButtonDefaults.colors(
-                    activeContainerColor = MaterialTheme.colorScheme.primary,
-                    activeContentColor = MaterialTheme.colorScheme.onPrimary,
-                    inactiveContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            Text(
+                text = stringResource(R.string.perfusion_velocidad_goteo),
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(bottom = 24.dp),
+                textAlign = TextAlign.Center
+            )
 
-                ),
-                modifier = Modifier.weight(1f),
+            // --- 1. Selección de Gotero (Segmented Buttons) ---
+
+
+            SingleChoiceSegmentedButtonRow(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)
             ) {
-                Text(
-                    text = stringResource(R.string.perfusion_macro),
-                    style = MaterialTheme.typography.labelSmall, // Fuente más pequeña para seguridad
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                SegmentedButton(
+                    selected = uiState.selectedGotero == GoteroType.MICRO,
+                    onClick = { viewModel.selectGotero(GoteroType.MICRO) },
+                    shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+                    colors = SegmentedButtonDefaults.colors(
+                        activeContainerColor = MaterialTheme.colorScheme.primary,
+                        activeContentColor = MaterialTheme.colorScheme.onPrimary,
+                        inactiveContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    ),
+                    modifier = Modifier.weight(1f),
+                ) {
+                    Text(
+                        stringResource(R.string.perfusion_micro),
+                        style = MaterialTheme.typography.labelSmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+                SegmentedButton(
+                    selected = uiState.selectedGotero == GoteroType.MACRO,
+                    onClick = { viewModel.selectGotero(GoteroType.MACRO) },
+                    shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+                    colors = SegmentedButtonDefaults.colors(
+                        activeContainerColor = MaterialTheme.colorScheme.primary,
+                        activeContentColor = MaterialTheme.colorScheme.onPrimary,
+                        inactiveContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+
+                        ),
+                    modifier = Modifier.weight(1f),
+                ) {
+                    Text(
+                        text = stringResource(R.string.perfusion_macro),
+                        style = MaterialTheme.typography.labelSmall, // Fuente más pequeña para seguridad
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+
+            // --- 2. Volumen (ml) ---
+            CalculoTextField(
+                value = uiState.volumen,
+                onValueChange = viewModel::updateVolumen,
+                label = stringResource(R.string.perfusion_label_volumen_perfundir),
+                unit = "ml",
+                isError = uiState.volumenError,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+
+            CalculoTextField(
+                value = uiState.tiempo,
+                onValueChange = viewModel::updateTiempo,
+                label = stringResource(R.string.perfusion_tiempo),
+                unit = if (uiState.selectedTimeUnit == TimeUnit.HOURS) "hrs" else "min",
+                isError = uiState.tiempoError,
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+
+            SingleChoiceSegmentedButtonRow(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)
+            ) {
+                SegmentedButton(
+                    selected = uiState.selectedTimeUnit == TimeUnit.HOURS,
+                    onClick = { viewModel.selectTimeUnit(TimeUnit.HOURS) },
+                    shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+                    colors = SegmentedButtonDefaults.colors(
+                        activeContainerColor = MaterialTheme.colorScheme.primary,
+                        activeContentColor = MaterialTheme.colorScheme.onPrimary,
+                        inactiveContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                ) {
+                    Text(stringResource(R.string.perfusion_hours))
+                }
+                SegmentedButton(
+                    selected = uiState.selectedTimeUnit == TimeUnit.MINUTES,
+                    onClick = { viewModel.selectTimeUnit(TimeUnit.MINUTES) },
+                    shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+                    colors = SegmentedButtonDefaults.colors(
+                        activeContainerColor = MaterialTheme.colorScheme.primary,
+                        activeContentColor = MaterialTheme.colorScheme.onPrimary,
+                        inactiveContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                ) {
+                    Text(stringResource(R.string.perfusion_minutes))
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Button(
+                onClick = {
+                    keyboardController?.hide()
+                    viewModel.calcularPerfusion()
+                },
+                enabled = isValidInput && !uiState.isCalculating,
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+                shape = MaterialTheme.shapes.large
+            ) {
+                if (uiState.isCalculating) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.size(24.dp)
+                    )
+                } else {
+                    Icon(Icons.Default.CheckCircle, contentDescription = null)
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(R.string.dosis_btn_calcular).uppercase())
+                }
             }
         }
 
-        // --- 2. Volumen (ml) ---
-        CalculoTextField(
-            value = uiState.volumen,
-            onValueChange = viewModel::updateVolumen,
-            label = stringResource(R.string.perfusion_label_volumen_perfundir),
-            unit = "ml",
-            isError = uiState.volumenError,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-
-        CalculoTextField(
-            value = uiState.tiempo,
-            onValueChange = viewModel::updateTiempo,
-            label = stringResource(R.string.perfusion_tiempo),
-            unit = if (uiState.selectedTimeUnit == TimeUnit.HOURS) "hrs" else "min",
-            isError = uiState.tiempoError,
-            modifier = Modifier.padding(bottom = 12.dp)
-        )
-
-        SingleChoiceSegmentedButtonRow(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp)
+        IconButton(
+            onClick = { showHelp = true },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(8.dp)
         ) {
-            SegmentedButton(
-                selected = uiState.selectedTimeUnit == TimeUnit.HOURS,
-                onClick = { viewModel.selectTimeUnit(TimeUnit.HOURS) },
-                shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
-                colors = SegmentedButtonDefaults.colors(
-                    activeContainerColor = MaterialTheme.colorScheme.primary,
-                    activeContentColor = MaterialTheme.colorScheme.onPrimary,
-                    inactiveContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            ) {
-                Text(stringResource(R.string.perfusion_hours))
-            }
-            SegmentedButton(
-                selected = uiState.selectedTimeUnit == TimeUnit.MINUTES,
-                onClick = { viewModel.selectTimeUnit(TimeUnit.MINUTES) },
-                shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
-                colors = SegmentedButtonDefaults.colors(
-                    activeContainerColor = MaterialTheme.colorScheme.primary,
-                    activeContentColor = MaterialTheme.colorScheme.onPrimary,
-                    inactiveContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    inactiveContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            ) {
-                Text(stringResource(R.string.perfusion_minutes))
-            }
+            Icon(
+                imageVector = Icons.Default.Info,
+                contentDescription = "Guía de goteo",
+                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
+            )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(
-            onClick = {
-                keyboardController?.hide()
-                viewModel.calcularPerfusion()
-            },
-            enabled = isValidInput && !uiState.isCalculating,
-            modifier = Modifier.fillMaxWidth().height(56.dp),
-            shape = MaterialTheme.shapes.large
-        ) {
-            if (uiState.isCalculating) {
-                CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(24.dp))
-            } else {
-                Icon(Icons.Default.CheckCircle, contentDescription = null)
-                Spacer(Modifier.width(8.dp))
-                Text(stringResource(R.string.dosis_btn_calcular).uppercase())
-            }
+        if (showHelp) {
+            PerfusionHelpDialog(onDismiss = { showHelp = false })
         }
-    }
 
-    if (uiState.showResultDialog && uiState.resultadoMlHr != null) {
-        PerfusionResultDialog(
-            resultadoMlHr = uiState.resultadoMlHr!!,
-            resultadoMlMin = uiState.resultadoMlMin!!,
-            resultadoGttsMin = uiState.resultadoGttsMin!!,
-            resultadoGttsMinInt = uiState.resultadoGttsMinInt,
-            onDismiss = {
-                viewModel.hideResultDialog()
-                activity?.let {
-                    AdsManager.showInterstitial(it, AdLocation.PERFUSION) {
-                        Log.d("ADS", "Intersticial de Perfusión cerrado")
+        if (uiState.showResultDialog && uiState.resultadoMlHr != null) {
+            PerfusionResultDialog(
+                resultadoMlHr = uiState.resultadoMlHr!!,
+                resultadoMlMin = uiState.resultadoMlMin!!,
+                resultadoGttsMin = uiState.resultadoGttsMin!!,
+                resultadoGttsMinInt = uiState.resultadoGttsMinInt,
+                onDismiss = {
+                    viewModel.hideResultDialog()
+                    activity?.let {
+                        AdsManager.showInterstitial(it, AdLocation.PERFUSION) {
+                            Log.d("ADS", "Intersticial de Perfusión cerrado")
+                        }
+                    }
+                },
+                onSync = {
+                    viewModel.hideResultDialog()
+                    val route = "${Screen.Sync.route}/${uiState.resultadoGttsMinInt}"
+                    navController.navigate(route) {
+                        popUpTo(navController.graph.findStartDestination().id)
+                        launchSingleTop = true
                     }
                 }
-            },
-            onSync = {
-                viewModel.hideResultDialog()
-                val route = "${Screen.Sync.route}/${uiState.resultadoGttsMinInt}"
-                navController.navigate(route) {
-                    popUpTo(navController.graph.findStartDestination().id)
-                    launchSingleTop = true
-                }
-            }
-        )
+            )
+        }
     }
 }
 

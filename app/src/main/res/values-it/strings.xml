@@ -190,4 +190,87 @@
 
     <string name="concentracion_toast_fail">Nessun annuncio disponibile</string>
 
+    <string name="menu_about">Informazioni su EnfermerApp</string>
+    <string name="about_title">INFORMAZIONI SU ENFERMERAPP</string>
+    <string name="about_btn_close">CHIUDI</string>
+    <string name="about_btn_rate">VOTA SUL PLAY STORE</string>
+    <string name="about_review_prompt">L\'app ti è utile? La tua recensione ci aiuta a crescere.</string>
+    <string name="about_footer">Sviluppato da ChifuzApps</string>
+    <string name="about_content">
+    EnfermerApp nasce da un bisogno reale: avere strumenti di calcolo affidabili che non vengano meno nel bel mezzo di un turno. Questo progetto è il risultato della collaborazione tra sviluppatori software e professionisti infermieri in attività.\n\n
+    Priorità nell\'Urgenza\n
+    Sappiamo che ogni secondo conta. Per questo, l\'app è ottimizzata per darti il risultato che cerchi all\'istante. Non verranno mostrati annunci a schermo intero finché non avrai visualizzato il risultato del calcolo, garantendo l\'agilità che il tuo lavoro richiede.\n\n
+    Modalità Concentrazione\n
+    Per quei momenti di massima richiesta in cui non puoi permetterti distrazioni, abbiamo progettato la \"Modalità Concentrazione\". Guardando un singolo breve video, potrai liberare l\'app dagli annunci a schermo intero per 4 ore, permettendoti di focalizzare tutta la tua attenzione sulla cura del paziente.\n\n
+    Privacy e Supporto\n
+    La tua privacy è la nostra priorità: non raccogliamo dati personali. Se hai suggerimenti o trovi qualcosa da migliorare, scrivici a contact@chifuzapps.com.\n\n
+    Grazie per averci scelto per accompagnarti nella tua pratica clinica quotidiana.
+</string>
+
+
+    <string name="help_dosis_title">Guida al Calcolo delle Dosi</string>
+    <string name="help_btn_ok">HO CAPITO</string>
+
+    <string name="help_std_intro">Questo calcolo utilizza la regola del tre semplice per ottenere il volume esatto (ml) da prelevare da un farmaco in base alla prescrizione medica.</string>
+    <string name="help_std_terms_header">Glossario dei Termini</string>
+    <string name="help_std_term_dosis">• <b>Dose da somministrare:</b> La quantità indicata dal medico per il paziente.</string>
+    <string name="help_std_term_volumen">• <b>Volume del farmaco:</b> Il liquido totale contenuto nella fiala o nel flacone (Solvente).</string>
+    <string name="help_std_term_concentracion">• <b>Concentrazione totale:</b> I mg o le unità totali presenti in quel volume (Soluto).</string>
+
+    <string name="help_std_formula_header">Formula Applicata (Regola del 3)</string>
+    <string name="help_std_formula_body">\"Risultato (ml) = (Dose desiderata × Volume fiala) / Concentrazione totale\"</string>
+
+    <string name="help_weight_intro">Si utilizza quando la dose viene calcolata in base alla massa corporea del paziente, garantendo un dosaggio personalizzato.</string>
+    <string name="help_weight_term_dosis">• <b>Dose per Kg:</b> Quantità di farmaco indicata per ogni chilo di peso (es: 5mg/kg).</string>
+    <string name="help_weight_term_peso">• <b>Peso del paziente:</b> Peso attuale in chilogrammi.</string>
+    <string name="help_weight_term_max">• <b>Dose Massima (Opzionale):</b> Limite di sicurezza. L\'app avviserà se il calcolo supera questo valore.</string>
+
+    <string name="help_weight_formula_header">Formula Applicata</string>
+    <string name="help_weight_formula_body">\"Dose Totale = Dose per Kg × Peso del Paziente\"</string>
+
+
+    <string name="help_perfusion_title">Guida al Calcolo dell\'Infusione</string>
+
+    <string name="help_perfusion_intro">Questo modulo consente di calcolare la velocità di infusione delle soluzioni parenterali in base al volume totale e al tempo indicato.</string>
+
+    <string name="help_perfusion_factors_header">Equivalenze (Fattore di Gocciolamento)</string>
+    <string name="help_perfusion_factor_macro">• <b>Macrogocciolatore:</b> Si assume un rapporto di 20 gocce per ogni 1 ml.</string>
+    <string name="help_perfusion_factor_micro">• <b>Microgocciolatore:</b> Si assume un rapporto di 60 microgocce per ogni 1 ml.</string>
+
+    <string name="help_perfusion_results_header">Interpretazione dei Risultati</string>
+    <string name="help_perfusion_res_gtts">• <b>Gocce/min:</b> Il ritmo di gocciolamento fisico da impostare nel sistema.</string>
+    <string name="help_perfusion_res_mlhr">• <b>Velocità (ml/h):</b> Flusso volumetrico orario, utilizzato frequentemente nelle pompe d\'infusione (BIP).</string>
+    <string name="help_perfusion_res_mlmin">• <b>Erogazione (ml/min):</b> Quantità di soluzione che entra nel paziente ogni minuto.</string>
+
+    <string name="help_perfusion_formula_header">Formula Applicata</string>
+    <string name="help_perfusion_formula_body">\"Gocce/min = (Volume × Fattore) / Tempo (min)\"</string>
+
+    <string name="help_perfusion_sync_header">Sincronizzazione del Ritmo</string>
+    <string name="help_perfusion_sync_body">L\'opzione \"Sincronizza\" apre un metronomo visivo e sonoro regolato sul risultato ottenuto, consentendo di calibrare il gocciolamento manuale con totale precisione.</string>
+
+
+    <string name="help_sync_title">Sincronizzazione del Ritmo</string>
+    <string name="help_sync_intro">Questo strumento consente di convalidare o calibrare il gocciolamento manuale in due modi diversi.</string>
+
+    <string name="help_sync_manual_header">Modalità Manuale (Tapping)</string>
+    <string name="help_sync_manual_body">Premi il pulsante centrale blu **ogni volta che vedi cadere una goccia** nella camera di gocciolamento. L\'app calcolerà la media tra le pressioni per indicarti il ritmo reale attuale (GTT/MIN).</string>
+
+    <string name="help_sync_metro_header">Modalità Metronomo</string>
+    <string name="help_sync_metro_body">Genera un segnale visivo e sonoro costante. Regola il morsetto del deflussore finché le gocce non cadono **esattamente allo stesso tempo** dell\'impulso del metronomo.</string>
+
+    <string name="help_sync_tip_header">Suggerimento di Precisione</string>
+    <string name="help_sync_tip_body">Per un risultato più stabile in modalità manuale, si consiglia di eseguire almeno 5 o 6 pressioni consecutive.</string>
+
+
+    <string name="help_edad_title">Guida all\'Età del Lattante</string>
+    <string name="help_edad_intro">Il calcolo dell\'età corretta è essenziale per valutare la crescita e lo sviluppo neurocognitivo dei bambini nati pretermine.</string>
+    <string name="help_edad_cron_header">Età Cronologica</string>
+    <string name="help_edad_cron_body">Il tempo trascorso dal momento della nascita reale. Si calcola sottraendo la data di nascita dalla data attuale.</string>
+    <string name="help_edad_corr_header">Età Corretta</string>
+    <string name="help_edad_corr_body">L\'età che il bambino avrebbe se fosse nato alla data presunta del parto. Viene utilizzata per adattare le aspettative di sviluppo fisico e motorio.</string>
+    <string name="help_edad_prema_header">Calcolo per Prematuri</string>
+    <string name="help_edad_prema_body">Per correggere l\'età, sottraiamo le settimane di gestazione mancanti dall\'età cronologica.\n\n<b>Importante:</b> Se il bambino non ha ancora raggiunto la data presunta del parto, il risultato indicherà quanto tempo manca a quel traguardo.</string>
+    <string name="help_edad_tip_header">Riferimento d\'Applicazione</string>
+    <string name="help_edad_tip_body">I protocolli di follow-up pediatrico applicano solitamente l\'aggiustamento dell\'età corretta fino ai 2 anni di vita.</string>
+
 </resources>

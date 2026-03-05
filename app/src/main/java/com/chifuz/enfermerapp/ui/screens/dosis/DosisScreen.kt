@@ -13,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -31,6 +32,7 @@ import com.chifuz.enfermerapp.ads.AdsManager
 import com.chifuz.enfermerapp.ads.AdLocation
 import com.chifuz.enfermerapp.utils.PrefsManager
 import androidx.core.net.toUri
+import com.chifuz.enfermerapp.ui.components.DosisHelpDialog
 
 @Composable
 fun CalculoTextField(
@@ -73,6 +75,7 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
     val activity = remember(context) { context.findActivity() }
     var showRateDialog by remember { mutableStateOf(false) }
     val uiState by viewModel.uiState.collectAsState()
+    var showHelp by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
     val scrollState = rememberScrollState()
 
@@ -91,6 +94,8 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
                 uiState.pesoPaciente.toDoubleOrNull() != null
     }
 
+
+    Box(modifier = Modifier.fillMaxSize()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -206,6 +211,28 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
 
     }
 
+
+    IconButton(
+        onClick = { showHelp = true },
+        modifier = Modifier
+            .align(Alignment.TopEnd)
+            .padding(8.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Info,
+            contentDescription = "Ayuda",
+            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
+        )
+    }
+
+    if (showHelp) {
+        DosisHelpDialog(
+            calcType = uiState.calcType,
+            onDismiss = { showHelp = false }
+        )
+    }
+
+
     if (uiState.showResultDialog && uiState.resultadoFinal != null) {
         if (uiState.calcType == DosisCalcType.ESTANDAR) {
             DosisEstandarDialog(
@@ -241,6 +268,7 @@ fun DosisScreen(navController: NavController, viewModel: DosisViewModel = viewMo
             }
         )
     }
+    }
 }
 
 private fun ejecutarFlujoPostCalculo(
@@ -250,7 +278,7 @@ private fun ejecutarFlujoPostCalculo(
     onShowRating: () -> Unit
 ) {
     val count = PrefsManager.incrementCalculationCount(context)
-    if (count == 5 || count == 50) {
+    if (count == 10 || count == 50) {
         onShowRating()
     } else {
         activity?.let {
