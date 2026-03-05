@@ -59,9 +59,11 @@ fun SettingsDialog(
                 Column(Modifier.padding(top = 8.dp)) {
                     languages.forEach { (code, name) ->
                         FilterChip(
-                            selected = currentLang == code || (code == "pt" && currentLang == "pt-rBR"),
+                            // Cambiamos la lógica de selección para que coincida con lo que guarda PrefsManager
+                            selected = currentLang == code || (code == "pt" && currentLang == "pt-BR"),
                             onClick = {
-                                val finalCode = if (code == "pt") "pt-rBR" else code
+                                // IMPORTANTE: Para el Locale de Java usamos "pt-BR" (sin la 'r')
+                                val finalCode = if (code == "pt") "pt-BR" else code
                                 onLangChanged(finalCode)
                             },
                             label = { Text(name) },

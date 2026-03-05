@@ -61,14 +61,20 @@ class MainActivity : ComponentActivity() {
 
     // Única función updateLocale, optimizada para Compose y Android moderno
     private fun updateLocale(lang: String) {
-        val locale = java.util.Locale(lang)
+        val locale = if (lang.contains("-")) {
+            val parts = lang.split("-")
+            java.util.Locale(parts[0], parts[1]) // Esto creará pt_BR correctamente
+        } else {
+            java.util.Locale(lang)
+        }
+
         java.util.Locale.setDefault(locale)
 
         val resources = resources
         val config = resources.configuration
         config.setLocale(locale)
 
-        // Esto asegura que tanto el contexto base como el de recursos se actualicen
+        // Sincronización de contextos
         baseContext.resources.updateConfiguration(config, resources.displayMetrics)
         resources.updateConfiguration(config, resources.displayMetrics)
     }

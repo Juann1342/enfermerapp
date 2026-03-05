@@ -61,7 +61,7 @@ sealed class Screen(val route: String, val title: Int, val icon: Int) {
 }
 
 sealed class MenuItem(val title: Int, val icon: ImageVector) {
-    object Terms : MenuItem(R.string.menu_terms, Icons.Default.Info)
+    object Terms : MenuItem(R.string.menu_terms, Icons.Default.Description)
     object Share : MenuItem(R.string.menu_share, Icons.Default.Share)
 }
 
@@ -353,7 +353,7 @@ fun DisclaimerDialog(onDismiss: () -> Unit) {
             },
             icon = {
                 Icon(
-                    imageVector = Icons.Default.Info,
+                    imageVector = Icons.Default.Description,
                     contentDescription = stringResource(R.string.informacion),
                     tint = MaterialTheme.colorScheme.secondary
                 )

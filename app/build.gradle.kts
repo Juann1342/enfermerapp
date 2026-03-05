@@ -32,8 +32,8 @@ android {
         applicationId = "com.chifuz.enfermerapp"
         minSdk = 26
         targetSdk = 36
-        versionCode = 21
-        versionName = "2.1"
+        versionCode = 24
+        versionName = "2.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -70,6 +70,7 @@ android {
         buildConfigField("String", "ADMOB_NATIVE_ID_EDAD", "\"$adNativeIdEdad\"")
 
         manifestPlaceholders["admobAppId"] = appId
+
     }
 
     // ... resto del archivo
@@ -120,6 +121,15 @@ android {
         }
     }
 
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
+
+    androidResources {
+        localeFilters += listOf("en", "es", "fr", "it", "pt-rBR")
+    }
 }
 
 dependencies {
