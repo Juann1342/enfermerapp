@@ -136,11 +136,11 @@
 
     <string name="concentracion_estrella_desc">Modo Concentra\u00e7\u00e3o</string>
     <string name="concentracion_titulo">Modo Concentra\u00e7\u00e3o</string>
-    <string name="concentracion_oferta_desc">Ative o modo concentra\u00e7\u00e3o para trabalhar sem an\u00fancios de tela cheia pelas pr\u00f3ximas 4 horas assistindo a um v\u00eddeo curto.\n\nIdeal para evitar distra\u00e7\u00f5es durante o seu plant\u00e3o ou estudos.</string>    <string name="concentracion_btn_activar">Ver v\u00eddeo e ativar</string>
+    <string name="concentracion_oferta_desc">Ative o modo concentra\u00e7\u00e3o para trabalhar sem an\u00fancios de tela cheia pelas pr\u00f3ximas 2 horas assistindo a um v\u00eddeo curto.\n\nIdeal para evitar distra\u00e7\u00f5es durante o seu plant\u00e3o ou estudos.</string>    <string name="concentracion_btn_activar">Ver v\u00eddeo e ativar</string>
     <string name="concentracion_btn_luego">Agora n\u00e3o</string>
     <string name="concentracion_activo_titulo">Modo Concentra\u00e7\u00e3o Ativo</string>
     <string name="concentracion_btn_entendido">Entendido</string>
-    <string name="concentracion_toast_exito">Modo concentra\u00e7\u00e3o ativado por 4 horas!</string>
+    <string name="concentracion_toast_exito">Modo concentra\u00e7\u00e3o ativado por 2 horas!</string>
     <string name="concentracion_activo_desc">Voc\u00ea n\u00e3o ver\u00e1 an\u00fancios enquanto realiza seus c\u00e1lculos. Termina em aproximadamente: %1$s</string>
     <string name="tiempo_formato_horas_minutos">%1$d h %2$d min</string>
     <string name="tiempo_formato_minutos">%1$d min</string>
@@ -277,5 +277,7 @@
     <string name="settings_language">Idioma do aplicativo</string>
     <string name="aceptar_theme">OK</string>
     <string name="opciones_theme">Opções</string>
+
+    <string name="menu_more_apps">Descubra mais apps</string>
 
 </resources>

@@ -136,11 +136,11 @@
 
     <string name="concentracion_estrella_desc">Modalit\u00e0 Concentrazione</string>
     <string name="concentracion_titulo">Modalit\u00e0 Concentrazione</string>
-    <string name="concentracion_oferta_desc">Attiva la modalit\u00e0 concentrazione per lavorare senza annunci a schermo intero per le prossime 4 ore guardando un breve video.\n\nIdeale per evitare distrazioni durante il turno o lo studio.</string>    <string name="concentracion_btn_activar">Guarda il video e attiva</string>
+    <string name="concentracion_oferta_desc">Attiva la modalit\u00e0 concentrazione per lavorare senza annunci a schermo intero per le prossime 2 ore guardando un breve video.\n\nIdeale per evitare distrazioni durante il turno o lo studio.</string>    <string name="concentracion_btn_activar">Guarda il video e attiva</string>
     <string name="concentracion_btn_luego">Non ora</string>
     <string name="concentracion_activo_titulo">Modalit\u00e0 Concentrazione Attiva</string>
     <string name="concentracion_btn_entendido">Ho capito</string>
-    <string name="concentracion_toast_exito">Modalit\u00e0 concentrazione attivata per 4 ore!</string>
+    <string name="concentracion_toast_exito">Modalit\u00e0 concentrazione attivata per 2 ore!</string>
     <string name="tiempo_formato_horas_minutos">%1$d h %2$d min</string>
     <string name="tiempo_formato_minutos">%1$d min</string>
     <string name="concentracion_activo_desc">Non vedrai annunci durante i tuoi calcoli. Termina tra circa: %1$s</string>
@@ -278,5 +278,7 @@
     <string name="settings_language">Lingua dell\'applicazione</string>
     <string name="aceptar_theme">OK</string>
     <string name="opciones_theme">Opzioni</string>
+
+    <string name="menu_more_apps">Scopri altre app</string>
 
 </resources>

@@ -136,11 +136,11 @@
 
     <string name="concentracion_estrella_desc">Focus Mode</string>
     <string name="concentracion_titulo">Focus Mode</string>
-    <string name="concentracion_oferta_desc">Enable focus mode to work without full-screen ads for the next 4 hours by watching a short video.\n\nPerfect for avoiding distractions during your shift or studies.</string>    <string name="concentracion_btn_activar">Watch video and enable</string>
+    <string name="concentracion_oferta_desc">Enable focus mode to work without full-screen ads for the next 2 hours by watching a short video.\n\nPerfect for avoiding distractions during your shift or studies.</string>    <string name="concentracion_btn_activar">Watch video and enable</string>
     <string name="concentracion_btn_luego">Not now</string>
     <string name="concentracion_activo_titulo">Focus Mode Active</string>
     <string name="concentracion_btn_entendido">Got it</string>
-    <string name="concentracion_toast_exito">Focus mode activated for 4 hours!</string>
+    <string name="concentracion_toast_exito">Focus mode activated for 2 hours!</string>
     <string name="concentracion_activo_desc">No ads will be shown while performing your calculations. Ends in approximately: %1$s</string>
     <string name="tiempo_formato_horas_minutos">%1$d h %2$d min</string>
     <string name="tiempo_formato_minutos">%1$d min</string>
@@ -276,5 +276,7 @@
     <string name="settings_language">App Language</string>
     <string name="aceptar_theme">OK</string>
     <string name="opciones_theme">Options</string>
+
+    <string name="menu_more_apps">Descubrí más apps</string>
 </resources>
 

@@ -28,10 +28,10 @@ object AdsManager {
     private const val TAG = "AdsManager"
 
     // --- NUEVA CONFIGURACIÓN DE TIEMPOS SEPARADA ---
-    private const val MAX_INTERSTITIALS_PER_HOUR = 5
-    private const val COOLDOWN_MILLIS = 2 * 60 * 1000L      // 2 minutos entre anuncios
-    private const val ONE_HOUR_MILLIS = 60 * 60 * 1000L    // Ventana de 1 hora para el límite de 5
-    private const val FOUR_HOURS_MILLIS = 4 * 60 * 60 * 1000L // Duración del Modo Concentración
+    private const val MAX_INTERSTITIALS_PER_HOUR = 7
+    private const val COOLDOWN_MILLIS = 1 * 60 * 1000L      // 1 minuto entre anuncios
+    private const val ONE_HOUR_MILLIS = 60 * 60 * 1000L    // Ventana de 1 hora para el límite de 7
+    private const val FOUR_HOURS_MILLIS = 2 * 60 * 60 * 1000L // Duración del Modo Concentración
 
     private val adTimestamps = mutableListOf<Long>()
     private var lastAdShownTime: Long = 0

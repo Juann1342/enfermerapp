@@ -3,6 +3,7 @@ package com.chifuz.enfermerapp.ui.navigation
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
@@ -224,6 +225,16 @@ fun AppNavHost(onThemeChanged: (Boolean) -> Unit, // Callback para el tema
                             onClick = {
                                 expanded = false
                                 showAboutDialog = true
+                            }
+                        )
+
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.menu_more_apps)) },
+                            leadingIcon = { Icon(Icons.Default.Apps, contentDescription = null) },
+                            onClick = {
+                                expanded = false
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://chifuzapps.com"))
+                                context.startActivity(intent)
                             }
                         )
                     }
